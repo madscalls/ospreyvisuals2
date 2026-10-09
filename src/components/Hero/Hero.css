@@ -102,13 +102,20 @@
   }
 
   .hero__actions .btn--outline {
-    flex: 1;
-    min-width: 0;
+    flex: 1 1 auto;
+    min-width: max-content; /* never narrower than its label, so the text can't spill out of the outline */
     height: 46px;
     padding-inline: 0.75em;
     white-space: nowrap;
   }
 
+}
+
+/* Small phones: shrink both buttons so they still fit side by side */
+@media (max-width: 350px) {
+  .hero__actions { gap: 0.5rem; }
+  .hero__actions .btn-art { --btn-h: 38px; }
+  .hero__actions .btn--outline { height: 38px; }
 }
 
 /* Portrait tablets: buttons keep their natural width instead of stretching across */

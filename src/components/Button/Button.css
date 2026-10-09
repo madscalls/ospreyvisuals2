@@ -138,4 +138,14 @@
   .btn-art {
     grid-template-rows: minmax(0, 1fr);
   }
+
+  /* Explicit heights: Safari can size percentage-height images from their natural size and widen the button */
+  .btn-art > img {
+    height: var(--btn-h);
+    max-width: none;
+  }
+
+  .btn-art > .btn-art__underlay {
+    height: calc(var(--btn-h) * 1.13) !important;
+  }
 }
