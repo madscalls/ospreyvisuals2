@@ -1,0 +1,36 @@
+.home {
+  position: relative;
+  height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: clamp(0.75rem, 3vh, 2.5rem);
+  padding: clamp(0.25rem, 2vh, 1.5rem) var(--ov-gutter) 0;
+}
+
+.home__copy {
+  position: relative;
+  z-index: 1;
+  align-self: center;
+  width: min(36%, 36rem);
+  min-width: 300px;
+}
+
+.home__services {
+  position: relative;
+  z-index: 1;
+  width: 64%;
+}
+
+/* Temporary small-screen fallback (stacked, scrolls) until the mobile design is settled */
+@media (max-width: 900px) {
+  .home {
+    height: auto;
+    gap: 2rem;
+    padding-bottom: 1rem;
+  }
+  .home__copy,
+  .home__services {
+    width: 100%;
+    min-width: 0;
+  }
+}

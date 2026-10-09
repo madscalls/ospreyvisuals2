@@ -1,0 +1,131 @@
+/* ---------- Text buttons ---------- */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  min-width: clamp(140px, 13vw, 200px);
+  padding: 0.95em 2em;
+  font-family: var(--ov-font-body);
+  font-weight: 500;
+  font-size: var(--ov-fs-small);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: transform 200ms var(--ov-ease), filter 200ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn--brush {
+  color: var(--ov-white);
+  background: var(--ov-orange-deep);
+  border-radius: 3px 14px 4px 18px / 12px 4px 16px 5px;
+}
+
+.btn--brush:hover {
+  filter: brightness(1.08);
+}
+
+.btn--outline {
+  color: var(--ov-ink);
+  border: 1.5px solid var(--ov-orange-deep);
+  background: transparent;
+}
+
+.btn--outline {
+  transition: transform 200ms var(--ov-ease), background-color 250ms ease, color 250ms ease, border-color 250ms ease;
+}
+
+/* Dark translucent charcoal, like the cap in the hero scene */
+.btn--outline:hover,
+.btn--outline:focus-visible {
+  background: rgba(28, 28, 30, 0.72);
+  border-color: rgba(28, 28, 30, 0.72);
+  color: var(--ov-white);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+.btn__arrow {
+  font-size: 1.3em;
+  line-height: 1;
+}
+
+/* ---------- Artwork buttons ---------- */
+.btn-art {
+  --btn-h: clamp(36px, 5.2vh, 54px);
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  height: var(--btn-h);
+  transition: transform 220ms var(--ov-ease);
+}
+
+.btn-art--sm {
+  --btn-h: clamp(30px, 4.4vh, 46px);
+}
+
+.btn-art--lg {
+  --btn-h: clamp(40px, 6vh, 60px);
+}
+
+/* Every layer sits in the same grid cell, stacked */
+.btn-art > img {
+  grid-area: 1 / 1;
+  height: 100%;
+  width: auto;
+  max-width: none;
+}
+
+.btn-art__img {
+  position: relative;
+  z-index: 1;
+  transition: opacity 220ms ease, filter 220ms ease;
+}
+
+/* Underlay art is drawn ~13% taller than the button, so it peeks out around the edges */
+.btn-art__underlay {
+  z-index: 0;
+  height: 113% !important;
+  transition: transform 220ms var(--ov-ease);
+}
+
+.btn-art:hover {
+  transform: translateY(-2px);
+}
+
+.btn-art:hover .btn-art__underlay {
+  transform: scale(1.04);
+}
+
+.btn-art:hover .btn-art__img--base {
+  filter: brightness(1.08);
+}
+
+/* Crossfade to the hover artwork */
+.btn-art__img--hover {
+  opacity: 0;
+}
+
+.btn-art--swap:hover .btn-art__img--base,
+.btn-art--swap:focus-visible .btn-art__img--base {
+  opacity: 0;
+}
+
+.btn-art--swap:hover .btn-art__img--hover,
+.btn-art--swap:focus-visible .btn-art__img--hover {
+  opacity: 1;
+}
+
+/* Darker resting state that brightens to the full artwork on hover */
+.btn-art--tone .btn-art__img--base {
+  filter: brightness(0.84) saturate(1.05);
+}
+
+.btn-art--tone:hover .btn-art__img--base,
+.btn-art--tone:focus-visible .btn-art__img--base {
+  filter: none;
+}

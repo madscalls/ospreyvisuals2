@@ -1,0 +1,28 @@
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.divider--art {
+  display: block;
+}
+
+.divider__art {
+  width: 100%;
+  height: auto;
+}
+
+.divider__line {
+  flex: 1;
+  height: 1px;
+  background: var(--ov-orange);
+}
+
+.divider__placeholder {
+  width: clamp(10px, 1.6vh, 14px);
+  aspect-ratio: 1;
+  background: var(--ov-orange);
+  transform: rotate(45deg);
+}

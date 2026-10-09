@@ -1,0 +1,32 @@
+.page-transition {
+  position: absolute;
+  inset: 0;
+  outline: none;
+}
+
+.page-transition--in {
+  animation: ov-page-in var(--ov-page-in) var(--ov-ease) both;
+}
+
+.page-transition--out {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+@keyframes ov-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Focus moves here on page change for screen readers; no visible ring needed on the whole page */
+.page-transition:focus,
+.page-transition:focus-visible {
+  outline: none;
+}

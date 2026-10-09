@@ -1,0 +1,62 @@
+.hero-scene {
+  position: absolute;
+  /* Spans the full screen height, behind the nav and footer, like the concept */
+  top: calc(-1 * var(--ov-nav-h));
+  bottom: calc(-1 * var(--ov-footer-h));
+  right: 0;
+  width: 68%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Anchored bottom-right; width is capped by height so the whole scene always fits on screen */
+.hero-scene__img {
+  position: absolute;
+  right: 0;
+  bottom: 8%;
+  width: min(100%, 124vh);
+  height: auto;
+  max-width: none;
+}
+
+.hero-scene__slot {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-left: 2px dashed rgba(201, 80, 15, 0.35);
+}
+
+.hero-scene__slot span {
+  font-size: var(--ov-fs-small);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(201, 80, 15, 0.6);
+}
+
+.hero-scene__layers {
+  position: absolute;
+  inset: 0;
+}
+
+@media (max-width: 900px) {
+  .hero-scene {
+    display: none; /* mobile treatment of the scene TBD */
+  }
+}
+
+/* First-load intro: the truck scene follows the text */
+.app--intro .hero-scene__img {
+  animation: ov-scene-in 800ms var(--ov-ease) 450ms both;
+}
+
+@keyframes ov-scene-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px) scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

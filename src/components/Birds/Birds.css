@@ -1,0 +1,94 @@
+.birds {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---------- Layer 1: glide in when the home page appears ---------- */
+.birds {
+  --enter-base: 0.2s; /* returning to Home from another page */
+}
+
+.app--intro .birds {
+  --enter-base: 0.9s; /* first load: after the text and the truck */
+}
+
+.birds__bird {
+  position: absolute;
+  display: block;
+  animation: ov-bird-enter 2.2s cubic-bezier(0.16, 0.84, 0.3, 1) both;
+  animation-delay: calc(var(--enter-base) + var(--i) * 0.16s);
+}
+
+@keyframes ov-bird-enter {
+  0% {
+    opacity: 0;
+    transform: translate3d(-22vw, 12vh, 0) rotate(-7deg) scale(0.85);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Layer 2: slow drift and bob ---------- */
+.birds__drift {
+  display: block;
+  will-change: transform;
+  animation: ov-bird-glide var(--bird-duration) ease-in-out var(--bird-delay) infinite alternate;
+}
+
+@keyframes ov-bird-glide {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(-2deg);
+  }
+  35% {
+    transform: translate3d(18px, -12px, 0) rotate(1deg);
+  }
+  70% {
+    transform: translate3d(36px, -4px, 0) rotate(-1deg);
+  }
+  100% {
+    transform: translate3d(52px, 6px, 0) rotate(1.5deg);
+  }
+}
+
+/* ---------- Layer 3: a couple of quick wing beats, then a long glide ---------- */
+.birds__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: 50% 55%;
+  animation: ov-bird-flap var(--flap-every) linear var(--flap-delay) infinite;
+}
+
+/* The flaps take the first ~9% of the cycle; the rest is gliding */
+@keyframes ov-bird-flap {
+  0%,
+  9%,
+  100% {
+    transform: none;
+  }
+  2% {
+    transform: scaleY(var(--flap-depth)) translateY(1px);
+  }
+  4% {
+    transform: scaleY(1.05);
+  }
+  6.5% {
+    transform: scaleY(var(--flap-depth)) translateY(1px);
+  }
+  8.5% {
+    transform: scaleY(1.03);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .birds__bird,
+  .birds__drift,
+  .birds__img {
+    animation: none;
+  }
+}

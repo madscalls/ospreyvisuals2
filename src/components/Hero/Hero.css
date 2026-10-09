@@ -1,0 +1,80 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(0.5rem, 1.8vh, 1.4rem);
+  max-width: 34rem;
+}
+
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  font-weight: 600;
+  font-size: var(--ov-fs-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero__eyebrow-rule {
+  flex: 0 0 clamp(60px, 9vw, 150px);
+  height: 1px;
+  background: var(--ov-orange);
+}
+
+.hero__title {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--ov-font-display);
+  font-weight: 400; /* the brand face has a single weight; don't let the browser fake a bold */
+  font-size: var(--ov-fs-hero);
+  line-height: 0.95;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  color: var(--ov-ink);
+}
+
+.hero__title-line {
+  white-space: nowrap; /* keep "We bring brands" on one line, as in the concept */
+}
+
+.hero__title-line--accent {
+  color: var(--ov-orange);
+}
+
+.hero__divider {
+  width: clamp(200px, 19vw, 300px);
+  margin-left: -1.2rem; /* the art's lines fade out at the ends */
+}
+
+.hero__body {
+  font-size: var(--ov-fs-body);
+  line-height: 1.6;
+  color: var(--ov-ink-soft);
+  max-width: 26rem;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(0.75rem, 1.5vw, 1.5rem);
+  align-items: center;
+  margin-top: clamp(0.25rem, 1.5vh, 1rem);
+}
+
+/* Match the outline button to the height of the brush artwork beside it */
+.hero__actions .btn--outline {
+  height: clamp(36px, 5.2vh, 52px);
+  padding-block: 0;
+}
+
+/* First-load intro: the text comes in first, one line after another */
+.app--intro .hero > * {
+  animation: ov-fade-up 600ms var(--ov-ease) both;
+}
+.app--intro .hero > :nth-child(1) { animation-delay: 0ms; }
+.app--intro .hero > :nth-child(2) { animation-delay: 90ms; }
+.app--intro .hero > :nth-child(3) { animation-delay: 220ms; }
+.app--intro .hero > :nth-child(4) { animation-delay: 290ms; }
+.app--intro .hero > :nth-child(5) { animation-delay: 380ms; }

@@ -1,0 +1,20 @@
+/*
+  Brand typefaces supplied by the designer.
+  Kept in their original formats (.otf / .ttf), which every current browser supports.
+  Before launch: confirm the licences cover web use (see README).
+*/
+@font-face {
+  font-family: 'Ayr Basepath Condensed';
+  src: url('../assets/fonts/ayr-basepath-condensed.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rezojas';
+  src: url('../assets/fonts/rezojas.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

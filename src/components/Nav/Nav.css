@@ -1,0 +1,105 @@
+.nav {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 3rem);
+  padding: 0 var(--ov-gutter);
+}
+
+.nav__links {
+  display: flex;
+  gap: clamp(0.75rem, 1.6vw, 1.75rem);
+  justify-self: center; /* centred in the space between the logo and the quote button */
+}
+
+.nav__link {
+  position: relative;
+  font-family: var(--ov-font-body);
+  font-weight: 500;
+  font-size: var(--ov-fs-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35em 0;
+}
+
+/* Designer's brush-stroke line: grows out from the centre and overshoots a little so it "pops" */
+.nav__link::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -0.15em;
+  /* Same size under every item: the average nav word is ~3.9em wide, plus ~15% overhang */
+  width: 4.5em;
+  aspect-ratio: 4.85 / 0.38; /* the artwork's proportions */
+  background: url('../../assets/images/ui/menu-hover-line.svg') center / 100% 100% no-repeat;
+  transform: translateX(-50%) scale(0, 0.3);
+  transform-origin: center;
+  opacity: 0;
+  transition:
+    transform 560ms cubic-bezier(0.34, 1.7, 0.5, 1),
+    opacity 160ms ease;
+  pointer-events: none;
+}
+
+.nav__link:hover::after,
+.nav__link:focus-visible::after,
+.nav__link--active::after {
+  transform: translateX(-50%) scale(1, 1);
+  opacity: 1;
+}
+
+.nav__link--active {
+  color: var(--ov-orange-deep);
+}
+
+.nav__cta {
+  min-width: 0;
+}
+
+/* Hamburger hidden on desktop. Mobile layout is a placeholder pending client feedback. */
+.nav__toggle {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .nav {
+    grid-template-columns: auto 1fr auto;
+  }
+  .nav__cta {
+    display: none;
+  }
+  .nav__toggle {
+    display: grid;
+    gap: 5px;
+    justify-self: end;
+    grid-column: 3;
+    padding: 0.5rem;
+  }
+  .nav__toggle-bar {
+    width: 26px;
+    height: 2px;
+    background: var(--ov-ink);
+  }
+  .nav__links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    margin: 0;
+    padding: 1rem var(--ov-gutter);
+    background: var(--ov-paper);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+  .nav__links--open {
+    display: flex;
+  }
+}
+
+/* First-load intro: nav arrives after the text and truck */
+.app--intro .nav {
+  animation: ov-fade-in 600ms ease 850ms both;
+}

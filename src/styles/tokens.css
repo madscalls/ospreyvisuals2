@@ -1,0 +1,32 @@
+/* Design tokens: pulled from the concept. Adjust once the brand files arrive. */
+:root {
+  /* Color */
+  --ov-orange: #e8641b;
+  --ov-orange-deep: #c9500f;
+  --ov-ink: #1f1f1f;
+  --ov-ink-soft: #3a3a3a;
+  --ov-paper: #f4ead9;
+  --ov-paper-shade: #e9dcc4;
+  --ov-white: #ffffff;
+
+  /* Type: headline + script are the brand fonts (styles/fonts.css); body is Jost from Google Fonts */
+  --ov-font-display: 'Ayr Basepath Condensed', 'Arial Narrow', sans-serif;
+  --ov-font-body: 'Jost', 'Helvetica Neue', Arial, sans-serif;
+  --ov-font-script: 'Rezojas', 'Brush Script MT', cursive;
+
+  /* Sizes scale with viewport HEIGHT as well as width, because nothing scrolls */
+  --ov-fs-hero: clamp(3rem, min(6.3vw, 10.2vh), 7.4rem); /* sized for the narrow Ayr Basepath face */
+  --ov-fs-eyebrow: clamp(0.7rem, 1.6vh, 0.95rem);
+  --ov-fs-body: clamp(0.85rem, 2vh, 1.15rem);
+  --ov-fs-nav: clamp(0.8rem, 1.9vh, 1.1rem);
+  --ov-fs-small: clamp(0.65rem, 1.35vh, 0.8rem);
+
+  /* Layout */
+  --ov-gutter: clamp(1rem, 3.5vw, 4rem);
+  --ov-nav-h: clamp(72px, 12.5vh, 140px);
+  --ov-footer-h: clamp(64px, 12vh, 130px);
+
+  /* Motion */
+  --ov-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ov-page-in: 450ms;
+}

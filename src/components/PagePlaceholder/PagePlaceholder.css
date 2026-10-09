@@ -1,0 +1,43 @@
+.page-placeholder {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.6vh, 1.2rem);
+  padding: clamp(0.5rem, 3vh, 2.5rem) var(--ov-gutter);
+}
+
+.page-placeholder__eyebrow {
+  font-weight: 600;
+  font-size: var(--ov-fs-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ov-orange-deep);
+}
+
+.page-placeholder__title {
+  font-family: var(--ov-font-display);
+  font-weight: 400;
+  font-size: calc(var(--ov-fs-hero) * 0.75);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.page-placeholder__intro {
+  max-width: 40rem;
+  font-size: var(--ov-fs-body);
+  line-height: 1.6;
+  color: var(--ov-ink-soft);
+}
+
+.page-placeholder__content {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  border: 1.5px dashed rgba(201, 80, 15, 0.35);
+  border-radius: 8px;
+  font-size: var(--ov-fs-small);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(201, 80, 15, 0.6);
+}
