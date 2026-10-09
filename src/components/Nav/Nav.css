@@ -66,24 +66,25 @@
 /* ---------- Phones and portrait tablets ---------- */
 @media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
   .nav {
-    grid-template-columns: auto 1fr auto auto;
+    grid-template-columns: auto 1fr auto; /* logo | quote button (centred) | menu icon */
     gap: 0.5rem;
     height: 72px;
     padding-top: env(safe-area-inset-top, 0px);
   }
 
-  /* Everything on one row: logo | (space) | quote button | menu icon */
+  /* Everything on one row */
   .nav > * {
     grid-row: 1;
   }
 
   .nav .nav__cta {
-    grid-column: 3;
-    --btn-h: 34px;
+    grid-column: 2;
+    justify-self: center;
+    --btn-h: clamp(36px, 10vw, 44px);
   }
 
   .nav__toggle {
-    grid-column: 4;
+    grid-column: 3;
     position: relative;
     z-index: 30; /* stays above the open menu so it can close it */
     display: grid;
@@ -162,6 +163,13 @@
     height: 88px;
   }
   .nav .nav__cta {
-    --btn-h: 42px;
+    --btn-h: 50px;
+  }
+}
+
+/* Very narrow phones: keep the quote button from crowding the logo */
+@media (max-width: 380px) {
+  .nav .nav__cta {
+    --btn-h: 34px;
   }
 }
