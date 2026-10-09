@@ -79,8 +79,9 @@
 
   .nav .nav__cta {
     grid-column: 2;
-    justify-self: center;
-    --btn-h: clamp(36px, 10vw, 44px);
+    justify-self: end; /* hugs the menu icon so the brush never touches the logo */
+    /* Scales with the free space between the logo and menu icon (button is ~4.8x wider than tall) */
+    --btn-h: clamp(22px, calc((100vw - 240px) / 4.8), 44px);
   }
 
   .nav__toggle {
@@ -167,9 +168,3 @@
   }
 }
 
-/* Very narrow phones: keep the quote button from crowding the logo */
-@media (max-width: 380px) {
-  .nav .nav__cta {
-    --btn-h: 34px;
-  }
-}
