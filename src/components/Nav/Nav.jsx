@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Logo from '../Logo/Logo.jsx';
 import Button from '../Button/Button.jsx';
@@ -9,20 +9,27 @@ import quoteUnderlay from '../../assets/images/ui/quote-button-underlay.svg';
 import './Nav.css';
 
 export default function Nav() {
-  // Mobile menu toggle: layout TBD until the client decides on mobile
+  // Phone menu: a full-screen overlay. Escape closes it; the page behind can't scroll while it's open.
   const [open, setOpen] = useState(false);
+  useEffect(() => {
+    document.documentElement.classList.toggle('menu-open', open);
+    if (!open) return;
+    const onKey = (e) => e.key === 'Escape' && setOpen(false);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
 
   return (
     <header className="nav">
       <Logo />
 
       <button
-        className="nav__toggle"
+        className={`nav__toggle${open ? ' nav__toggle--open' : ''}`}
         aria-expanded={open}
         aria-controls="primary-nav"
         onClick={() => setOpen((o) => !o)}
       >
-        <span className="visually-hidden">Menu</span>
+        <span className="visually-hidden">{open ? 'Close menu' : 'Menu'}</span>
         <span className="nav__toggle-bar" />
         <span className="nav__toggle-bar" />
         <span className="nav__toggle-bar" />
@@ -38,6 +45,7 @@ export default function Nav() {
             onMouseEnter={() => preloadPage(link.to)}
             onFocus={() => preloadPage(link.to)}
             onClick={() => setOpen(false)}
+            style={{ '--i': NAV_LINKS.indexOf(link) }}
           >
             {link.label}
           </NavLink>

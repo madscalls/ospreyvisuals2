@@ -63,43 +63,105 @@
   display: none;
 }
 
-@media (max-width: 900px) {
+/* ---------- Phones and portrait tablets ---------- */
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
   .nav {
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 0.5rem;
+    height: 72px;
+    padding-top: env(safe-area-inset-top, 0px);
   }
-  .nav__cta {
-    display: none;
+
+  /* Everything on one row: logo | (space) | quote button | menu icon */
+  .nav > * {
+    grid-row: 1;
   }
-  .nav__toggle {
-    display: grid;
-    gap: 5px;
-    justify-self: end;
+
+  .nav .nav__cta {
     grid-column: 3;
-    padding: 0.5rem;
+    --btn-h: 34px;
   }
+
+  .nav__toggle {
+    grid-column: 4;
+    position: relative;
+    z-index: 30; /* stays above the open menu so it can close it */
+    display: grid;
+    gap: 6px;
+    padding: 0.6rem 0.4rem;
+  }
+
   .nav__toggle-bar {
     width: 26px;
     height: 2px;
     background: var(--ov-ink);
+    transition: transform 300ms var(--ov-ease), opacity 200ms ease;
   }
+
+  /* Bars turn into an X */
+  .nav__toggle--open .nav__toggle-bar:nth-child(2) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .nav__toggle--open .nav__toggle-bar:nth-child(3) {
+    opacity: 0;
+  }
+  .nav__toggle--open .nav__toggle-bar:nth-child(4) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  /* Full-screen menu on the paper background */
   .nav__links {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    flex-direction: column;
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    justify-self: stretch; /* fill the screen (the desktop rule centres it) */
     margin: 0;
-    padding: 1rem var(--ov-gutter);
-    background: var(--ov-paper);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  }
-  .nav__links--open {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.4rem;
+    background: var(--ov-paper);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 300ms ease, visibility 0s linear 300ms;
+  }
+
+  .nav__links--open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 300ms ease;
+  }
+
+  .nav__link {
+    font-family: var(--ov-font-display);
+    font-size: clamp(2.4rem, 11vw, 3.4rem);
+    letter-spacing: 0.02em;
+    padding: 0.1em 0;
+  }
+
+  .nav__links--open .nav__link {
+    animation: ov-fade-up 450ms var(--ov-ease) both;
+    animation-delay: calc(80ms + var(--i) * 60ms);
+  }
+
+  html.menu-open,
+  html.menu-open body {
+    overflow: hidden;
   }
 }
 
 /* First-load intro: nav arrives after the text and truck */
 .app--intro .nav {
   animation: ov-fade-in 600ms ease 850ms both;
+}
+
+/* Portrait tablets: a little more room, so the bar items can be bigger */
+@media (min-width: 600px) and (max-width: 1100px) and (orientation: portrait) {
+  .nav {
+    height: 88px;
+  }
+  .nav .nav__cta {
+    --btn-h: 42px;
+  }
 }

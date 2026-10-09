@@ -129,3 +129,13 @@
 .btn-art--tone:focus-visible .btn-art__img--base {
   filter: none;
 }
+
+/*
+  Phones: size the artwork buttons from --btn-h. (On desktop they show at the artwork's
+  own size, which is what was signed off, so this only applies to small screens.)
+*/
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  .btn-art {
+    grid-template-rows: minmax(0, 1fr);
+  }
+}

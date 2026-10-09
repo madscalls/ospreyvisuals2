@@ -39,10 +39,31 @@
   inset: 0;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  /* Sits in the page flow below the text, edge to edge, with the painted sky behind it */
   .hero-scene {
-    display: none; /* mobile treatment of the scene TBD */
+    position: relative;
+    inset: auto;
+    width: auto;
+    margin-inline: calc(-1 * var(--ov-gutter));
+    padding-top: 18%; /* sky room for the birds */
+    background: var(--scene-sky) right center / cover no-repeat;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 88%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 88%, transparent 100%);
   }
+
+  .hero-scene__img {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+  }
+
+  /* Phones get the three distant birds only, placed in the sky above the buildings */
+  .hero-scene .birds__bird:nth-child(1) { display: none; }
+  .hero-scene .birds__bird:nth-child(2) { top: 6% !important; left: 14% !important; }
+  .hero-scene .birds__bird:nth-child(3) { top: 3% !important; left: 30% !important; }
+  .hero-scene .birds__bird:nth-child(4) { top: 13% !important; left: 24% !important; }
 }
 
 /* First-load intro: the truck scene follows the text */
@@ -58,5 +79,21 @@
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+/*
+  Squarer landscape screens (smaller laptops, iPads on their side, narrow browser windows):
+  the scene would run into the services row, so lift it to sit above the row and shrink it to fit.
+  Wide screens (16:10 and wider) keep the signed-off desktop placement.
+*/
+@media (min-width: 901px) and (max-aspect-ratio: 155/100) and (orientation: landscape) {
+  .hero-scene {
+    --clear-services: calc(var(--ov-footer-h) + 8vh + 110px); /* footer + service row */
+  }
+
+  .hero-scene__img {
+    bottom: var(--clear-services);
+    width: min(100%, 62vw, calc((100vh - var(--ov-nav-h) - var(--clear-services)) * 1.51));
   }
 }

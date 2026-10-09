@@ -18,3 +18,10 @@
 .app--intro .backdrop__img {
   animation: ov-fade-in 700ms ease 100ms both;
 }
+
+/* Phones: keep the plain paper side of the painting behind the text (the scene gets its own sky) */
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  .backdrop__img {
+    object-position: left center;
+  }
+}

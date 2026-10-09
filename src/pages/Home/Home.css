@@ -21,16 +21,29 @@
   width: 64%;
 }
 
-/* Temporary small-screen fallback (stacked, scrolls) until the mobile design is settled */
-@media (max-width: 900px) {
+/* ---------- Phones and portrait tablets: text, then the truck scene, then a swipeable services row ---------- */
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
   .home {
     height: auto;
-    gap: 2rem;
-    padding-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem var(--ov-gutter) 0.5rem;
   }
-  .home__copy,
-  .home__services {
+
+  .home__copy {
+    order: 1;
     width: 100%;
     min-width: 0;
+  }
+
+  .home .hero-scene {
+    order: 2;
+  }
+
+  .home__services {
+    order: 3;
+    width: auto;
+    margin-inline: calc(-1 * var(--ov-gutter)); /* lets the row run edge to edge */
   }
 }

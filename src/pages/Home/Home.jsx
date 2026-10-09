@@ -8,6 +8,7 @@ import bird3 from '../../assets/images/home/bird-3.webp';
 import bird4 from '../../assets/images/home/bird-4.webp';
 import scene1400 from '../../assets/images/home/hero-scene-1400.webp';
 import scene2200 from '../../assets/images/home/hero-scene-2200.webp';
+import sky from '../../assets/images/backdrop/background-1600.webp';
 import './Home.css';
 
 /*
@@ -25,7 +26,7 @@ const FLOCK = [
 export default function Home() {
   return (
     <div className="home">
-      <HeroScene src={scene1400} srcSet={`${scene1400} 1400w, ${scene2200} 2200w`}>
+      <HeroScene sky={sky} src={scene1400} srcSet={`${scene1400} 1400w, ${scene2200} 2200w`}>
         <Birds flock={FLOCK} />
       </HeroScene>
 

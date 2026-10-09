@@ -5,15 +5,15 @@ import './HeroScene.css';
  *   <HeroScene src={small} srcSet="small 1400w, large 2200w" />
  * Layers that animate (birds, etc.) go in as children so they sit on top.
  */
-export default function HeroScene({ src, srcSet, alt = '', children }) {
+export default function HeroScene({ src, srcSet, sky, alt = '', children }) {
   return (
-    <div className="hero-scene">
+    <div className="hero-scene" style={sky ? { '--scene-sky': `url(${sky})` } : undefined}>
       {src ? (
         <img
           className="hero-scene__img"
           src={src}
           srcSet={srcSet}
-          sizes="(max-width: 900px) 100vw, 68vw"
+          sizes="(max-width: 1100px) and (orientation: portrait) 100vw, (max-width: 900px) 100vw, 68vw"
           alt={alt}
           fetchPriority="high"
           decoding="async"

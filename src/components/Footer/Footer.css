@@ -36,16 +36,13 @@
   width: clamp(200px, 19vw, 300px);
 }
 
-@media (max-width: 900px) {
+
+
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
   .footer {
     width: 100%;
-  }
-}
-
-@media (max-width: 900px) {
-  .footer {
     height: auto;
-    padding-block: 1.5rem;
+    padding-block: 1.5rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
   }
 }
 

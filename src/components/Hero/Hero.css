@@ -78,3 +78,73 @@
 .app--intro .hero > :nth-child(3) { animation-delay: 220ms; }
 .app--intro .hero > :nth-child(4) { animation-delay: 290ms; }
 .app--intro .hero > :nth-child(5) { animation-delay: 380ms; }
+
+/* ---------- Phones ---------- */
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  .hero {
+    --ov-fs-hero: min(16.5vw, 4.6rem); /* "We bring brands" still fits on one line */
+    max-width: none;
+  }
+
+  .hero__body {
+    font-size: 1rem;
+  }
+
+  .hero__actions {
+    width: 100%;
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+  }
+
+  .hero__actions .btn-art {
+    --btn-h: 46px;
+    flex: 0 0 auto;
+  }
+
+  .hero__actions .btn--outline {
+    flex: 1;
+    min-width: 0;
+    height: 46px;
+    padding-inline: 0.75em;
+    white-space: nowrap;
+  }
+
+}
+
+/* Portrait tablets: buttons keep their natural width instead of stretching across */
+@media (min-width: 600px) and (max-width: 1100px) and (orientation: portrait) {
+  .hero__actions .btn-art {
+    --btn-h: 54px;
+  }
+  .hero__actions .btn--outline {
+    flex: 0 0 auto;
+    height: 50px;
+    padding-inline: 2em;
+  }
+  .hero__body {
+    font-size: 1.1rem;
+    max-width: 32rem;
+  }
+}
+
+/* Landscape tablets and laptops up to 1340px: let the brush button scale down so both buttons stay on one row */
+@media (min-width: 901px) and (max-width: 1340px) and (orientation: landscape) {
+  .hero__actions {
+    flex-wrap: nowrap;
+  }
+  .hero__actions .btn--outline {
+    white-space: nowrap;
+    min-width: 0;
+    padding-inline: 1.4em;
+  }
+  .hero__actions .btn-art {
+    grid-template-rows: minmax(0, 1fr);
+  }
+}
+
+/* Touch screens have no hover, so show the hero quote button in full colour */
+@media (hover: none) {
+  .hero__actions .btn-art--tone .btn-art__img--base {
+    filter: none;
+  }
+}

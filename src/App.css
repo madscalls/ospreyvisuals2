@@ -4,6 +4,7 @@
   height: 100dvh;
   display: grid;
   grid-template-rows: var(--ov-nav-h) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr); /* never let wide content stretch the page sideways */
   isolation: isolate;
 }
 
@@ -12,7 +13,7 @@
   min-height: 0;
 }
 
-@media (max-height: 600px), (max-width: 900px) {
+@media (max-height: 600px), (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
   .app {
     height: auto;
     min-height: 100dvh;

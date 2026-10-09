@@ -45,13 +45,45 @@
   color: var(--ov-ink-soft);
 }
 
-@media (max-width: 900px) {
+/* Phones: one row you swipe sideways, snapping tile by tile; ~2.5 tiles show so it's clear there's more */
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
   .service-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 1.5rem;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 40%;
+    grid-template-columns: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--ov-gutter);
+    padding: 0.25rem var(--ov-gutter) 0.75rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
-  .service-strip__item + .service-strip__item {
-    border-left: none;
+
+  .service-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .service-strip__item {
+    scroll-snap-align: start;
+  }
+
+  .service-strip__icon {
+    height: 72px;
+  }
+
+  .service-strip__title {
+    font-size: 0.72rem;
+  }
+
+  .service-strip__blurb {
+    font-size: 0.7rem;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 900px), (min-width: 600px) and (max-width: 1100px) and (orientation: portrait) {
+  .service-strip {
+    grid-auto-columns: 30%; /* portrait tablets: ~3 tiles visible */
   }
 }
 
