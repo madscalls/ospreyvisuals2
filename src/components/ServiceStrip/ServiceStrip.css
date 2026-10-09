@@ -68,8 +68,19 @@
     scroll-snap-align: start;
   }
 
+  /* Fixed-size icon box: Safari resolved the percentage image height differently and let the art spill over the title */
   .service-strip__icon {
+    flex: none;
     height: 72px;
+    width: 100%;
+    aspect-ratio: auto;
+    overflow: hidden;
+  }
+
+  .service-strip__icon img {
+    height: 72px;
+    width: auto;
+    max-width: 100%;
   }
 
   .service-strip__title {
