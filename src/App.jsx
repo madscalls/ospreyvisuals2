@@ -26,7 +26,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className={`app${intro ? ' app--intro' : ''}`}>
+    <div className={`app${intro ? ' app--intro' : ''}${location.pathname === '/contact' ? ' app--no-footer' : ''}`}>
       {/* Stays mounted across pages, so the paper texture never reloads or flashes */}
       <Backdrop />
 
@@ -48,7 +48,8 @@ export default function App() {
         </PageTransition>
       </main>
 
-      <Footer />
+      {/* No footer tagline on the Contact page: its contact-details row takes that spot */}
+      {location.pathname !== '/contact' && <Footer />}
     </div>
   );
 }

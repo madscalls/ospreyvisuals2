@@ -1,3 +1,86 @@
+/* Desktop: one screen. Heading + form on the left, the lighthouse on the right, contact details along the bottom. */
 .page-contact {
+  position: relative;
   height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: clamp(0.5rem, 2vh, 1.5rem);
+  padding: clamp(0rem, 0.8vh, 0.75rem) var(--ov-gutter) clamp(0.75rem, 3vh, 2rem);
+}
+
+.page-contact__main {
+  position: relative;
+  z-index: 1;
+  align-self: start;
+  width: min(42%, 40rem);
+  min-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.6rem, 1.8vh, 1.4rem);
+}
+
+.page-contact__info {
+  position: relative;
+  z-index: 1;
+}
+
+/* The lighthouse scene: right side, full height, sitting lower than the home truck scene */
+.hero-scene--contact {
+  width: 64%;
+  bottom: 0; /* this page has no footer below it, so the scene stops at the bottom of the screen */
+}
+
+.hero-scene--contact .hero-scene__img {
+  --contact-col: calc(var(--ov-gutter) + max(42vw, 380px)); /* space taken by the form column */
+  bottom: 9%;
+  /* Never wider than the space beside the form (its left edge is soft sky, so a little overlap is fine) */
+  width: min(100%, 118vh, calc(100vw - var(--contact-col) + 6vw));
+}
+
+/* Squarer landscape screens: lift the scene above the contact-details row so the text stays readable */
+@media (min-width: 901px) and (max-aspect-ratio: 155/100) and (orientation: landscape) {
+  .hero-scene--contact .hero-scene__img {
+    bottom: 17vh;
+    width: min(100%, calc((100vh - var(--ov-nav-h) - 17vh) * 1.5), calc(100vw - var(--contact-col) + 6vw));
+  }
+}
+
+.app--intro .hero-scene--contact .hero-scene__img {
+  animation-delay: 350ms;
+}
+
+/* ---------- Phones and portrait tablets ---------- */
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  .page-contact {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+    padding: 1rem var(--ov-gutter) 2rem;
+  }
+  .page-contact__main {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* The lighthouse: small, top-right corner beside the heading, full colour */
+  .page-contact .hero-scene--contact {
+    position: absolute;
+    top: 0.25rem;
+    right: 0;
+    bottom: auto;
+    left: auto;
+    width: clamp(88px, 25vw, 260px);
+    margin: 0;
+    padding: 0;
+    background: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+    opacity: 1;
+    z-index: 0;
+  }
+  .hero-scene--contact .hero-scene__img {
+    position: static;
+    width: 100%;
+  }
 }

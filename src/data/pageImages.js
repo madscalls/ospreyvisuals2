@@ -15,6 +15,7 @@ import bird2 from '../assets/images/home/bird-2.webp';
 import bird3 from '../assets/images/home/bird-3.webp';
 import bird4 from '../assets/images/home/bird-4.webp';
 import scene1400 from '../assets/images/home/hero-scene-1400.webp';
+import contactScene from '../assets/images/contact/lighthouse-scene-1400.webp';
 import { SERVICES } from './services';
 
 const serviceIcons = SERVICES.map((s) => s.icon).filter(Boolean);
@@ -25,5 +26,5 @@ export const PAGE_IMAGES = {
   '/services': [...serviceIcons],
   '/about': [],
   '/shop': [],
-  '/contact': [],
+  '/contact': [contactScene],
 };

@@ -19,3 +19,8 @@
     min-height: 100dvh;
   }
 }
+
+/* Contact page: its contact-details row replaces the footer tagline */
+.app--no-footer > .footer {
+  display: none;
+}

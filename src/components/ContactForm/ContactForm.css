@@ -1,0 +1,396 @@
+.contact-form {
+  --cf-h: clamp(32px, 4.6vh, 48px);
+  --cf-fs: clamp(0.76rem, 1.5vh, 0.95rem);
+  --cf-line: #d6c3a3;
+  --cf-fill: rgba(251, 246, 238, 0.88);
+  --cf-danger: #b3261e;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.4vh, 1rem);
+  font-size: var(--cf-fs);
+}
+
+.contact-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.4rem, 1.1vh, 0.8rem) clamp(0.5rem, 0.8vw, 0.9rem);
+}
+
+.contact-form__field--wide {
+  grid-column: 1 / -1;
+  position: relative;
+}
+
+.contact-form input[type='text'],
+.contact-form input[type='email'],
+.contact-form input[type='tel'],
+.contact-form select,
+.contact-form textarea {
+  width: 100%;
+  height: var(--cf-h);
+  padding: 0 0.9em;
+  border: 1px solid var(--cf-line);
+  border-radius: 4px;
+  background: var(--cf-fill);
+  color: var(--ov-ink);
+  font: inherit;
+  font-weight: 500;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.contact-form ::placeholder {
+  color: #3a3a3a;
+  opacity: 1;
+}
+
+.contact-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.4em;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1.5 7 7.5l6-6' fill='none' stroke='%231f1f1f' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9em center;
+}
+
+.contact-form select:invalid {
+  color: #3a3a3a;
+}
+
+/* Project details: label sits inside the box, like the design */
+.contact-form__textarea-label {
+  position: absolute;
+  top: 0.55em;
+  left: 0.9em;
+  font-weight: 500;
+  color: var(--ov-ink);
+  pointer-events: none;
+}
+
+.contact-form textarea {
+  height: clamp(64px, 10.5vh, 120px);
+  padding: 1.8em 0.9em 0.6em;
+  resize: none;
+  line-height: 1.4;
+}
+
+.contact-form textarea::placeholder {
+  color: #8a8075;
+  font-weight: 400;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--ov-orange);
+  box-shadow: 0 0 0 3px rgba(232, 100, 27, 0.18);
+}
+
+.contact-form--show-errors :is(input, select, textarea):invalid {
+  border-color: var(--cf-danger);
+}
+
+/* ---------- Upload + agreement row ---------- */
+.contact-form__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(0.6rem, 1.2vw, 1.2rem);
+  align-items: end;
+}
+
+.contact-form__botcheck {
+  display: none;
+}
+
+/* No upload box (free Web3Forms plan): the agreement sits on its own line */
+.contact-form__row--no-upload {
+  grid-template-columns: 1fr;
+}
+
+.contact-form__upload {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  min-width: 0;
+}
+
+.contact-form__upload-title {
+  font-size: 0.85em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.contact-form__drop {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+  min-height: clamp(44px, 6.6vh, 68px);
+  padding: 0.4em 0.9em;
+  border: 1.5px dashed #b9a685;
+  border-radius: 4px;
+  background: rgba(251, 246, 238, 0.55);
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.contact-form__drop:hover,
+.contact-form__drop.is-over {
+  border-color: var(--ov-orange);
+  background: rgba(255, 240, 225, 0.8);
+}
+
+.contact-form__drop:focus-within {
+  border-color: var(--ov-orange);
+  box-shadow: 0 0 0 3px rgba(232, 100, 27, 0.18);
+}
+
+.contact-form__drop input[type='file'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.contact-form__upload-icon {
+  flex: 0 0 auto;
+  width: 1.7em;
+  height: 1.7em;
+  color: var(--ov-ink);
+}
+
+.contact-form__drop-text {
+  display: flex;
+  flex-direction: column;
+  color: #6b6258;
+  font-size: 0.86em;
+  line-height: 1.35;
+}
+
+.contact-form__drop-text small {
+  font-size: 0.92em;
+}
+
+.contact-form__files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em;
+  min-width: 0;
+}
+
+.contact-form__file {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  max-width: 100%;
+  padding: 0.15em 0.2em 0.15em 0.6em;
+  border-radius: 999px;
+  background: var(--ov-paper-shade);
+  font-size: 0.82em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.contact-form__file small {
+  color: #6b6258;
+}
+
+.contact-form__file button {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  line-height: 1;
+  color: var(--ov-ink);
+}
+
+.contact-form__file button:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.contact-form__agree {
+  display: flex;
+  gap: 0.7em;
+  align-items: flex-start;
+  font-size: 0.8em;
+  line-height: 1.4;
+  color: var(--ov-ink);
+  cursor: pointer;
+}
+
+.contact-form__agree input {
+  flex: 0 0 auto;
+  width: 1.35em;
+  height: 1.35em;
+  margin-top: 0.1em;
+  accent-color: var(--ov-orange-deep);
+  cursor: pointer;
+}
+
+.contact-form--show-errors .contact-form__agree input:invalid {
+  outline: 2px solid var(--cf-danger);
+  outline-offset: 1px;
+}
+
+/* ---------- Send ---------- */
+.contact-form__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4em clamp(0.6rem, 1.2vw, 1.2rem);
+}
+
+.contact-form__send {
+  height: clamp(40px, 6vh, 60px); /* same height as the home page Get a Quote button */
+  aspect-ratio: 442 / 90.5; /* the brush artwork's proportions */
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  padding: 0 1em;
+  color: #fff;
+  font-weight: 500;
+  font-size: 1em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: transform 220ms var(--ov-ease), filter 200ms ease;
+}
+
+/* Brush artwork fills the button; the label sits on top */
+.contact-form__send-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  pointer-events: none;
+}
+
+.contact-form__send-label {
+  position: relative;
+}
+
+/* Same treatment as the home page CTA: slightly darker at rest, full orange on hover */
+.contact-form__send {
+  filter: brightness(0.84) saturate(1.05);
+}
+
+.contact-form__send:hover:not(:disabled),
+.contact-form__send:focus-visible {
+  transform: translateY(-2px);
+  filter: none;
+}
+
+/* Touch screens have no hover, so show it in full colour */
+@media (hover: none) {
+  .contact-form__send {
+    filter: none;
+  }
+}
+
+.contact-form__send:disabled {
+  cursor: progress;
+  filter: saturate(0.7);
+}
+
+.contact-form__bird {
+  height: clamp(26px, 3.8vh, 42px);
+  width: auto;
+}
+
+.contact-form__sign {
+  flex: 1 1 8rem;
+  min-width: 0;
+  max-width: 15rem;
+}
+
+.contact-form__sign input {
+  font-style: italic;
+}
+
+.contact-form__message {
+  flex-basis: 100%;
+  min-height: 1.2em;
+  font-size: 0.85em;
+  color: var(--cf-danger);
+}
+
+.contact-form__message:empty {
+  display: none;
+}
+
+/* ---------- Sent ---------- */
+.contact-form--sent {
+  justify-content: center;
+  min-height: 40vh;
+  padding: 2rem;
+  border: 1px solid var(--cf-line);
+  border-radius: 6px;
+  background: var(--cf-fill);
+  font-size: var(--ov-fs-body);
+  color: var(--ov-ink-soft);
+}
+
+.contact-form__thanks {
+  font-family: var(--ov-font-display);
+  font-size: clamp(2rem, 5vh, 3rem);
+  line-height: 1;
+  color: var(--ov-orange);
+  text-transform: uppercase;
+}
+
+.contact-form__again {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  border-bottom: 1px solid currentColor;
+  color: var(--ov-ink);
+}
+
+/* ---------- Phones and portrait tablets ---------- */
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  .contact-form {
+    --cf-h: 48px;
+    --cf-fs: 16px; /* 16px stops iPhones zooming in when a field is tapped */
+  }
+  .contact-form textarea {
+    height: 140px;
+  }
+  .contact-form__row {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  .contact-form__agree {
+    font-size: 0.85em;
+  }
+  .contact-form__send {
+    height: 54px;
+  }
+  /* Signature, send button and bird stacked and centred */
+  .contact-form__actions {
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .contact-form__sign {
+    order: -1;
+    flex: none;
+    width: 100%;
+    max-width: none;
+  }
+  .contact-form__message {
+    text-align: center;
+  }
+}
+
+@media (max-width: 560px) {
+  .contact-form__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Narrower desktop/landscape screens: drop the small bird so the signature stays on the Send row */
+@media (min-width: 901px) and (max-width: 1200px) and (orientation: landscape) {
+  .contact-form__bird {
+    display: none;
+  }
+}

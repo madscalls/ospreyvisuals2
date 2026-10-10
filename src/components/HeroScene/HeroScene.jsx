@@ -5,9 +5,9 @@ import './HeroScene.css';
  *   <HeroScene src={small} srcSet="small 1400w, large 2200w" />
  * Layers that animate (birds, etc.) go in as children so they sit on top.
  */
-export default function HeroScene({ src, srcSet, sky, alt = '', children }) {
+export default function HeroScene({ src, srcSet, sky, alt = '', className = '', children }) {
   return (
-    <div className="hero-scene" style={sky ? { '--scene-sky': `url(${sky})` } : undefined}>
+    <div className={`hero-scene ${className}`.trim()} style={sky ? { '--scene-sky': `url(${sky})` } : undefined}>
       {src ? (
         <img
           className="hero-scene__img"

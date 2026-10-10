@@ -1,0 +1,98 @@
+.contact-info {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.contact-info__item + .contact-info__item {
+  border-left: 1px solid var(--ov-orange);
+}
+
+.contact-info__item {
+  padding: 0 clamp(0.8rem, 1.6vw, 1.8rem);
+}
+
+.contact-info__item:first-child {
+  padding-left: 0;
+}
+
+.contact-info__link {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+}
+
+.contact-info__icon {
+  height: clamp(30px, 4.4vh, 46px);
+  width: auto;
+  transition: transform 220ms var(--ov-ease);
+}
+
+a.contact-info__link:hover .contact-info__icon {
+  transform: rotate(-4deg) scale(1.06);
+}
+
+.contact-info__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.contact-info__label {
+  font-weight: 600;
+  font-size: var(--ov-fs-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.contact-info__value {
+  font-size: calc(var(--ov-fs-eyebrow) * 0.9);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+a.contact-info__link:hover .contact-info__value {
+  color: var(--ov-orange-deep);
+}
+
+/* First-load intro: arrives with the rest of the page furniture */
+.app--intro .contact-info__item {
+  animation: ov-fade-up 550ms var(--ov-ease) both;
+}
+.app--intro .contact-info__item:nth-child(1) { animation-delay: 1000ms; }
+.app--intro .contact-info__item:nth-child(2) { animation-delay: 1080ms; }
+.app--intro .contact-info__item:nth-child(3) { animation-delay: 1160ms; }
+
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  /* Stacked and centred: icon on top, text underneath */
+  .contact-info {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+  }
+  .contact-info__link {
+    flex-direction: column;
+    gap: 0.45rem;
+    text-align: center;
+  }
+  .contact-info__text {
+    align-items: center;
+  }
+  .contact-info__item,
+  .contact-info__item:first-child {
+    padding: 0;
+  }
+  .contact-info__item + .contact-info__item {
+    border-left: none;
+  }
+  .contact-info__icon {
+    height: 44px;
+  }
+  .contact-info__label {
+    font-size: 0.85rem;
+  }
+  .contact-info__value {
+    font-size: 0.85rem;
+  }
+}
