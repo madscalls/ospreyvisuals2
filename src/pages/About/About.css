@@ -1,3 +1,145 @@
+/* Desktop: one screen. Story, values and closing lines down the left; the coastal scene fills the right. */
 .page-about {
+  position: relative;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 3.6vh, 2.75rem);
+  padding: clamp(0rem, 0.8vh, 0.75rem) var(--ov-gutter) clamp(0.75rem, 3vh, 2rem);
+}
+
+.page-about__story,
+.page-about__values,
+.page-about__closing {
+  position: relative;
+  z-index: 1;
+}
+
+.page-about__story {
+  width: min(54%, 62rem);
+  min-width: 420px;
+}
+
+/* Smaller than the home headline: the second line is long */
+.page-about .page-heading__title {
+  font-size: clamp(2rem, min(3.6vw, 6.3vh), 4.8rem);
+}
+
+.page-about .page-heading__body {
+  font-size: clamp(0.9rem, min(2.5vh, 1.4vw), 1.8rem);
+  line-height: 1.45;
+  color: var(--ov-ink);
+  max-width: none;
+  margin-top: clamp(0.1rem, 0.6vh, 0.5rem);
+}
+
+/* The closing two lines sit at the bottom of the screen */
+.page-about__closing {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(0.9rem, min(2.6vh, 1.45vw), 1.85rem);
+  line-height: 1.4;
+  color: var(--ov-ink);
+}
+
+/* The coastal scene: right side, nearly full height, down to the bottom of the screen (no footer on this page) */
+.hero-scene--about {
+  width: 72%;
+  bottom: 0;
+}
+
+.hero-scene--about .hero-scene__img {
+  bottom: 1.5%;
+  width: min(100%, 126vh);
+}
+
+/*
+  Squarer landscape screens (smaller laptops, iPads on their side): the text would be sized by the narrow width
+  and leave the screen half empty, so give it a wider column and size it more by height. The scene keeps to the
+  bottom right, where its top-left corner is open sky.
+*/
+@media (min-width: 901px) and (max-aspect-ratio: 155/100) and (orientation: landscape) {
+  .page-about__story {
+    width: min(64%, 62rem);
+  }
+  .page-about .page-heading__title {
+    font-size: clamp(2rem, min(4.4vw, 6.3vh), 4.8rem);
+  }
+  .page-about .page-heading__body {
+    font-size: clamp(0.9rem, min(2.5vh, 1.85vw), 1.8rem);
+  }
+  .page-about__closing {
+    font-size: clamp(0.9rem, min(2.6vh, 1.9vw), 1.85rem);
+  }
+  .page-about .about-values__word {
+    font-size: clamp(1.4rem, min(3.9vh, 3vw), 2.8rem);
+  }
+  .page-about .about-values__line {
+    font-size: clamp(0.85rem, min(2.3vh, 1.8vw), 1.6rem);
+  }
+  .page-about .about-values__beliefs {
+    font-size: clamp(0.95rem, min(2.5vh, 1.95vw), 1.75rem);
+  }
+  .hero-scene--about .hero-scene__img {
+    bottom: 11vh; /* lifted clear of the two closing lines */
+    width: min(64vw, 126vh);
+  }
+}
+
+.app--intro .page-about__closing {
+  animation: ov-fade-up 600ms var(--ov-ease) 1050ms both;
+}
+
+/* Short desktop windows: let the page scroll rather than overlap */
+@media (max-height: 600px) {
+  .page-about {
+    height: auto;
+  }
+}
+
+/* ---------- Phones and portrait tablets: story, then the scene edge to edge, then values and closing ---------- */
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  .page-about {
+    height: auto;
+    gap: 1.75rem;
+    padding: 1rem var(--ov-gutter) 2.5rem;
+  }
+
+  .page-about__story {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .page-about .page-heading__title {
+    font-size: min(9.5vw, 3.6rem);
+    white-space: normal;
+  }
+
+  .page-about .page-heading__body {
+    font-size: 1rem;
+  }
+
+  .page-about .hero-scene--about {
+    order: 2;
+    width: auto;
+    padding-top: 0;
+    background: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .hero-scene--about .hero-scene__img {
+    width: 100%;
+  }
+
+  .page-about__values {
+    order: 3;
+  }
+
+  .page-about__closing {
+    order: 4;
+    margin-top: 0;
+    font-size: 1rem;
+  }
 }

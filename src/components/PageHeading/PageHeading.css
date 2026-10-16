@@ -36,6 +36,10 @@
   color: var(--ov-orange);
 }
 
+.page-heading--stacked .page-heading__accent {
+  display: block;
+}
+
 .page-heading__body {
   font-size: var(--ov-fs-body);
   line-height: 1.55;

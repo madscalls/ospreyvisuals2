@@ -1,3 +1,100 @@
+/* Desktop: one screen. Heading top left, sky splash top right, the six services filling the rest. */
 .page-services {
+  position: relative;
   height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: clamp(1rem, 5vh, 3.5rem);
+  padding: clamp(0rem, 0.8vh, 0.75rem) var(--ov-gutter) clamp(0.75rem, 3.5vh, 2.25rem);
+}
+
+.page-services__splash {
+  --splash-w: min(80vh, 58vw); /* sized by height so the paint stays clear of the nav links */
+  --splash-bottom: 45vh; /* from the top of the screen: the splash ends just above the first row of services */
+  position: absolute;
+  /* Runs up behind the nav (and off the top edge, like the concept) so its bottom lands at --splash-bottom */
+  top: calc(var(--splash-bottom) - var(--ov-nav-h) - var(--splash-w) / 1.763);
+  right: -1vw;
+  width: var(--splash-w);
+  height: auto;
+  max-width: none;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.page-services__intro,
+.page-services__catalog {
+  position: relative;
+  z-index: 1;
+}
+
+.page-services__intro {
+  width: min(52%, 60rem);
+  min-width: 380px;
+}
+
+.page-services .page-heading__body {
+  font-weight: 500;
+  color: var(--ov-ink);
+  max-width: none;
+}
+
+.page-services__catalog {
+  min-height: 0;
+}
+
+/* Squarer landscape screens: shrink the splash so it stays clear of the services grid */
+@media (min-width: 901px) and (max-aspect-ratio: 155/100) and (orientation: landscape) {
+  .page-services__splash {
+    --splash-w: min(50vw, 90vh);
+    --splash-bottom: 40vh;
+  }
+}
+
+.app--intro .page-services__splash {
+  animation: ov-scene-in 800ms var(--ov-ease) 350ms both;
+}
+
+/* Short desktop windows: let the page scroll rather than squash the cards */
+@media (max-height: 600px) {
+  .page-services {
+    height: auto;
+  }
+  .page-services__catalog .service-catalog {
+    grid-template-rows: repeat(3, auto);
+  }
+}
+
+/* ---------- Phones and portrait tablets: heading, splash edge to edge, then the services stacked ---------- */
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  .page-services {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem var(--ov-gutter) 2.5rem;
+  }
+
+  .page-services__intro {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .page-services .page-heading__title {
+    font-size: min(12.5vw, 5rem);
+    white-space: normal;
+  }
+
+  .page-services__splash {
+    position: relative;
+    order: 2;
+    top: auto;
+    right: auto;
+    width: calc(100% + 2 * var(--ov-gutter));
+    margin: -0.5rem calc(-1 * var(--ov-gutter)) 0;
+  }
+
+  .page-services__catalog {
+    order: 3;
+  }
 }

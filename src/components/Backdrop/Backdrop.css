@@ -14,6 +14,23 @@
   object-position: center;
 }
 
+/*
+  Services: the painted clouds stay at the top (behind the palm-tree splash) and fade to plain paper
+  before the service cards, like the concept. A paper wash fades in over the lower part.
+*/
+.backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0, transparent 24vh, var(--ov-paper) 52vh);
+  opacity: 0;
+  transition: opacity var(--ov-page-in) ease;
+}
+
+.app--plain-paper .backdrop::after {
+  opacity: 1;
+}
+
 /* First-load intro: the painted sky eases in behind the text instead of popping in */
 .app--intro .backdrop__img {
   animation: ov-fade-in 700ms ease 100ms both;

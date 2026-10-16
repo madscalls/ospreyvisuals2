@@ -20,7 +20,7 @@
   }
 }
 
-/* Contact page: its contact-details row replaces the footer tagline */
+/* Contact, Services and About pages: no footer tagline */
 .app--no-footer > .footer {
   display: none;
 }

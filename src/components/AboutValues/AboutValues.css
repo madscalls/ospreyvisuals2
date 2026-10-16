@@ -1,0 +1,81 @@
+.about-values {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: start;
+  align-items: center;
+  column-gap: clamp(1rem, 2.2vw, 2.75rem);
+  font-family: var(--ov-font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.about-values__steps,
+.about-values__beliefs {
+  list-style: none;
+}
+
+/* Understand. / Listen first. — centred stacks */
+.about-values__steps {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.35rem, 1.4vh, 1rem);
+  text-align: center;
+}
+
+.about-values__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1em;
+}
+
+.about-values__word {
+  font-size: clamp(1.4rem, min(3.9vh, 2.3vw), 2.8rem);
+  color: var(--ov-orange);
+}
+
+.about-values__line {
+  font-size: clamp(0.85rem, min(2.3vh, 1.35vw), 1.6rem);
+  color: var(--ov-ink);
+}
+
+.about-values__beliefs {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.9vh, 1.35rem);
+  font-size: clamp(0.95rem, min(2.5vh, 1.45vw), 1.75rem);
+  color: var(--ov-orange);
+}
+
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  .about-values {
+    column-gap: 1.25rem;
+  }
+  .about-values__word {
+    font-size: clamp(1.4rem, 6.5vw, 2.4rem);
+  }
+  .about-values__line {
+    font-size: clamp(0.85rem, 3.6vw, 1.3rem);
+  }
+  .about-values__beliefs {
+    font-size: clamp(0.95rem, 4.2vw, 1.5rem);
+  }
+}
+
+@media (max-width: 400px) {
+  .about-values {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    row-gap: 1.75rem;
+  }
+  .about-values__beliefs {
+    text-align: center;
+  }
+}
+
+/* First-load intro: the lines ripple in after the story text */
+.app--intro .about-values li {
+  animation: ov-fade-up 550ms var(--ov-ease) both;
+  animation-delay: calc(700ms + var(--i) * 70ms);
+}

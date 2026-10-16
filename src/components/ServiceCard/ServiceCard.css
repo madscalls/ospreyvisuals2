@@ -1,0 +1,119 @@
+.service-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: clamp(72px, 10.5vw, 190px) minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: center;
+  column-gap: clamp(0.75rem, 1.6vw, 2rem);
+  min-height: 0;
+}
+
+/* Painted icon: fits a fixed box, so every title lines up whatever the art's shape */
+.service-card__art {
+  height: clamp(56px, 13vh, 150px);
+  display: grid;
+  place-items: center;
+}
+
+.service-card__art img {
+  max-width: 115%; /* the paint splashes may run a little past the box, like the concept */
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.service-card__title {
+  font-family: var(--ov-font-display);
+  font-weight: 400;
+  font-size: clamp(1.25rem, 3.9vh, 2.4rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--ov-ink);
+  white-space: nowrap;
+}
+
+/* The same orange brush stroke as the menu's active link, left-aligned with the title */
+.service-card__underline {
+  display: block;
+  width: clamp(56px, 6vw, 110px);
+  aspect-ratio: 4.85 / 0.38; /* the artwork's proportions (a squashed height hid the tapered start, so it looked indented) */
+  margin: clamp(0.3rem, 0.9vh, 0.6rem) 0 clamp(0.35rem, 1vh, 0.75rem);
+  background: url('../../assets/images/ui/menu-hover-line.svg') left center / 100% 100% no-repeat;
+}
+
+.service-card__tagline {
+  font-size: calc(var(--ov-fs-small) * 1.12);
+  line-height: 1.4;
+  color: var(--ov-ink-soft);
+  max-width: 19rem;
+}
+
+.service-card__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.1rem, 0.45vh, 0.35rem);
+  font-size: calc(var(--ov-fs-small) * 1.14);
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--ov-ink);
+}
+
+.service-card__list li {
+  position: relative;
+  padding-left: 1.3em;
+}
+
+/* Orange chevron bullet */
+.service-card__list li::before {
+  content: '';
+  position: absolute;
+  left: 0.15em;
+  top: 50%;
+  width: 0.42em;
+  height: 0.42em;
+  border-top: 2px solid var(--ov-orange);
+  border-right: 2px solid var(--ov-orange);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* ---------- Phones and portrait tablets: icon beside the title, list underneath in two columns ---------- */
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  .service-card {
+    grid-template-columns: clamp(96px, 30vw, 180px) minmax(0, 1fr);
+    row-gap: 0.9rem;
+  }
+
+  .service-card__art {
+    height: clamp(80px, 24vw, 140px);
+  }
+
+  .service-card__title {
+    font-size: clamp(1.5rem, 7vw, 2.2rem);
+    white-space: normal;
+  }
+
+  .service-card__tagline {
+    font-size: 0.9rem;
+  }
+
+  .service-card__list {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.4rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .service-card__list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* First-load intro: cards ripple in after the heading */
+.app--intro .service-card {
+  animation: ov-fade-up 550ms var(--ov-ease) both;
+  animation-delay: calc(600ms + var(--i) * 80ms);
+}

@@ -17,6 +17,11 @@ export default function App() {
   const location = useLocation();
   usePreloadPages(location.pathname);
 
+  // Contact, Services and About fill the screen themselves, so the footer tagline is left off there
+  const noFooter = ['/contact', '/services', '/about'].includes(location.pathname);
+  // Services: the backdrop's painted sky shows only at the top, behind the palm-tree splash
+  const plainPaper = location.pathname === '/services';
+
   // First-load intro: while this class is on, components play their staggered fade-in
   // (text → truck scene → everything else). Removed once everything (incl. the birds' glide-in) has finished.
   const [intro, setIntro] = useState(true);
@@ -26,7 +31,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className={`app${intro ? ' app--intro' : ''}${location.pathname === '/contact' ? ' app--no-footer' : ''}`}>
+    <div className={`app${intro ? ' app--intro' : ''}${noFooter ? ' app--no-footer' : ''}${plainPaper ? ' app--plain-paper' : ''}`}>
       {/* Stays mounted across pages, so the paper texture never reloads or flashes */}
       <Backdrop />
 
@@ -48,8 +53,8 @@ export default function App() {
         </PageTransition>
       </main>
 
-      {/* No footer tagline on the Contact page: its contact-details row takes that spot */}
-      {location.pathname !== '/contact' && <Footer />}
+      {/* No footer tagline on Contact (its contact-details row takes that spot), Services or About (their content runs to the bottom) */}
+      {!noFooter && <Footer />}
     </div>
   );
 }
