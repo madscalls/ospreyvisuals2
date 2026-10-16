@@ -1,0 +1,46 @@
+.gallery-grid {
+  list-style: none;
+  columns: 3 280px;
+  column-gap: clamp(0.75rem, 1.6vw, 1.75rem);
+}
+
+.gallery-grid__item {
+  break-inside: avoid;
+  margin-bottom: clamp(0.75rem, 1.6vw, 1.75rem);
+  animation: ov-fade-up 500ms var(--ov-ease) both;
+  animation-delay: calc(var(--i) * 50ms);
+}
+
+/* Pale paper rim, like the torn tiles on the Work page */
+.gallery-grid__button {
+  display: block;
+  width: 100%;
+  padding: clamp(3px, 0.35vw, 6px);
+  background: #f7f0e3;
+  border-radius: 3px;
+  box-shadow: 0 6px 14px rgba(31, 31, 31, 0.14);
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.gallery-grid__button img {
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+  transition: transform 450ms var(--ov-ease), filter 300ms ease;
+}
+
+.gallery-grid__button:hover img,
+.gallery-grid__button:focus-visible img {
+  transform: scale(1.03);
+  filter: brightness(1.05);
+}
+
+.gallery-grid__caption {
+  margin-top: 0.5rem;
+  font-size: var(--ov-fs-small);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ov-ink-soft);
+}

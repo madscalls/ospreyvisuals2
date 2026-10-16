@@ -66,6 +66,15 @@ button {
   }
 }
 
+/* Pages that scroll on desktop too (the galleries): App.jsx adds this class to <html> */
+html.page-scroll,
+html.page-scroll body,
+html.page-scroll #root {
+  height: auto;
+  min-height: 100%;
+  overflow: auto;
+}
+
 /* Shared entrance animations (used by the first-load intro) */
 @keyframes ov-fade-up {
   from {

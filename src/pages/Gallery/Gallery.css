@@ -1,0 +1,55 @@
+/* Galleries scroll (they can hold any number of photos), so this page isn't held to one screen */
+.page-gallery {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 2.6vh, 2rem);
+  padding: clamp(0rem, 0.5vh, 0.5rem) var(--ov-gutter) clamp(2rem, 6vh, 4rem);
+}
+
+.page-gallery__back {
+  position: absolute;
+  top: clamp(0rem, 0.5vh, 0.5rem);
+  left: var(--ov-gutter);
+  display: inline-flex;
+  gap: 0.5em;
+  font-weight: 600;
+  font-size: var(--ov-fs-eyebrow);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 200ms ease;
+}
+
+.page-gallery__back:hover,
+.page-gallery__back:focus-visible {
+  color: var(--ov-orange-deep);
+}
+
+.page-gallery__body {
+  margin-top: clamp(0.5rem, 2vh, 1.5rem);
+}
+
+.page-gallery__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: clamp(2rem, 8vh, 5rem) 1rem;
+  text-align: center;
+  font-size: clamp(0.95rem, 2.2vh, 1.25rem);
+}
+
+.page-gallery__empty .brush-btn {
+  margin-top: 1rem;
+}
+
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  .page-gallery {
+    gap: 1.25rem;
+    padding: 1rem var(--ov-gutter) 2.5rem;
+  }
+  .page-gallery__back {
+    position: static;
+    order: -1;
+  }
+}

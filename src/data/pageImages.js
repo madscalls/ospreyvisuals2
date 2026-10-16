@@ -18,6 +18,11 @@ import scene1400 from '../assets/images/home/hero-scene-1400.webp';
 import contactScene from '../assets/images/contact/lighthouse-scene-1400.webp';
 import servicesSplash from '../assets/images/services/sky-splash-1400.webp';
 import aboutScene from '../assets/images/about/coast-scene-1400.webp';
+import brushButton from '../assets/images/ui/brush-button.svg';
+import brushButtonHover from '../assets/images/ui/brush-button-hover.svg';
+import tornEdge1 from '../assets/images/work/torn-edge-1.svg';
+import tornEdge2 from '../assets/images/work/torn-edge-2.svg';
+import tornEdge3 from '../assets/images/work/torn-edge-3.svg';
 import { SERVICES, SERVICE_DETAILS } from './services';
 
 const serviceIcons = SERVICES.map((s) => s.icon).filter(Boolean);
@@ -25,7 +30,8 @@ const serviceArt = SERVICE_DETAILS.map((s) => s.art).filter(Boolean);
 
 export const PAGE_IMAGES = {
   '/': [scene1400, bird1, bird2, bird3, bird4, ...serviceIcons],
-  '/work': [],
+  // Work: the button and torn-edge art (cover photos come from the admin, so they load on the page itself)
+  '/work': [brushButton, brushButtonHover, tornEdge1, tornEdge2, tornEdge3, ...serviceArt],
   '/services': [servicesSplash, ...serviceArt],
   '/about': [aboutScene],
   '/shop': [],

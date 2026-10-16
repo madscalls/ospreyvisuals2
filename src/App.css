@@ -20,7 +20,18 @@
   }
 }
 
-/* Contact, Services and About pages: no footer tagline */
+/* Galleries scroll: the app grows with its content */
+.app--scroll {
+  height: auto;
+  min-height: 100dvh;
+}
+
+.app--scroll .page-transition {
+  position: relative;
+  inset: auto;
+}
+
+/* Contact, Services, About, Work and gallery pages: no footer tagline */
 .app--no-footer > .footer {
   display: none;
 }

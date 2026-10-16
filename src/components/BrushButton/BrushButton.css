@@ -1,0 +1,76 @@
+.brush-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7em;
+  padding: 0.95em 2.1em 0.9em;
+  font-family: var(--ov-font-body);
+  font-weight: 600;
+  font-size: clamp(0.62rem, min(1.45vh, 0.85vw), 0.95rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #f2f4f4; /* the lettering colour of the Get a Quote artwork */
+  isolation: isolate;
+  transition: transform 220ms var(--ov-ease);
+}
+
+/* The paint stroke stretches to fit the label */
+.brush-btn__paint {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url('../../assets/images/ui/brush-button.svg') center / 100% 100% no-repeat;
+  transition: opacity 220ms ease;
+}
+
+/* The hover artwork is the brighter, slightly bigger stroke */
+.brush-btn__paint--hover {
+  inset: -9% -5%;
+  background-image: url('../../assets/images/ui/brush-button-hover.svg');
+  opacity: 0;
+}
+
+.brush-btn__label {
+  position: relative;
+}
+
+.brush-btn__arrow {
+  display: inline-flex;
+  transition: transform 220ms var(--ov-ease);
+}
+
+.brush-btn__arrow svg {
+  display: block;
+}
+
+/* Hover: on the button itself, or on whatever link card it sits inside */
+.brush-btn:hover,
+.brush-btn:focus-visible,
+a:hover > * > .brush-btn,
+a:focus-visible > * > .brush-btn,
+a:hover > .brush-btn,
+a:focus-visible > .brush-btn {
+  transform: translateY(-2px);
+}
+
+.brush-btn:hover .brush-btn__paint--hover,
+.brush-btn:focus-visible .brush-btn__paint--hover,
+a:hover .brush-btn .brush-btn__paint--hover,
+a:focus-visible .brush-btn .brush-btn__paint--hover {
+  opacity: 1;
+}
+
+.brush-btn:hover .brush-btn__arrow,
+.brush-btn:focus-visible .brush-btn__arrow,
+a:hover .brush-btn .brush-btn__arrow,
+a:focus-visible .brush-btn .brush-btn__arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  .brush-btn {
+    font-size: 0.72rem;
+  }
+}

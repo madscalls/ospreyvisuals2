@@ -1,0 +1,84 @@
+.work-tile {
+  --edge: url('../../assets/images/work/torn-edge-1.svg');
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 0;
+  height: 100%;
+  filter: drop-shadow(0 6px 10px rgba(31, 31, 31, 0.16)); /* on the link, since the mask would cut it off the frame */
+}
+
+.work-tile--edge-2 { --edge: url('../../assets/images/work/torn-edge-2.svg'); }
+.work-tile--edge-3 { --edge: url('../../assets/images/work/torn-edge-3.svg'); }
+
+/* Torn paper: a pale paper rim cut to the torn shape, with the photo cut to the same shape inside it */
+.work-tile__frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: clamp(3px, 0.35vw, 6px);
+  background: #f7f0e3;
+  -webkit-mask: var(--edge) center / 100% 100% no-repeat;
+  mask: var(--edge) center / 100% 100% no-repeat;
+}
+
+.work-tile__photo,
+.work-tile__placeholder {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -webkit-mask: var(--edge) center / 100% 100% no-repeat;
+  mask: var(--edge) center / 100% 100% no-repeat;
+  transition: transform 450ms var(--ov-ease), filter 300ms ease;
+}
+
+.work-tile__photo {
+  object-fit: cover;
+}
+
+/* No cover photo yet: the category's painted art on a warm wash */
+.work-tile__placeholder {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(ellipse at 50% 55%, rgba(232, 100, 27, 0.16), transparent 70%),
+    var(--ov-paper-shade);
+}
+
+.work-tile__placeholder img {
+  max-height: 72%;
+  max-width: 62%;
+  object-fit: contain;
+}
+
+.work-tile:hover .work-tile__photo,
+.work-tile:focus-visible .work-tile__photo,
+.work-tile:hover .work-tile__placeholder,
+.work-tile:focus-visible .work-tile__placeholder {
+  transform: scale(1.03);
+  filter: brightness(1.05) saturate(1.05);
+}
+
+/* The orange button sits across the bottom edge of the photo */
+.work-tile__button {
+  margin-top: calc(-1 * clamp(1.1rem, 2.6vh, 1.9rem));
+  z-index: 1;
+}
+
+.work-tile:focus-visible {
+  outline: none;
+}
+
+.work-tile:focus-visible .work-tile__button {
+  outline: 2px solid var(--ov-ink);
+  outline-offset: 4px;
+}
+
+/* First-load intro: tiles ripple in */
+.app--intro .work-tile {
+  animation: ov-fade-up 600ms var(--ov-ease) both;
+  animation-delay: calc(650ms + var(--i) * 80ms);
+}
