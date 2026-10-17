@@ -36,6 +36,26 @@
   width: clamp(200px, 19vw, 300px);
 }
 
+/* Small print under the tagline, with the owner's way into the admin */
+.footer__legal {
+  display: flex;
+  gap: 0.5em;
+  font-size: clamp(0.6rem, 1.1vh, 0.72rem);
+  letter-spacing: 0.06em;
+  color: rgba(31, 31, 31, 0.5);
+}
+
+.footer__admin {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 200ms ease;
+}
+
+.footer__admin:hover,
+.footer__admin:focus-visible {
+  color: var(--ov-orange-deep);
+}
+
 
 
 @media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {

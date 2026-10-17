@@ -10,6 +10,7 @@ import wrapsArt from '../assets/images/services/wraps-signage.webp';
 import printArt from '../assets/images/services/print-promo.webp';
 import digitalArt from '../assets/images/services/digital-solutions.webp';
 import businessArt from '../assets/images/services/business-solutions.webp';
+import customArt from '../assets/images/services/custom-creations.webp';
 
 // icon: null leaves an empty space the same size as an icon, so all six titles stay lined up (Custom Creations has no icon by design)
 export const SERVICES = [
@@ -26,7 +27,7 @@ export const SERVICES = [
 /*
   The Services page cards, in reading order: the left column top to bottom, then the right column.
   Titles come from SERVICES above (matched by id), so a rename only happens in one place.
-  art: null leaves an icon-sized gap so the text still lines up (no Custom Creations art yet).
+  art: null leaves an icon-sized gap so the text still lines up.
 */
 export const SERVICE_DETAILS = [
   {
@@ -43,7 +44,7 @@ export const SERVICE_DETAILS = [
   },
   {
     id: 'custom',
-    art: null,
+    art: customArt,
     tagline: 'Bring unique ideas to life with specialty fabrication and personalization.',
     offerings: ['3D Printing', 'Laser Engraving', 'Custom Products', 'Prototypes & Concepts', 'Specialty Projects'],
   },

@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:admin": "vite --mode admindemo --port 5180 --strictPort --open /ospreyvisuals2/admin",
     "build": "vite build && cp dist/index.html dist/404.html",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:access": "node tests/access.test.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

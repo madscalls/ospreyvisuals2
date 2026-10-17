@@ -19,9 +19,20 @@
   gap: clamp(0.6rem, 1.8vh, 1.4rem);
 }
 
+.page-contact .page-heading__divider {
+  align-self: center;
+  margin-left: 0;
+}
+
 .page-contact__info {
   position: relative;
   z-index: 1;
+}
+
+@media (min-width: 901px) and (orientation: landscape) {
+  .page-contact .page-heading__title {
+    font-size: clamp(3.5rem, min(6.9vw, 11vh), 7.8rem);
+  }
 }
 
 /* The lighthouse scene: right side, full height, sitting lower than the home truck scene */

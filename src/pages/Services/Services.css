@@ -1,25 +1,41 @@
 /* Desktop: one screen. Heading top left, sky splash top right, the six services filling the rest. */
 .page-services {
+  --pad-top: clamp(0rem, 0.8vh, 0.75rem);
+  --row-gap: clamp(1rem, 5vh, 3.5rem);
   position: relative;
   height: 100%;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr);
-  gap: clamp(1rem, 5vh, 3.5rem);
-  padding: clamp(0rem, 0.8vh, 0.75rem) var(--ov-gutter) clamp(0.75rem, 3.5vh, 2.25rem);
+  gap: var(--row-gap);
+  padding: var(--pad-top) var(--ov-gutter) clamp(0.75rem, 3.5vh, 2.25rem);
+}
+
+/*
+  The sky splash shares the heading's row, stretched from the top of the screen (up behind the nav, like the
+  concept) to just above the first row of services, so it never runs into Print & Promo. It sits flush
+  right, and its size follows the heading row, so it adjusts to every screen by itself.
+*/
+.page-services__sky {
+  grid-row: 1;
+  grid-column: 1;
+  position: relative;
+  z-index: 0;
+  margin-top: calc(-1 * (var(--pad-top) + var(--ov-nav-h)));
+  margin-bottom: calc(-1 * var(--row-gap) + 1.2vh);
+  margin-right: calc(-1 * var(--ov-gutter));
+  pointer-events: none;
 }
 
 .page-services__splash {
-  --splash-w: min(80vh, 58vw); /* sized by height so the paint stays clear of the nav links */
-  --splash-bottom: 45vh; /* from the top of the screen: the splash ends just above the first row of services */
   position: absolute;
-  /* Runs up behind the nav (and off the top edge, like the concept) so its bottom lands at --splash-bottom */
-  top: calc(var(--splash-bottom) - var(--ov-nav-h) - var(--splash-w) / 1.763);
-  right: -1vw;
-  width: var(--splash-w);
-  height: auto;
-  max-width: none;
-  z-index: 0;
-  pointer-events: none;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: auto;
+  max-width: 58vw; /* stays clear of the headline on narrower windows */
+  object-fit: contain;
+  object-position: right center;
 }
 
 .page-services__intro,
@@ -28,7 +44,16 @@
   z-index: 1;
 }
 
+/* Squarer landscape screens: a little narrower so the palms stay clear of the nav links and the tagline */
+@media (min-width: 901px) and (max-aspect-ratio: 155/100) and (orientation: landscape) {
+  .page-services__splash {
+    max-width: 50vw;
+  }
+}
+
 .page-services__intro {
+  grid-row: 1;
+  grid-column: 1;
   width: min(52%, 60rem);
   min-width: 380px;
 }
@@ -39,16 +64,13 @@
   max-width: none;
 }
 
-.page-services__catalog {
-  min-height: 0;
+.page-services .page-heading__title {
+  font-size: clamp(3.5rem, min(7.1vw, 11vh), 8rem);
 }
 
-/* Squarer landscape screens: shrink the splash so it stays clear of the services grid */
-@media (min-width: 901px) and (max-aspect-ratio: 155/100) and (orientation: landscape) {
-  .page-services__splash {
-    --splash-w: min(50vw, 90vh);
-    --splash-bottom: 40vh;
-  }
+.page-services__catalog {
+  grid-row: 2;
+  min-height: 0;
 }
 
 .app--intro .page-services__splash {
@@ -85,13 +107,16 @@
     white-space: normal;
   }
 
-  .page-services__splash {
-    position: relative;
+  .page-services__sky {
     order: 2;
-    top: auto;
-    right: auto;
-    width: calc(100% + 2 * var(--ov-gutter));
     margin: -0.5rem calc(-1 * var(--ov-gutter)) 0;
+  }
+
+  .page-services__splash {
+    position: static;
+    width: 100%;
+    height: auto;
+    max-width: none;
   }
 
   .page-services__catalog {

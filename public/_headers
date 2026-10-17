@@ -1,0 +1,21 @@
+# Cloudflare Pages response headers (GitHub Pages ignores this file).
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  X-Frame-Options: SAMEORIGIN
+
+# The admin page: never indexed, cached or framed, and it can only load its own code.
+/admin
+  ! X-Frame-Options
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+  X-Frame-Options: DENY
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' blob: data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+/admin/*
+  ! X-Frame-Options
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+  X-Frame-Options: DENY
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' blob: data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'

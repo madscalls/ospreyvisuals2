@@ -1,0 +1,17 @@
+# Cloudflare Pages settings for the new site (functions in functions/, built site in dist/).
+# Fill in database_id after creating the database:  npx wrangler d1 create ospreyvisuals
+name = "ospreyvisuals2"
+pages_build_output_dir = "dist"
+compatibility_date = "2025-09-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ospreyvisuals"
+database_id = "REPLACE-WITH-D1-DATABASE-ID"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "ospreyvisuals-media"
+
+# ACCESS_TEAM_DOMAIN, ACCESS_AUD and ADMIN_EMAILS are set in the Cloudflare dashboard
+# (Pages project → Settings → Variables). Never put ADMIN_DEV_EMAIL there: it's for local testing only (.dev.vars).

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Backdrop from './components/Backdrop/Backdrop.jsx';
 import Nav from './components/Nav/Nav.jsx';
@@ -14,7 +14,29 @@ import Contact from './pages/Contact/Contact.jsx';
 import { usePreloadPages } from './hooks/usePreloadPages.js';
 import './App.css';
 
+// The admin is its own page (no nav, artwork or page transitions), loaded only when someone opens /admin
+const AdminApp = lazy(() => import('./admin/AdminApp.jsx'));
+
 export default function App() {
+  const { pathname } = useLocation();
+  if (pathname === '/admin' || pathname.startsWith('/admin/')) return <AdminPage />;
+  return <Site />;
+}
+
+function AdminPage() {
+  // The admin scrolls like a normal page
+  useEffect(() => {
+    document.documentElement.classList.add('page-scroll');
+    return () => document.documentElement.classList.remove('page-scroll');
+  }, []);
+  return (
+    <Suspense fallback={null}>
+      <AdminApp />
+    </Suspense>
+  );
+}
+
+function Site() {
   const location = useLocation();
   usePreloadPages(location.pathname);
 

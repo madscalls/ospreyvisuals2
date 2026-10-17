@@ -1,22 +1,11 @@
 import { SERVICES, SERVICE_DETAILS } from './services';
+import { WORK_CATEGORY_ORDER as ORDER } from './workCategories';
 
 /*
-  Work page categories, in the order of the concept (top row, then bottom row).
-  Each one has its own gallery at /work/<slug>. Titles and taglines come from services.js,
-  so a rename there updates the Work page, the filter row and the gallery heading.
-
-  The slugs are also the category keys the admin uses for portfolio photos: don't change one
-  once photos have been uploaded under it.
+  Work page categories, in the order of the concept (top row, then bottom row); the slugs live in
+  workCategories.js. Each one has its own gallery at /work/<slug>. Titles and taglines come from
+  services.js, so a rename there updates the Work page, the filter row and the gallery heading.
 */
-const ORDER = [
-  { slug: 'wraps-signage', serviceId: 'wraps' },
-  { slug: 'business-solutions', serviceId: 'business' },
-  { slug: 'digital-solutions', serviceId: 'digital' },
-  { slug: 'custom-creations', serviceId: 'custom' },
-  { slug: 'print-promo', serviceId: 'print' },
-  { slug: 'branding-design', serviceId: 'branding' },
-];
-
 export const WORK_CATEGORIES = ORDER.map(({ slug, serviceId }) => {
   const service = SERVICES.find((s) => s.id === serviceId);
   const details = SERVICE_DETAILS.find((s) => s.id === serviceId);

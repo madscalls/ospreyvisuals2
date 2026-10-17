@@ -7,17 +7,18 @@ import './Services.css';
 export default function Services() {
   return (
     <div className="page-services">
-      {/* Palm-tree sky splash, top right, running up behind the nav like the concept */}
-      <img
-        className="page-services__splash"
-        src={splash1400}
-        srcSet={`${splash1400} 1400w, ${splash2200} 2200w`}
-        sizes="(max-width: 900px) 100vw, (max-width: 1100px) and (orientation: portrait) 100vw, 60vw"
-        alt=""
-        aria-hidden="true"
-        fetchPriority="high"
-        decoding="async"
-      />
+      {/* Palm-tree sky splash, top right: sized to fit between the nav and the first row of services */}
+      <div className="page-services__sky" aria-hidden="true">
+        <img
+          className="page-services__splash"
+          src={splash1400}
+          srcSet={`${splash1400} 1400w, ${splash2200} 2200w`}
+          sizes="(max-width: 900px) 100vw, (max-width: 1100px) and (orientation: portrait) 100vw, 60vw"
+          alt=""
+          fetchPriority="high"
+          decoding="async"
+        />
+      </div>
 
       <section className="page-services__intro" aria-labelledby="services-title">
         <PageHeading

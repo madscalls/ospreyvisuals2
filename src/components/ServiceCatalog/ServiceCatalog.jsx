@@ -7,7 +7,7 @@ export default function ServiceCatalog() {
   return (
     <div className="service-catalog">
       {SERVICE_DETAILS.map((s, i) => (
-        <ServiceCard key={s.id} index={i} title={s.title} art={s.art} tagline={s.tagline} offerings={s.offerings} />
+        <ServiceCard key={s.id} id={s.id} index={i} title={s.title} art={s.art} tagline={s.tagline} offerings={s.offerings} />
       ))}
     </div>
   );

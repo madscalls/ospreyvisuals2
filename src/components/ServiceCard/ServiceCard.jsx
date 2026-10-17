@@ -4,9 +4,9 @@ import './ServiceCard.css';
  * One service on the Services page: painted icon | title, brush underline and tagline | list of offerings.
  *   <ServiceCard title="Wraps & Signage" art={img} tagline="..." offerings={['Vehicle Wraps', ...]} />
  */
-export default function ServiceCard({ title, art, tagline, offerings = [], index = 0 }) {
+export default function ServiceCard({ id, title, art, tagline, offerings = [], index = 0 }) {
   return (
-    <article className="service-card" style={{ '--i': index }}>
+    <article className="service-card" data-service={id} style={{ '--i': index }}>
       <div className="service-card__art" aria-hidden="true">
         {art && <img src={art} alt="" decoding="async" />}
       </div>

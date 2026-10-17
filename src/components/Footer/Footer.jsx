@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Divider from '../Divider/Divider.jsx';
 import './Footer.css';
 
@@ -9,7 +10,13 @@ export default function Footer() {
         <span className="footer__script">Always with purpose.</span>
       </p>
       <Divider className="footer__divider" />
-      <p className="visually-hidden">© {new Date().getFullYear()} Osprey Visuals</p>
+      <p className="footer__legal">
+        <span>© {new Date().getFullYear()} Osprey Visuals</span>
+        <span aria-hidden="true">·</span>
+        <Link to="/admin" className="footer__admin">
+          Admin
+        </Link>
+      </p>
     </footer>
   );
 }
