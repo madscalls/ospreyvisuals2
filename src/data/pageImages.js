@@ -10,11 +10,7 @@
   Note: preloading fetches the src given here. For images with a srcSet, list the size
   most screens will use (the smaller one); the browser picks the right size on its own on the page.
 */
-import bird1 from '../assets/images/home/bird-1.webp';
-import bird2 from '../assets/images/home/bird-2.webp';
-import bird3 from '../assets/images/home/bird-3.webp';
-import bird4 from '../assets/images/home/bird-4.webp';
-import scene1400 from '../assets/images/home/hero-scene-1400.webp';
+import { TRUCK_SCENE_IMAGES } from './truckScene';
 import contactScene from '../assets/images/contact/lighthouse-scene-1400.webp';
 import servicesSplash from '../assets/images/services/sky-splash-1400.webp';
 import aboutScene from '../assets/images/about/coast-scene-1400.webp';
@@ -29,11 +25,11 @@ const serviceIcons = SERVICES.map((s) => s.icon).filter(Boolean);
 const serviceArt = SERVICE_DETAILS.map((s) => s.art).filter(Boolean);
 
 export const PAGE_IMAGES = {
-  '/': [scene1400, bird1, bird2, bird3, bird4, ...serviceIcons],
+  '/': [...TRUCK_SCENE_IMAGES, ...serviceIcons],
   // Work: the button and torn-edge art (cover photos come from the admin, so they load on the page itself)
   '/work': [brushButton, brushButtonHover, tornEdge1, tornEdge2, tornEdge3, ...serviceArt],
   '/services': [servicesSplash, ...serviceArt],
   '/about': [aboutScene],
-  '/shop': [],
+  '/shop': [...TRUCK_SCENE_IMAGES],
   '/contact': [contactScene],
 };

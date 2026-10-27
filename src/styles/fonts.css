@@ -18,3 +18,12 @@
   font-style: normal;
   font-display: swap;
 }
+
+/* Marker lettering on the Shop "coming soon" note. Permanent Marker (Font Diner), Apache 2.0 licence: free for web use. */
+@font-face {
+  font-family: 'Permanent Marker';
+  src: url('../assets/fonts/permanent-marker.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

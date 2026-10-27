@@ -1,0 +1,78 @@
+/* The whole note: tilted a touch, with a soft shadow that follows the paper's torn shape */
+.taped-note {
+  position: relative;
+  transform: rotate(var(--tilt));
+  filter: drop-shadow(0 10px 14px rgba(31, 31, 31, 0.18)) drop-shadow(0 2px 3px rgba(31, 31, 31, 0.12));
+  perspective: 900px;
+}
+
+/* Off-white paper with a fine grain, slightly rough edges, pinned along the top */
+.taped-note__paper {
+  position: relative;
+  padding: clamp(1.6rem, 4.5vh, 3rem) clamp(1.4rem, 2.6vw, 2.75rem) clamp(1.8rem, 5vh, 3.25rem);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.42 0 0 0 0 0.36 0 0 0 0 0.27 0 0 0 0.1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(170deg, #fffdf8 0%, #f8f2e6 55%, #f1e8d6 100%);
+  -webkit-mask: url('../../assets/images/work/torn-edge-2.svg') center / 100% 100% no-repeat;
+  mask: url('../../assets/images/work/torn-edge-2.svg') center / 100% 100% no-repeat;
+  transform-origin: 50% 0;
+  animation: ov-note-flap 7.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Light and shade across the sheet as it bends, in step with the flap */
+.taped-note__paper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 35%, rgba(60, 40, 20, 0.09) 100%);
+  opacity: 0.3;
+  animation: ov-note-shade 7.5s ease-in-out infinite;
+}
+
+/* Strips of masking tape across the top corners: half on the paper, half on the wall, with torn ends */
+.taped-note__tape {
+  position: absolute;
+  top: calc(-1 * clamp(6px, 1.1vh, 12px));
+  width: clamp(78px, 7.5vw, 130px);
+  height: clamp(24px, 3.6vh, 36px);
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0 3px, rgba(0, 0, 0, 0.025) 3px 6px),
+    linear-gradient(180deg, rgba(228, 208, 160, 0.95), rgba(212, 189, 140, 0.92));
+  box-shadow: 0 2px 4px rgba(31, 31, 31, 0.18);
+  clip-path: polygon(0 8%, 6% 0, 12% 10%, 20% 2%, 30% 9%, 42% 1%, 55% 8%, 68% 0, 80% 7%, 90% 1%, 100% 9%, 97% 30%, 100% 52%, 96% 74%, 100% 93%, 90% 100%, 78% 92%, 64% 100%, 50% 93%, 36% 100%, 22% 92%, 10% 100%, 0 92%, 4% 70%, 0 48%, 3% 26%);
+  z-index: 1;
+}
+
+.taped-note__tape--left {
+  left: calc(-1 * clamp(18px, 2vw, 32px));
+  transform: rotate(-34deg);
+}
+
+.taped-note__tape--right {
+  right: calc(-1 * clamp(18px, 2vw, 32px));
+  transform: rotate(30deg);
+}
+
+/* Gusts: uneven lifts and settles so it never looks like a metronome */
+@keyframes ov-note-flap {
+  0%   { transform: rotateX(0deg) rotateY(0deg) skewX(0deg); }
+  14%  { transform: rotateX(7deg) rotateY(-1.2deg) skewX(-0.4deg); }
+  24%  { transform: rotateX(2.5deg) rotateY(0.4deg) skewX(0.2deg); }
+  38%  { transform: rotateX(10deg) rotateY(1.4deg) skewX(0.6deg); }
+  52%  { transform: rotateX(3deg) rotateY(-0.3deg) skewX(0deg); }
+  63%  { transform: rotateX(5.5deg) rotateY(-1deg) skewX(-0.3deg); }
+  80%  { transform: rotateX(1deg) rotateY(0.3deg) skewX(0.1deg); }
+  100% { transform: rotateX(0deg) rotateY(0deg) skewX(0deg); }
+}
+
+@keyframes ov-note-shade {
+  0%, 100% { opacity: 0.25; }
+  14% { opacity: 0.7; }
+  24% { opacity: 0.4; }
+  38% { opacity: 0.95; }
+  52% { opacity: 0.45; }
+  63% { opacity: 0.6; }
+  80% { opacity: 0.3; }
+}

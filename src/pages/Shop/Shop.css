@@ -1,3 +1,125 @@
+/* Desktop: the Home scene on the right; the taped note where the Home headline sits. */
 .page-shop {
+  position: relative;
   height: 100%;
+  display: grid;
+  align-items: center;
+  padding: 0 var(--ov-gutter);
+}
+
+.page-shop__note {
+  position: relative;
+  z-index: 1;
+  width: min(36%, 36rem);
+  min-width: 300px;
+  display: grid;
+  justify-items: center;
+}
+
+.page-shop .taped-note {
+  width: clamp(270px, min(30vw, 56vh), 500px);
+}
+
+/* Marker lettering */
+.shop-note__title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--ov-font-marker);
+  font-weight: 400;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 0.95;
+}
+
+.shop-note__shop {
+  font-size: clamp(3.4rem, min(7.4vw, 13vh), 7.5rem);
+  color: var(--ov-ink);
+  letter-spacing: 0.02em;
+  transform: rotate(-2deg);
+}
+
+.shop-note__soon {
+  margin-top: 0.15em;
+  font-size: clamp(1.7rem, min(3.4vw, 6vh), 3.4rem);
+  color: var(--ov-orange-deep);
+  letter-spacing: 0.03em;
+  transform: rotate(-1deg);
+}
+
+/* Two quick marker strokes under "Coming soon" */
+.shop-note__scribble {
+  display: block;
+  width: 78%;
+  height: clamp(12px, 2.2vh, 20px);
+  margin: 0.35em auto 0;
+  overflow: visible;
+}
+
+.shop-note__scribble path {
+  fill: none;
+  stroke: var(--ov-orange);
+  stroke-width: 4;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.shop-note__scribble path + path {
+  stroke-width: 2.5;
+  opacity: 0.8;
+}
+
+.shop-note__items {
+  margin-top: clamp(0.6rem, 1.8vh, 1.2rem);
+  font-family: var(--ov-font-marker);
+  font-size: clamp(0.95rem, min(1.6vw, 2.7vh), 1.45rem);
+  color: var(--ov-ink-soft);
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+/* Squarer landscape screens: there's no services row here, so the scene doesn't need lifting as much as on Home */
+@media (min-width: 901px) and (max-aspect-ratio: 155/100) and (orientation: landscape) {
+  .hero-scene--shop .hero-scene__img {
+    bottom: 6%;
+    width: min(100%, 64vw, calc((100vh - var(--ov-nav-h) - var(--ov-footer-h)) * 1.45));
+  }
+}
+
+/* First-load intro: the note drops in after the scene */
+.app--intro .page-shop__note {
+  animation: ov-fade-up 700ms var(--ov-ease) 300ms both;
+}
+
+/* ---------- Phones and portrait tablets: the note, then the truck scene ---------- */
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  .page-shop {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem var(--ov-gutter) 0.5rem;
+  }
+
+  .page-shop__note {
+    order: 1;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .page-shop .taped-note {
+    width: min(84vw, 380px);
+  }
+
+  .shop-note__shop {
+    font-size: min(19vw, 5.5rem);
+  }
+
+  .shop-note__soon {
+    font-size: min(8.5vw, 2.4rem);
+  }
+
+  .page-shop .hero-scene {
+    order: 2;
+  }
 }

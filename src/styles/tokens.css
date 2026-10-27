@@ -13,6 +13,7 @@
   --ov-font-display: 'Ayr Basepath Condensed', 'Arial Narrow', sans-serif;
   --ov-font-body: 'Jost', 'Helvetica Neue', Arial, sans-serif;
   --ov-font-script: 'Rezojas', 'Brush Script MT', cursive;
+  --ov-font-marker: 'Permanent Marker', 'Marker Felt', 'Comic Sans MS', cursive;
 
   /* Sizes scale with viewport HEIGHT as well as width, because nothing scrolls */
   --ov-fs-hero: clamp(3rem, min(6.3vw, 10.2vh), 7.4rem); /* sized for the narrow Ayr Basepath face */
