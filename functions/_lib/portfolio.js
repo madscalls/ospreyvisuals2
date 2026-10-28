@@ -7,7 +7,7 @@ export const isCategory = (slug) => CATEGORY_SLUGS.includes(slug);
 export const TRASH_DAYS = 30;
 export const ID_PATTERN = /^[0-9a-f-]{36}$/;
 
-const COLUMNS = `id, category, full_key, thumb_key, width, height, alt, caption, position, hidden, deleted_at, created_at, updated_at, updated_by`;
+const COLUMNS = `id, category, full_key, thumb_key, width, height, alt, caption, position, hidden, deleted_at, replaced_from, created_at, updated_at, updated_by`;
 
 export const toPublicItem = (row) => ({
   id: row.id,
@@ -29,6 +29,7 @@ export const toAdminItem = (row) => ({
   position: row.position,
   hidden: !!row.hidden,
   deletedAt: row.deleted_at || null,
+  replacedFrom: row.replaced_from || null, // set on an earlier version kept after a replace
   updatedAt: row.updated_at,
   updatedBy: row.updated_by,
 });

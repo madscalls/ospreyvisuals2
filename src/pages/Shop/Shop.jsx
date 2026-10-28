@@ -23,7 +23,7 @@ export default function Shop() {
             <path d="M4 15 C 40 7, 78 19, 120 12 S 196 6, 236 13" />
             <path d="M18 20 C 62 14, 120 22, 214 16" />
           </svg>
-          <p className="shop-note__items">Stickers · Shirts · Hats</p>
+          <p className="shop-note__items">Decals · Shirts · Hats</p>
         </TapedNote>
       </section>
     </div>

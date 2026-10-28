@@ -1,4 +1,7 @@
-// PUT /api/admin/portfolio/:id/photo: replace the image, keeping its details and place. Multipart: full, thumb, width, height.
+/*
+  PUT /api/admin/portfolio/:id/photo: replace the image, keeping its details and place. Multipart: full, thumb, width, height.
+  The old image isn't thrown away: it's kept as its own entry in "Recently deleted" for 30 days, so a replace can be undone.
+*/
 import { json, HttpError } from '../../../../_lib/http.js';
 import { readImage, imageKey, putImage, MAX_FULL_BYTES, MAX_THUMB_BYTES } from '../../../../_lib/images.js';
 import { getItem, toAdminItem, audit } from '../../../../_lib/portfolio.js';
@@ -26,14 +29,24 @@ export async function onRequestPut({ request, env, params, data }) {
   await putImage(env.MEDIA, fullKey, full);
   if (thumb) await putImage(env.MEDIA, thumbKey, thumb);
 
-  await env.DB.batch([
-    env.DB.prepare(
-      'UPDATE portfolio_items SET full_key = ?, thumb_key = ?, width = ?, height = ?, updated_at = ?, updated_by = ? WHERE id = ?'
-    ).bind(fullKey, thumbKey, toSize(form.get('width')), toSize(form.get('height')), new Date().toISOString(), data.admin, row.id),
-    audit(env.DB, data.admin, 'replace', row.id),
-  ]);
-  // Only remove the old files once the new ones are saved
-  await env.MEDIA.delete([row.full_key, row.thumb_key].filter(Boolean));
+  const now = new Date().toISOString();
+  const oldVersionId = crypto.randomUUID();
+  try {
+    await env.DB.batch([
+      // The old version, parked in "Recently deleted" with the same details
+      env.DB.prepare(
+        `INSERT INTO portfolio_items (id, category, full_key, thumb_key, width, height, alt, caption, position, hidden, deleted_at, replaced_from, created_at, updated_at, updated_by)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      ).bind(oldVersionId, row.category, row.full_key, row.thumb_key, row.width, row.height, row.alt, row.caption, row.position, row.hidden, now, row.id, row.created_at, now, data.admin),
+      env.DB.prepare(
+        'UPDATE portfolio_items SET full_key = ?, thumb_key = ?, width = ?, height = ?, updated_at = ?, updated_by = ? WHERE id = ?'
+      ).bind(fullKey, thumbKey, toSize(form.get('width')), toSize(form.get('height')), now, data.admin, row.id),
+      audit(env.DB, data.admin, 'replace', row.id, { oldVersion: oldVersionId }),
+    ]);
+  } catch (err) {
+    await env.MEDIA.delete([fullKey, thumbKey].filter(Boolean)); // nothing changed: don't leave the new files behind
+    throw err;
+  }
 
-  return json({ item: toAdminItem(await getItem(env.DB, row.id)) });
+  return json({ item: toAdminItem(await getItem(env.DB, row.id)), oldVersion: toAdminItem(await getItem(env.DB, oldVersionId)) });
 }

@@ -1,5 +1,5 @@
 # Cloudflare Pages settings for the new site (functions in functions/, built site in dist/).
-# Fill in database_id after creating the database:  npx wrangler d1 create ospreyvisuals
+# D1 database "ospreyvisuals" (created in the dashboard, schema from db/schema.sql applied).
 name = "ospreyvisuals2"
 pages_build_output_dir = "dist"
 compatibility_date = "2025-09-01"
@@ -7,7 +7,7 @@ compatibility_date = "2025-09-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "ospreyvisuals"
-database_id = "REPLACE-WITH-D1-DATABASE-ID"
+database_id = "8a50407a-c56d-43f0-9dec-1889476813dd"
 
 [[r2_buckets]]
 binding = "MEDIA"

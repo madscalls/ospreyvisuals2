@@ -31,7 +31,7 @@
   left: 50%;
   bottom: -0.15em;
   /* Same size under every item: the average nav word is ~3.9em wide, plus ~15% overhang */
-  width: 4.5em;
+  width: 4em;
   aspect-ratio: 4.85 / 0.38; /* the artwork's proportions */
   background: url('../../assets/images/ui/menu-hover-line.svg') center / 100% 100% no-repeat;
   transform: translateX(-50%) scale(0, 0.3);

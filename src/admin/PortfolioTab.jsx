@@ -128,8 +128,11 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
     replacePhoto: async (item, file) => {
       try {
         const prepared = await prepareImage(file);
-        const r = await run(() => api.replace(item.id, prepared), 'Photo replaced.');
-        if (r) replaceItem(r.item);
+        const r = await run(() => api.replace(item.id, prepared), 'Photo replaced. The old one is in Recently deleted.');
+        if (r) {
+          replaceItem(r.item);
+          if (r.oldVersion) setItems((list) => [...list, r.oldVersion]);
+        }
       } catch (err) {
         notify(err.message, 'error');
       }
@@ -262,12 +265,15 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
       {trash.length > 0 && (
         <section className="admin-trash" aria-labelledby="trash-title">
           <h2 id="trash-title">Recently deleted</h2>
-          <p className="admin__note">Deleted photos stay here for {TRASH_DAYS} days, then they're removed for good.</p>
+          <p className="admin__note">Deleted and replaced photos stay here for {TRASH_DAYS} days, then they're removed for good.</p>
           <ul className="admin-trash__list">
             {trash.map((item) => (
               <li key={item.id} className="admin-trash__item">
                 <img src={item.thumb} alt="" />
-                <span>{daysLeft(item.deletedAt)} days left</span>
+                <span>
+                  {item.replacedFrom ? 'Earlier version · ' : ''}
+                  {daysLeft(item.deletedAt)} days left
+                </span>
                 <button type="button" className="admin-btn admin-btn--small" onClick={() => actions.restore(item)}>
                   Restore
                 </button>

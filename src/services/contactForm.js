@@ -30,6 +30,10 @@ export async function sendContactForm(formData) {
     // Replies in the inbox go straight to the customer
     if (formData.get('email')) formData.set('replyto', formData.get('email'));
     if (!UPLOADS_ENABLED) formData.delete('attachment');
+    // Optional referral code: tidy it up, and leave it out of the email when it's blank
+    const referral = String(formData.get('referral_code') || '').trim().toUpperCase();
+    if (referral) formData.set('referral_code', referral);
+    else formData.delete('referral_code');
 
     // Don't set Content-Type: the browser adds the multipart boundary itself (needed for attachments)
     const res = await fetch(ENDPOINT, { method: 'POST', body: formData, headers: { Accept: 'application/json' } });

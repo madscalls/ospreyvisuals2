@@ -20,14 +20,15 @@ import tornEdge1 from '../assets/images/work/torn-edge-1.svg';
 import tornEdge2 from '../assets/images/work/torn-edge-2.svg';
 import tornEdge3 from '../assets/images/work/torn-edge-3.svg';
 import { SERVICES, SERVICE_DETAILS } from './services';
+import { DEFAULT_COVER_IMAGES } from './work';
 
 const serviceIcons = SERVICES.map((s) => s.icon).filter(Boolean);
 const serviceArt = SERVICE_DETAILS.map((s) => s.art).filter(Boolean);
 
 export const PAGE_IMAGES = {
   '/': [...TRUCK_SCENE_IMAGES, ...serviceIcons],
-  // Work: the button and torn-edge art (cover photos come from the admin, so they load on the page itself)
-  '/work': [brushButton, brushButtonHover, tornEdge1, tornEdge2, tornEdge3, ...serviceArt],
+  // Work: the button, torn-edge art and the tile photos that come with the site (admin covers load on the page itself)
+  '/work': [brushButton, brushButtonHover, tornEdge1, tornEdge2, tornEdge3, ...DEFAULT_COVER_IMAGES],
   '/services': [servicesSplash, ...serviceArt],
   '/about': [aboutScene],
   '/shop': [...TRUCK_SCENE_IMAGES],

@@ -299,14 +299,20 @@
   width: auto;
 }
 
-.contact-form__sign {
+.contact-form__referral {
   flex: 1 1 8rem;
   min-width: 0;
   max-width: 15rem;
 }
 
-.contact-form__sign input {
-  font-style: italic;
+.contact-form__referral input {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.contact-form__referral input::placeholder {
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .contact-form__message {
@@ -371,7 +377,7 @@
     flex-direction: column;
     gap: 0.9rem;
   }
-  .contact-form__sign {
+  .contact-form__referral {
     order: -1;
     flex: none;
     width: 100%;
@@ -388,7 +394,7 @@
   }
 }
 
-/* Narrower desktop/landscape screens: drop the small bird so the signature stays on the Send row */
+/* Narrower desktop/landscape screens: drop the small bird so the referral code box stays on the Send row */
 @media (min-width: 901px) and (max-width: 1200px) and (orientation: landscape) {
   .contact-form__bird {
     display: none;

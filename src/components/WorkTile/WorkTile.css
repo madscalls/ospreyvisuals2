@@ -1,5 +1,6 @@
 .work-tile {
   --edge: url('../../assets/images/work/torn-edge-1.svg');
+  --btn-overlap: clamp(1.1rem, 2.6vh, 1.9rem); /* how far the orange button reaches up into the photo */
   position: relative;
   display: flex;
   flex-direction: column;
@@ -41,16 +42,23 @@
 
 /* No cover photo yet: the category's painted art on a warm wash */
 .work-tile__placeholder {
-  display: grid;
-  place-items: center;
+  position: relative;
   background:
     radial-gradient(ellipse at 50% 55%, rgba(232, 100, 27, 0.16), transparent 70%),
     var(--ov-paper-shade);
 }
 
+/*
+  The painting sits in a fixed box centred in the part of the tile above the button, and is scaled to fit it.
+  Taller paintings (the pen, the 3D printer) get the same height as the wide ones instead of growing into the button.
+*/
 .work-tile__placeholder img {
-  max-height: 72%;
-  max-width: 62%;
+  position: absolute;
+  top: 10%;
+  left: 18%;
+  width: 64%;
+  height: calc(82% - var(--btn-overlap));
+  max-width: none;
   object-fit: contain;
 }
 
@@ -64,7 +72,7 @@
 
 /* The orange button sits across the bottom edge of the photo */
 .work-tile__button {
-  margin-top: calc(-1 * clamp(1.1rem, 2.6vh, 1.9rem));
+  margin-top: calc(-1 * var(--btn-overlap));
   z-index: 1;
 }
 

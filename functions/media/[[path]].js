@@ -11,11 +11,11 @@ export async function onRequestGet({ params, env, request }) {
   const key = (Array.isArray(params.path) ? params.path : [params.path]).join('/');
   if (!IMAGE_KEY.test(key)) return notFound();
 
-  const id = key.split('/')[1];
+  // Looked up by file, not by folder: a restored earlier version keeps its files in the original photo's folder
   const row = await env.DB.prepare(
-    'SELECT 1 AS ok FROM portfolio_items WHERE id = ? AND hidden = 0 AND deleted_at IS NULL AND (full_key = ? OR thumb_key = ?)'
+    'SELECT 1 AS ok FROM portfolio_items WHERE hidden = 0 AND deleted_at IS NULL AND (full_key = ? OR thumb_key = ?)'
   )
-    .bind(id, key, key)
+    .bind(key, key)
     .first();
   if (!row) return notFound();
 

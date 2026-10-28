@@ -55,8 +55,11 @@ export const demoApi = {
   async replace(id, { full, thumb, width, height }) {
     await wait(500);
     const item = find(id);
+    // Like the real admin: the old version goes to Recently deleted
+    const oldVersion = { ...item, id: crypto.randomUUID(), deletedAt: now(), replacedFrom: item.id };
+    items.push(oldVersion);
     Object.assign(item, { src: URL.createObjectURL(full), thumb: URL.createObjectURL(thumb || full), width, height, updatedAt: now() });
-    return { item: { ...item } };
+    return { item: { ...item }, oldVersion: { ...oldVersion } };
   },
   async remove(id) {
     await wait();

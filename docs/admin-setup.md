@@ -41,7 +41,7 @@ The admin page (`/admin`) and its photo storage run on Cloudflare. Until these s
 3. **Turn on Access** (Zero Trust → Access → Applications → Add → Self-hosted):
    - Application domain: the Pages address, paths `admin` **and** `api/admin` (add both). Add the same
      two paths for the real domain at launch.
-   - Session duration: 30 days (or shorter if you prefer).
+   - Session duration: 7 days (a lost or shared device stops having access within a week).
    - Policy: Allow → Emails → the owner's email(s) and yours. Login method: One-time PIN.
    - Copy the **Application Audience (AUD) tag** from the application's overview.
 4. **Set the variables** (Pages project → Settings → Variables and secrets, Production):

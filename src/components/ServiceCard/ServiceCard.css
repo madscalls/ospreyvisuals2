@@ -20,9 +20,14 @@
   object-fit: contain;
 }
 
+/*
+  The pen is taller than the other paintings, so it filled the whole box and its nib ran down to the divider.
+  Shrink it a little from the top and lift it, so it sits the same distance from the lines as the others
+  (percentages, so it holds at every screen size).
+*/
 .service-card[data-service='branding'] .service-card__art img {
-  position: relative;
-  top: -3px;
+  transform-origin: 50% 0;
+  transform: translateY(-4%) scale(0.88);
 }
 
 .service-card__title {

@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS portfolio_items (
   position   INTEGER NOT NULL DEFAULT 0,       -- order within the category (drag to reorder)
   hidden     INTEGER NOT NULL DEFAULT 0,       -- 1 = kept in the admin but not shown on the site
   deleted_at TEXT,                             -- set = in "Recently deleted"; removed for good after 30 days
+  replaced_from TEXT,                          -- set on the old version kept when a photo is replaced (the photo's id)
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL,
   updated_by TEXT NOT NULL                     -- email of the admin who last changed it

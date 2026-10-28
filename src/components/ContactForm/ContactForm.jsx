@@ -147,7 +147,7 @@ export default function ContactForm() {
         <label className="contact-form__agree">
           <input type="checkbox" name="agree" required />
           <span>
-            By checking this box and signing below, you agree that any artwork provided may not be print ready and may require design work.
+            By checking this box, you agree that any artwork provided may not be print ready and may require design work.
             Additional design fees may apply.
           </span>
         </label>
@@ -161,16 +161,18 @@ export default function ContactForm() {
           </span>
         </button>
         <img className="contact-form__bird" src={birdDivider} alt="" aria-hidden="true" />
-        {/* Agreement signature: the box beside Send in the design */}
-        <div className="contact-form__sign">
-          <label htmlFor="cf-signature" className="visually-hidden">Type your full name to agree to the artwork terms</label>
+        {/* Optional referral code: the box beside Send in the design */}
+        <div className="contact-form__referral">
+          <label htmlFor="cf-referral" className="visually-hidden">Referral code (optional)</label>
           <input
-            id="cf-signature"
-            name="agreement_signature"
+            id="cf-referral"
+            name="referral_code"
             type="text"
-            required
-            autoComplete="name"
-            placeholder="Type your name to agree*"
+            maxLength={40}
+            autoComplete="off"
+            autoCapitalize="characters"
+            spellCheck={false}
+            placeholder="Referral code"
           />
         </div>
         <p className="contact-form__message" role="alert" aria-live="polite">{message}</p>
