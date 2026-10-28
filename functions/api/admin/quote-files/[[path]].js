@@ -4,9 +4,13 @@
 import { QUOTE_KEY, QUOTE_FOLDER, QUOTE_TYPES, extOf } from '../../../_lib/quoteFiles.js';
 import { json } from '../../../_lib/http.js';
 import { audit } from '../../../_lib/portfolio.js';
+import { onRequestGet as listQuotes } from './index.js';
 
-export async function onRequestGet({ params, env }) {
-  const key = (Array.isArray(params.path) ? params.path : [params.path]).join('/');
+export async function onRequestGet(context) {
+  const { params, env } = context;
+  const key = (Array.isArray(params.path) ? params.path : [params.path ?? '']).join('/');
+  // Cloudflare routes /api/admin/quote-files itself here too (the catch-all matches nothing after it): that's the list
+  if (key === '') return listQuotes(context);
   if (!QUOTE_KEY.test(key)) return new Response('Not found', { status: 404 });
   const object = await env.MEDIA.get(key);
   if (!object) return new Response('This file has been removed (files are kept for 6 months).', { status: 404 });

@@ -170,4 +170,14 @@ await test('admin delete removes one request only, and is logged', async () => {
   assert.equal(e.MEDIA.store.size, 1);
 });
 
+await test('the bare /api/admin/quote-files address returns the list, not "Not found"', async () => {
+  const e = env();
+  await onRequestPost({ request: post({ files: [['a.png', PNG]] }), env: e });
+  for (const params of [{ path: [] }, { path: undefined }, {}]) {
+    const res = await onRequestGet({ params, env: e });
+    assert.equal(res.status, 200);
+    assert.equal((await res.json()).requests.length, 1);
+  }
+});
+
 console.log(`\n${passed} checks passed`);
