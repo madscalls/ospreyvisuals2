@@ -24,32 +24,30 @@ The admin page (`/admin`) and its photo storage run on Cloudflare. Until these s
 
 `npm run test:access` checks the sign-in check against forged, expired and wrong-audience tokens.
 
-## One-time setup
+## One-time setup (done 28 Oct 2026, test site)
 
-1. **Create the Pages project** (Cloudflare dashboard → Workers & Pages → Create → Pages → Connect to Git →
-   `madscalls/ospreyvisuals2`).
-   - Build command: `npx vite build`  (not `npm run build`: its 404.html copy is for GitHub Pages and would
-     break page links on Cloudflare)
-   - Output directory: `dist`
-   - Environment variable: `VITE_BASE` = `/`
-   - This gives a test address like `ospreyvisuals2.pages.dev`. The real domain moves at launch.
-2. **Create the storage** (from the OVS2 folder, signed in with `npx wrangler login`):
-   - `npx wrangler d1 create ospreyvisuals` → copy the `database_id` into `wrangler.toml`
-   - `npx wrangler d1 execute ospreyvisuals --remote --file=db/schema.sql`
-   - `npx wrangler r2 bucket create ospreyvisuals-media`
-   - In the Pages project → Settings → Bindings: D1 database `DB` → ospreyvisuals, R2 bucket `MEDIA` → ospreyvisuals-media
-3. **Turn on Access** (Zero Trust → Access → Applications → Add → Self-hosted):
-   - Application domain: the Pages address, paths `admin` **and** `api/admin` (add both). Add the same
-     two paths for the real domain at launch.
-   - Session duration: 7 days (a lost or shared device stops having access within a week).
-   - Policy: Allow → Emails → the owner's email(s) and yours. Login method: One-time PIN.
-   - Copy the **Application Audience (AUD) tag** from the application's overview.
-4. **Set the variables** (Pages project → Settings → Variables and secrets, Production):
-   - `ACCESS_TEAM_DOMAIN` = your team domain, e.g. `ospreyvisuals.cloudflareaccess.com`
-   - `ACCESS_AUD` = the AUD tag from step 3
-   - `ADMIN_EMAILS` = the same emails as the Access policy, comma-separated
+Cloudflare account: Ospreyvisualsfl@gmail.com. Everything below is on free plans.
+
+1. **Pages project** `ospreyvisuals2` (Workers & Pages), connected to GitHub `madscalls/ospreyvisuals2`, branch `main`.
+   - Build command `npx vite build`, output `dist`. Every push to `main` deploys; other branches get a preview URL.
+   - Because `wrangler.toml` exists, Cloudflare reads bindings from it and **ignores build variables typed into the
+     dashboard**. That's why `vite.config.js` defaults to the site root, and why the settings in step 4 are *secrets*.
+   - Test address: https://ospreyvisuals2.pages.dev
+2. **Storage**
+   - D1 database `ospreyvisuals` (id in `wrangler.toml`), tables from `db/schema.sql` (applied in the D1 console).
+   - R2 bucket `ospreyvisuals-media` (public access off). Bindings `DB` and `MEDIA` come from `wrangler.toml`.
+3. **Access** (Zero Trust, Free plan, team domain `ospreyvisuals.cloudflareaccess.com`)
+   - Application "Osprey Visuals admin" on `ospreyvisuals2.pages.dev/admin` and `ospreyvisuals2.pages.dev/api/admin`.
+     Add the same two paths for the real domain at launch.
+   - Session duration: 1 week (a lost or shared device stops having access within a week).
+   - Policy "Osprey admins": Allow, Emails = ospreyvisualsfl@gmail.com (Nick), chadknightstudio@gmail.com (Chad),
+     madscalls@gmail.com (Madi, tech). Login: one-time PIN emailed at each sign-in. No passwords.
+4. **Secrets** (Pages project → Settings → Variables and secrets, Production, type Secret)
+   - `ACCESS_TEAM_DOMAIN` = `ospreyvisuals.cloudflareaccess.com`
+   - `ACCESS_AUD` = the application's Audience (AUD) tag (Access app → Additional settings)
+   - `ADMIN_EMAILS` = the same three emails, comma-separated
    - **Never** set `ADMIN_DEV_EMAIL` here. It's only for local testing.
-5. Redeploy, open `/admin` on the test address, and sign in with the emailed code.
+   - Secrets only apply to the next deploy: push, or Deployments → latest → Retry deployment.
 
 Adding or removing someone later: change the Access policy **and** `ADMIN_EMAILS`. Both must list them.
 
