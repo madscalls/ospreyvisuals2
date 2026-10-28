@@ -24,4 +24,5 @@ export const UPLOAD = {
   label: 'PDF, AI, EPS, SVG, JPG, PNG',
   maxBytes: 25 * 1024 * 1024, // 25MB total
   maxLabel: '25MB',
+  maxFiles: 10, // same limits are enforced on the server (functions/_lib/quoteFiles.js)
 };

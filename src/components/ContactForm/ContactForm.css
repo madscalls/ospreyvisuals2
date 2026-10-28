@@ -400,3 +400,8 @@
     display: none;
   }
 }
+
+/* Turnstile ("are you human") check for uploads: usually invisible, a small box only if Cloudflare asks for a click */
+.contact-form__turnstile:not(:empty) {
+  margin-top: 0.5rem;
+}

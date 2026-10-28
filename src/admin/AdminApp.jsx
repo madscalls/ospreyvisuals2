@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { getApi, SIGN_OUT_URL } from './api';
 import PortfolioTab from './PortfolioTab.jsx';
+import QuotesTab from './QuotesTab.jsx';
 import './AdminApp.css';
 
 /**
@@ -93,6 +94,7 @@ export default function AdminApp() {
             <nav className="admin__tabs" aria-label="Sections">
               {[
                 ['portfolio', 'Portfolio'],
+                ['quotes', 'Quote files'],
                 ['shop', 'Shop'],
               ].map(([id, label]) => (
                 <button
@@ -108,6 +110,7 @@ export default function AdminApp() {
             </nav>
 
             {tab === 'portfolio' && <PortfolioTab api={api} notify={notify} onAuthError={onAuthError} />}
+            {tab === 'quotes' && <QuotesTab api={api} notify={notify} onAuthError={onAuthError} />}
             {tab === 'shop' && (
               <section className="admin__panel">
                 <h2>Shop</h2>

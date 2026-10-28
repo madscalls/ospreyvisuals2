@@ -2,6 +2,33 @@
 
 let items = [];
 let covers = {};
+// Two sample quote requests so the Quote files tab can be tried (the files don't open in demo mode)
+const daysAgo = (n) => new Date(Date.now() - n * 86400_000).toISOString();
+let quotes = [
+  {
+    id: 'quotes/demo/aaaaaaaaaaaa',
+    uploaded: daysAgo(1),
+    daysLeft: 179,
+    customer: 'Jamie Rivera',
+    email: 'jamie@example.com',
+    business: 'Rivera Landscaping',
+    project: 'Vehicle Wrap',
+    files: [
+      { name: 'truck-side.jpg', size: 2400000, url: '#', kind: 'image' },
+      { name: 'logo-final.ai', size: 830000, url: '#', kind: 'ai' },
+    ],
+  },
+  {
+    id: 'quotes/demo/bbbbbbbbbbbb',
+    uploaded: daysAgo(40),
+    daysLeft: 140,
+    customer: 'Sam Lee',
+    email: 'sam@example.com',
+    business: '',
+    project: 'Signage',
+    files: [{ name: 'storefront-measurements.pdf', size: 410000, url: '#', kind: 'pdf' }],
+  },
+];
 const wait = (ms = 250) => new Promise((r) => setTimeout(r, ms));
 const now = () => new Date().toISOString();
 const ME = 'owner@example.com';
@@ -84,6 +111,15 @@ export const demoApi = {
     await wait(150);
     covers[category] = itemId;
     return { category, itemId };
+  },
+  async quoteFiles() {
+    await wait();
+    return { requests: quotes.map((q) => ({ ...q })), keepDays: 180 };
+  },
+  async deleteQuote(id) {
+    await wait();
+    quotes = quotes.filter((q) => q.id !== id);
+    return { deleted: 1 };
   },
   async clearCover(category) {
     await wait(150);

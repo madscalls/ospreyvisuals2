@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { PROJECT_TYPES, TIMELINES, UPLOAD, CONTACT } from '../../data/contact';
-import { sendContactForm, UPLOADS_ENABLED } from '../../services/contactForm';
+import { sendContactForm, uploadQuoteFiles, UPLOADS_ENABLED, TURNSTILE_SITE_KEY } from '../../services/contactForm';
+import Turnstile from './Turnstile.jsx';
 import birdDivider from '../../assets/images/ui/divider-bird-small.svg';
 // Bright orange version of the Send art, to match the home page Get a Quote button
 import sendArt from '../../assets/images/contact/send-button-bright.svg';
@@ -18,12 +19,19 @@ export default function ContactForm() {
   const [status, setStatus] = useState('idle'); // idle | sending | sent | error
   const [message, setMessage] = useState('');
   const [showErrors, setShowErrors] = useState(false);
+  // Turnstile ("are you human") token for the file upload; the ref lets onSubmit wait for it
+  const token = useRef('');
+  const [turnstileRound, setTurnstileRound] = useState(0);
 
   function addFiles(list) {
     const incoming = Array.from(list);
     const bad = incoming.filter((f) => !allowedExt.includes(extOf(f.name)));
     const good = incoming.filter((f) => allowedExt.includes(extOf(f.name)));
     const next = [...files, ...good];
+    if (next.length > UPLOAD.maxFiles) {
+      setMessage(`Up to ${UPLOAD.maxFiles} files can be attached. For more, email them to ${CONTACT.email}.`);
+      return;
+    }
     const total = next.reduce((n, f) => n + f.size, 0);
     if (total > UPLOAD.maxBytes) {
       setMessage(`Files can be up to ${UPLOAD.maxLabel} in total. Try fewer or smaller files, or email them to ${CONTACT.email}.`);
@@ -48,17 +56,42 @@ export default function ContactForm() {
     }
     const data = new FormData(form);
     data.delete('files');
-    if (UPLOADS_ENABLED) files.forEach((f) => data.append('attachment', f, f.name));
+    data.delete('cf-turnstile-response');
 
     setStatus('sending');
     setMessage('');
+
+    let uploaded = [];
+    if (UPLOADS_ENABLED && files.length) {
+      try {
+        if (TURNSTILE_SITE_KEY) await waitForToken();
+        uploaded = await uploadQuoteFiles(files, token.current, Object.fromEntries(data));
+      } catch (err) {
+        token.current = '';
+        setTurnstileRound((n) => n + 1); // a token only works once: get a fresh one for the retry
+        setStatus('error');
+        setMessage(
+          `${err.userFacing ? err.message : "Your files didn't upload."} Try again, or send the message without files and email them to ${CONTACT.email}.`
+        );
+        return;
+      }
+    }
+
     try {
-      await sendContactForm(data);
+      await sendContactForm(data, uploaded);
       setStatus('sent');
     } catch {
+      token.current = '';
+      setTurnstileRound((n) => n + 1);
       setStatus('error');
       setMessage(`Sorry, your message didn't send. Please call ${CONTACT.phone} or email ${CONTACT.email}.`);
     }
+  }
+
+  // Turnstile usually passes in a second or two after the first file is added; give it up to 15s
+  async function waitForToken() {
+    for (let i = 0; i < 60 && !token.current; i++) await new Promise((r) => setTimeout(r, 250));
+    if (!token.current) throw Object.assign(new Error('The "are you human" check didn\'t finish.'), { userFacing: true });
   }
 
   if (status === 'sent') {
@@ -66,7 +99,7 @@ export default function ContactForm() {
       <div className="contact-form contact-form--sent" role="status">
         <p className="contact-form__thanks">Thanks, we got it.</p>
         <p>We'll get back to you as soon as possible, usually within one business day.</p>
-        <button type="button" className="contact-form__again" onClick={() => { setStatus('idle'); setFiles([]); setShowErrors(false); }}>
+        <button type="button" className="contact-form__again" onClick={() => { setStatus('idle'); setFiles([]); setShowErrors(false); token.current = ''; }}>
           Send another message
         </button>
       </div>
@@ -141,6 +174,9 @@ export default function ContactForm() {
               </span>
             )}
           </label>
+          {TURNSTILE_SITE_KEY && files.length > 0 && (
+            <Turnstile siteKey={TURNSTILE_SITE_KEY} resetKey={turnstileRound} onToken={(t) => (token.current = t)} />
+          )}
         </div>
         )}
 

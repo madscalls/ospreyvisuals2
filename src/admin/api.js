@@ -66,6 +66,8 @@ const realApi = {
   reorder: (category, ids) => request('/portfolio/reorder', { method: 'POST', body: { category, ids } }),
   setCover: (category, itemId) => request(`/covers/${category}`, { method: 'PUT', body: { itemId } }),
   clearCover: (category) => request(`/covers/${category}`, { method: 'DELETE' }),
+  quoteFiles: () => request('/quote-files'),
+  deleteQuote: (id) => request(`/quote-files/${id}`, { method: 'DELETE' }),
 };
 
 export async function getApi() {

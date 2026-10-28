@@ -49,6 +49,24 @@ Cloudflare account: Ospreyvisualsfl@gmail.com. Everything below is on free plans
    - **Never** set `ADMIN_DEV_EMAIL` here. It's only for local testing.
    - Secrets only apply to the next deploy: push, or Deployments → latest → Retry deployment.
 
+## Contact-form file uploads
+
+Customers can attach up to 10 files (PDF, AI, EPS, SVG, JPG, PNG; 25MB in total) to the contact form.
+
+- The browser sends them to `/api/quote-files` (functions/api/quote-files.js) after a Cloudflare **Turnstile** check
+  (widget "Osprey Visuals contact uploads", hostnames ospreyvisuals2.pages.dev and ospreyvisuals.com).
+  The site key is in `.env.production`; the secret is the Pages secret **`TURNSTILE_SECRET`**. Without it, uploads
+  are refused (the rest of the form still works).
+- Each file is checked by its contents and stored in R2 under `quotes/<day>/<id>/<name>`.
+- The Web3Forms email lists each file with a link to `/api/admin/quote-files/...`, which sits behind Access: only
+  the admins can open it. Photos and PDFs open in the browser; SVG/AI/EPS download.
+- The admin's **Quote files** tab lists every request that came with files (who, when, days left), with photo
+  thumbnails; "Delete now" removes a request's files early (logged in `audit_log`). Files from one request share a
+  folder, `quotes/<day>/<request id>/`, and carry the sender's name/email/business/project type as R2 metadata.
+- R2 lifecycle rule "Delete quote files after 6 months" removes everything under `quotes/` after 180 days. It doesn't
+  touch the portfolio photos (`portfolio/`).
+- `npm run test:quote-files` checks the upload rules with a fake bucket and a fake Turnstile.
+
 Adding or removing someone later: change the Access policy **and** `ADMIN_EMAILS`. Both must list them.
 
 ## Testing locally
