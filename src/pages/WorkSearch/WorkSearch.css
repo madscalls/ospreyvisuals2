@@ -1,0 +1,31 @@
+.page-work-search__count {
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(31, 31, 31, 0.6);
+}
+
+.page-work-search__tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.page-work-search__tags a {
+  display: inline-block;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid rgba(31, 31, 31, 0.25);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  transition: border-color 200ms ease, color 200ms ease;
+}
+
+.page-work-search__tags a:hover,
+.page-work-search__tags a:focus-visible {
+  border-color: var(--ov-orange-deep);
+  color: var(--ov-orange-deep);
+}

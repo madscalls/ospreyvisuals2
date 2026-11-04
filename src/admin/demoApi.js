@@ -33,6 +33,9 @@ const wait = (ms = 250) => new Promise((r) => setTimeout(r, ms));
 const now = () => new Date().toISOString();
 const ME = 'owner@example.com';
 
+// Same tidying as functions/_lib/tags.js
+const tidyTags = (v) => [...new Set((Array.isArray(v) ? v : String(v || '').split(',')).map((t) => String(t).replace(/\s+/g, ' ').trim().replace(/^#+\s*/, '').toLowerCase().slice(0, 30)).filter(Boolean))].slice(0, 15);
+
 const find = (id) => {
   const item = items.find((i) => i.id === id);
   if (!item) throw Object.assign(new Error('That photo no longer exists'), { status: 404 });
@@ -48,7 +51,7 @@ export const demoApi = {
     await wait();
     return { items: items.map((i) => ({ ...i })), covers: { ...covers } };
   },
-  async upload(category, { full, thumb, width, height }, { alt = '', caption = '' } = {}) {
+  async upload(category, { full, thumb, width, height }, { alt = '', caption = '', tags = '' } = {}) {
     await wait(500);
     const position = Math.max(-1, ...items.filter((i) => i.category === category).map((i) => i.position)) + 1;
     const item = {
@@ -60,6 +63,7 @@ export const demoApi = {
       height,
       alt,
       caption,
+      tags: tidyTags(tags),
       position,
       hidden: false,
       deletedAt: null,
@@ -76,7 +80,7 @@ export const demoApi = {
       Object.keys(covers).forEach((c) => covers[c] === id && delete covers[c]);
       item.position = Math.max(-1, ...items.filter((i) => i.category === changes.category).map((i) => i.position)) + 1;
     }
-    Object.assign(item, changes, { updatedAt: now() });
+    Object.assign(item, changes, 'tags' in changes ? { tags: tidyTags(changes.tags) } : {}, { updatedAt: now() });
     return { item: { ...item } };
   },
   async replace(id, { full, thumb, width, height }) {

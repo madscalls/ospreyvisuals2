@@ -6,6 +6,14 @@ import { findCategory } from '../../data/work';
 import { preloadWithTimeout } from '../../hooks/imagePreloader';
 import './PageTransition.css';
 
+// Pages that aren't in the menu
+const PAGE_TITLES = {
+  '/login': 'Log in',
+  '/terms': 'Terms and Conditions',
+  '/privacy': 'Privacy Policy',
+  '/refunds': 'Refund and Cancellation Policy',
+};
+
 const OUT_MS = 220; // keep in sync with .page-transition--out in the CSS
 const wait = (ms) => new Promise((res) => setTimeout(res, ms));
 
@@ -40,7 +48,11 @@ export default function PageTransition({ children }) {
   useEffect(() => {
     const link = NAV_LINKS.find((l) => l.to === displayed.pathname);
     const gallery = displayed.pathname.startsWith('/work/') && findCategory(displayed.pathname.slice(6));
-    document.title = gallery
+    document.title = displayed.pathname === '/work/search'
+      ? 'Search | Work | Osprey Visuals'
+      : PAGE_TITLES[displayed.pathname]
+        ? `${PAGE_TITLES[displayed.pathname]} | Osprey Visuals`
+        : gallery
       ? `${gallery.title} | Work | Osprey Visuals`
       : link && link.to !== '/'
         ? `${link.label} | Osprey Visuals`

@@ -57,8 +57,8 @@ const imageForm = (fields, { full, thumb, width, height }) => {
 const realApi = {
   session: () => request('/session'),
   list: () => request('/portfolio'),
-  upload: (category, prepared, { alt = '', caption = '' } = {}) =>
-    request('/portfolio', { method: 'POST', form: imageForm({ category, alt, caption }, prepared) }),
+  upload: (category, prepared, { alt = '', caption = '', tags = '' } = {}) =>
+    request('/portfolio', { method: 'POST', form: imageForm({ category, alt, caption, tags }, prepared) }),
   update: (id, changes) => request(`/portfolio/${id}`, { method: 'PATCH', body: changes }),
   replace: (id, prepared) => request(`/portfolio/${id}/photo`, { method: 'PUT', form: imageForm({}, prepared) }),
   remove: (id) => request(`/portfolio/${id}`, { method: 'DELETE' }),

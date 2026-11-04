@@ -14,6 +14,11 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
   const [uploads, setUploads] = useState([]); // { name, status: 'working' | 'error', message }
   const [dragOver, setDragOver] = useState(false);
   const fileInput = useRef(null);
+  // Bulk upload: chosen photos wait here (with previews) so one description and one set of tags can go on all of them
+  const [batch, setBatch] = useState([]); // { key, file, preview }
+  const [batchAlt, setBatchAlt] = useState('');
+  const [batchTags, setBatchTags] = useState('');
+  const [progress, setProgress] = useState(null); // { done, total } while uploading
 
   // Any failed call: show the message, and switch to the sign-in screen if the session ran out
   const run = useCallback(
@@ -58,27 +63,63 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
 
   const replaceItem = (item) => setItems((list) => list.map((i) => (i.id === item.id ? item : i)));
 
-  // ---- Upload: photos are shrunk in the browser, then sent one at a time ----
-  async function addFiles(fileList) {
-    const files = Array.from(fileList || []);
+  // ---- Bulk upload: choose or drop any number of photos, add shared details, then upload them all ----
+  const isImage = (f) => f.type.startsWith('image/') || /\.(heic|heif)$/i.test(f.name);
+
+  function addFiles(fileList) {
+    const files = Array.from(fileList || []).filter(isImage);
     if (!files.length) return;
+    setBatch((b) => [...b, ...files.map((file) => ({ key: `${file.name}-${file.size}-${Math.random()}`, file, preview: URL.createObjectURL(file) }))]);
+  }
+
+  function removeFromBatch(key) {
+    setBatch((b) => {
+      const gone = b.find((x) => x.key === key);
+      if (gone) URL.revokeObjectURL(gone.preview);
+      return b.filter((x) => x.key !== key);
+    });
+  }
+
+  function clearBatch() {
+    batch.forEach((x) => URL.revokeObjectURL(x.preview));
+    setBatch([]);
+    setBatchAlt('');
+    setBatchTags('');
+  }
+
+  // Photos are shrunk in the browser, then sent one at a time so they keep the order they were chosen in.
+  // The next photo is resized while the current one uploads.
+  async function uploadBatch() {
+    const queue = [...batch];
+    if (!queue.length || progress) return;
     const forCategory = category;
     const label = WORK_CATEGORIES.find((c) => c.slug === forCategory)?.title;
+    const details = { alt: batchAlt.trim() || `${label} project by Osprey Visuals`, tags: batchTags };
+    clearBatch();
+    setProgress({ done: 0, total: queue.length });
 
-    for (const file of files) {
-      const key = `${file.name}-${file.size}-${Math.random()}`;
-      setUploads((u) => [...u, { key, name: file.name, status: 'working' }]);
+    let added = 0;
+    let next = prepareImage(queue[0].file).catch((err) => err);
+    for (let i = 0; i < queue.length; i++) {
+      const { file, key } = queue[i];
+      const prepared = await next;
+      if (i + 1 < queue.length) next = prepareImage(queue[i + 1].file).catch((err) => err);
       try {
-        const prepared = await prepareImage(file);
-        const result = await api.upload(forCategory, prepared, { alt: `${label} project by Osprey Visuals` });
+        if (prepared instanceof Error) throw prepared;
+        const result = await api.upload(forCategory, prepared, details);
         setItems((list) => [...list, result.item]);
-        setUploads((u) => u.filter((x) => x.key !== key));
+        added++;
       } catch (err) {
-        if (err.status === 401) return onAuthError();
-        setUploads((u) => u.map((x) => (x.key === key ? { ...x, status: 'error', message: err.message } : x)));
+        if (err.status === 401) {
+          setProgress(null);
+          return onAuthError();
+        }
+        setUploads((u) => [...u, { key, name: file.name, status: 'error', message: err.message }]);
       }
+      setProgress({ done: i + 1, total: queue.length });
     }
-    notify(files.length === 1 ? 'Photo added.' : 'Photos added.');
+    setProgress(null);
+    if (added) notify(added === 1 ? 'Photo added.' : `${added} photos added.`);
   }
 
   // ---- Reorder (drag on desktop, arrow buttons everywhere) ----
@@ -199,9 +240,9 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
         <p>
           <strong>Add photos to {categoryTitle}</strong>
           <br />
-          Drag them here, or
+          Drag them here (as many as you like), or
         </p>
-        <button type="button" className="admin-btn admin-btn--primary" onClick={() => fileInput.current?.click()}>
+        <button type="button" className="admin-btn admin-btn--primary" onClick={() => fileInput.current?.click()} disabled={!!progress}>
           Choose photos
         </button>
         <input
@@ -215,8 +256,53 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
             e.target.value = '';
           }}
         />
-        <p className="admin__note">JPEG, PNG, WebP or iPhone photos. They're resized automatically and location data is removed.</p>
+        <p className="admin__note">Select several at once. JPEG, PNG, WebP or iPhone photos; they're resized automatically and location data is removed.</p>
       </div>
+
+      {batch.length > 0 && (
+        <section className="admin-batch" aria-labelledby="batch-title">
+          <h2 id="batch-title">
+            {batch.length} {batch.length === 1 ? 'photo' : 'photos'} ready for {categoryTitle}
+          </h2>
+          <ul className="admin-batch__list">
+            {batch.map((x) => (
+              <li key={x.key} className="admin-batch__item">
+                <img src={x.preview} alt="" />
+                <button type="button" className="admin-batch__remove" onClick={() => removeFromBatch(x.key)} aria-label={`Remove ${x.file.name}`}>
+                  ×
+                </button>
+              </li>
+            ))}
+          </ul>
+          <div className="admin-batch__fields">
+            <label className="admin-field">
+              <span>Description for all of them (optional; you can change each one later)</span>
+              <input value={batchAlt} maxLength={200} onChange={(e) => setBatchAlt(e.target.value)} placeholder={`${categoryTitle} project by Osprey Visuals`} />
+            </label>
+            <label className="admin-field">
+              <span>Tags for all of them (separate with commas)</span>
+              <input value={batchTags} maxLength={500} onChange={(e) => setBatchTags(e.target.value)} placeholder="e.g. truck wrap, ford, palm trees" />
+            </label>
+          </div>
+          <div className="admin-batch__actions">
+            <button type="button" className="admin-btn admin-btn--primary" onClick={uploadBatch}>
+              Upload {batch.length} {batch.length === 1 ? 'photo' : 'photos'}
+            </button>
+            <button type="button" className="admin-btn" onClick={clearBatch}>
+              Cancel
+            </button>
+          </div>
+        </section>
+      )}
+
+      {progress && (
+        <div className="admin-progress" role="status">
+          <span>
+            Uploading {Math.min(progress.done + 1, progress.total)} of {progress.total}…
+          </span>
+          <span className="admin-progress__bar" style={{ '--done': progress.done / progress.total }} />
+        </div>
+      )}
 
       {uploads.length > 0 && (
         <ul className="admin-uploads">

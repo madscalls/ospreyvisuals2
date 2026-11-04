@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Divider from '../Divider/Divider.jsx';
+import { POLICY_LIST } from '../../data/policies';
 import './Footer.css';
 
 export default function Footer() {
@@ -12,10 +13,14 @@ export default function Footer() {
       <Divider className="footer__divider" />
       <p className="footer__legal">
         <span>© {new Date().getFullYear()} Osprey Visuals</span>
-        <span aria-hidden="true">·</span>
-        <Link to="/admin" className="footer__admin">
-          Admin
-        </Link>
+        {POLICY_LIST.map((p) => (
+          <span key={p.slug} className="footer__item">
+            <span aria-hidden="true">·</span>
+            <Link to={p.path} className="footer__link">
+              {p.label}
+            </Link>
+          </span>
+        ))}
       </p>
     </footer>
   );

@@ -1,5 +1,6 @@
 import { WORK_CATEGORY_SLUGS } from '../../src/data/workCategories.js';
 import { mediaUrl } from './images.js';
+import { columnToTags } from './tags.js';
 
 export const CATEGORY_SLUGS = WORK_CATEGORY_SLUGS;
 export const isCategory = (slug) => CATEGORY_SLUGS.includes(slug);
@@ -7,7 +8,7 @@ export const isCategory = (slug) => CATEGORY_SLUGS.includes(slug);
 export const TRASH_DAYS = 30;
 export const ID_PATTERN = /^[0-9a-f-]{36}$/;
 
-const COLUMNS = `id, category, full_key, thumb_key, width, height, alt, caption, position, hidden, deleted_at, replaced_from, created_at, updated_at, updated_by`;
+const COLUMNS = `id, category, full_key, thumb_key, width, height, alt, caption, tags, position, hidden, deleted_at, replaced_from, created_at, updated_at, updated_by`;
 
 export const toPublicItem = (row) => ({
   id: row.id,
@@ -18,6 +19,7 @@ export const toPublicItem = (row) => ({
   height: row.height ?? undefined,
   alt: row.alt || '',
   caption: row.caption || undefined,
+  tags: columnToTags(row.tags),
 });
 
 export const toAdminItem = (row) => ({

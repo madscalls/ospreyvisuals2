@@ -51,3 +51,29 @@ export function loadPortfolio() {
 }
 
 export const itemsFor = (data, slug) => data.items.filter((i) => i.category === slug);
+
+/**
+ * Work page search: photos whose tags, description, caption or category name match every word typed.
+ * "ford wrap" finds photos tagged "ford" in Wraps & Signage. Best matches (exact tag hits) first.
+ */
+export function searchItems(data, query, categories = []) {
+  const words = String(query || '').toLowerCase().split(/[\s,]+/).map((w) => w.replace(/^#/, '')).filter(Boolean);
+  if (!words.length) return [];
+  const titles = Object.fromEntries(categories.map((c) => [c.slug, c.title.toLowerCase()]));
+  const scored = [];
+  for (const item of data.items) {
+    const tags = (item.tags || []).map((t) => t.toLowerCase());
+    const text = [tags.join(' '), item.alt, item.caption, titles[item.category]].join(' ').toLowerCase();
+    if (!words.every((w) => text.includes(w))) continue;
+    const score = words.reduce((n, w) => n + (tags.includes(w) ? 3 : tags.some((t) => t.includes(w)) ? 2 : 1), 0);
+    scored.push({ item, score });
+  }
+  return scored.sort((a, b) => b.score - a.score).map((s) => s.item);
+}
+
+/** Every tag in use, most used first: suggestions under the search box. */
+export function popularTags(data, limit = 8) {
+  const counts = new Map();
+  for (const item of data.items) for (const t of item.tags || []) counts.set(t, (counts.get(t) || 0) + 1);
+  return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, limit).map(([t]) => t);
+}

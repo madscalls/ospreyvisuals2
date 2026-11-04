@@ -7,6 +7,10 @@ import PageTransition from './components/PageTransition/PageTransition.jsx';
 import Home from './pages/Home/Home.jsx';
 import Work from './pages/Work/Work.jsx';
 import Gallery from './pages/Gallery/Gallery.jsx';
+import WorkSearch from './pages/WorkSearch/WorkSearch.jsx';
+import Login from './pages/Login/Login.jsx';
+import Policy from './pages/Policy/Policy.jsx';
+import { POLICY_LIST } from './data/policies';
 import Services from './pages/Services/Services.jsx';
 import About from './pages/About/About.jsx';
 import Shop from './pages/Shop/Shop.jsx';
@@ -41,13 +45,15 @@ function Site() {
   usePreloadPages(location.pathname);
 
   const isGallery = location.pathname.startsWith('/work/');
-  // Contact, Services, About and Work fill the screen themselves, so the footer tagline is left off there
-  const noFooter = ['/contact', '/services', '/about', '/work'].includes(location.pathname) || isGallery;
+  const isPolicy = POLICY_LIST.some((p) => p.path === location.pathname);
+  // Long pages scroll instead of fitting one screen: galleries (any number of photos) and the policy pages
+  const scrolls = isGallery || isPolicy;
+  // Contact, Services, About, Work and Login fill the screen themselves, so the footer tagline is left off there
+  const noFooter = ['/contact', '/services', '/about', '/work', '/login'].includes(location.pathname) || scrolls;
 
-  // Galleries can hold any number of photos, so they scroll instead of fitting one screen
   useEffect(() => {
-    document.documentElement.classList.toggle('page-scroll', isGallery);
-  }, [isGallery]);
+    document.documentElement.classList.toggle('page-scroll', scrolls);
+  }, [scrolls]);
   // Services: the backdrop's painted sky shows only at the top, behind the palm-tree splash
   const plainPaper = location.pathname === '/services';
 
@@ -60,7 +66,7 @@ function Site() {
   }, []);
 
   return (
-    <div className={`app${intro ? ' app--intro' : ''}${noFooter ? ' app--no-footer' : ''}${plainPaper ? ' app--plain-paper' : ''}${isGallery ? ' app--scroll' : ''}`}>
+    <div className={`app${intro ? ' app--intro' : ''}${noFooter ? ' app--no-footer' : ''}${plainPaper ? ' app--plain-paper' : ''}${scrolls ? ' app--scroll' : ''}`}>
       {/* Stays mounted across pages, so the paper texture never reloads or flashes */}
       <Backdrop />
 
@@ -72,11 +78,16 @@ function Site() {
             <Routes location={displayedLocation}>
               <Route path="/" element={<Home />} />
               <Route path="/work" element={<Work />} />
+              <Route path="/work/search" element={<WorkSearch />} />
               <Route path="/work/:slug" element={<Gallery />} />
               <Route path="/services" element={<Services />} />
               <Route path="/about" element={<About />} />
               <Route path="/shop" element={<Shop />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<Login />} />
+              {POLICY_LIST.map((p) => (
+                <Route key={p.slug} path={p.path} element={<Policy slug={p.slug} />} />
+              ))}
               <Route path="*" element={<Home />} />
             </Routes>
           )}

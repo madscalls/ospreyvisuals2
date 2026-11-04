@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS portfolio_items (
   height     INTEGER,
   alt        TEXT NOT NULL DEFAULT '',
   caption    TEXT NOT NULL DEFAULT '',
+  tags       TEXT NOT NULL DEFAULT '',       -- comma-separated, lowercase (functions/_lib/tags.js); searched on the Work page
   position   INTEGER NOT NULL DEFAULT 0,       -- order within the category (drag to reorder)
   hidden     INTEGER NOT NULL DEFAULT 0,       -- 1 = kept in the admin but not shown on the site
   deleted_at TEXT,                             -- set = in "Recently deleted"; removed for good after 30 days
@@ -40,3 +41,6 @@ CREATE TABLE IF NOT EXISTS audit_log (
   target TEXT,
   detail TEXT
 );
+
+-- Migrations for a database created before a column existed (run once in the D1 console):
+--   2026-11-04  ALTER TABLE portfolio_items ADD COLUMN tags TEXT NOT NULL DEFAULT '';

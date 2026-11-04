@@ -1,16 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import { WORK_CATEGORIES } from '../data/work';
 
-/** One photo in the admin list: preview, description, caption, and its actions. */
+const tagText = (tags) => (tags || []).join(', ');
+
+/** One photo in the admin list: preview, description, caption, tags, and its actions. */
 export default function PhotoCard({ item, index, total, isCover, onMove, onDragStart, onDragEnd, onDropOn, actions, currentCategory }) {
   const [alt, setAlt] = useState(item.alt);
   const [caption, setCaption] = useState(item.caption || '');
+  const [tags, setTags] = useState(tagText(item.tags));
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [over, setOver] = useState(false);
   const replaceInput = useRef(null);
 
   useEffect(() => setAlt(item.alt), [item.alt]);
   useEffect(() => setCaption(item.caption || ''), [item.caption]);
+  useEffect(() => setTags(tagText(item.tags)), [item.tags]);
 
   // Delete asks twice: the button turns into "Confirm delete" for a few seconds
   useEffect(() => {
@@ -60,6 +64,26 @@ export default function PhotoCard({ item, index, total, isCover, onMove, onDragS
           <span>Caption (optional, shown under the photo)</span>
           <input value={caption} maxLength={160} onChange={(e) => setCaption(e.target.value)} onBlur={() => saveField('caption', caption)} />
         </label>
+        <label className="admin-field">
+          <span>Tags (separate with commas; people can search these on the Work page)</span>
+          <input
+            value={tags}
+            maxLength={500}
+            onChange={(e) => setTags(e.target.value)}
+            onBlur={() => {
+              const next = tags.split(',').map((t) => t.trim().toLowerCase()).filter(Boolean).join(', ');
+              if (next !== tagText(item.tags)) actions.save(item, { tags });
+            }}
+            placeholder="e.g. truck wrap, ford, palm trees"
+          />
+        </label>
+        {item.tags?.length > 0 && (
+          <ul className="admin-tags" aria-label="Tags">
+            {item.tags.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div className="admin-photo__actions">

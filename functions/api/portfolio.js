@@ -10,7 +10,7 @@ import { toPublicItem } from '../_lib/portfolio.js';
 export async function onRequestGet({ env }) {
   const [items, covers] = await Promise.all([
     env.DB.prepare(
-      `SELECT id, category, full_key, thumb_key, width, height, alt, caption
+      `SELECT id, category, full_key, thumb_key, width, height, alt, caption, tags
          FROM portfolio_items
         WHERE hidden = 0 AND deleted_at IS NULL
         ORDER BY category, position, created_at`

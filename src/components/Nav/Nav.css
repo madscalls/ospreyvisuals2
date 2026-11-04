@@ -2,7 +2,7 @@
   position: relative;
   z-index: 10;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto auto; /* logo | menu | login | quote button */
   align-items: center;
   gap: clamp(1rem, 3vw, 3rem);
   padding: 0 var(--ov-gutter);
@@ -58,6 +58,28 @@
   min-width: 0;
 }
 
+/* Login: quieter than the menu, same type, sits just left of the quote button */
+.nav__login {
+  font-family: var(--ov-font-body);
+  font-weight: 500;
+  font-size: var(--ov-fs-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35em 0;
+  margin-right: calc(clamp(1rem, 3vw, 3rem) * -0.5); /* closer to the button than the menu gap */
+  transition: color 200ms ease;
+}
+
+.nav__login:hover,
+.nav__login:focus-visible,
+.nav__login--active {
+  color: var(--ov-orange-deep);
+}
+
+.nav__login--menu {
+  display: none;
+}
+
 /* Hamburger hidden on desktop. Mobile layout is a placeholder pending client feedback. */
 .nav__toggle {
   display: none;
@@ -75,6 +97,27 @@
   /* Everything on one row */
   .nav > * {
     grid-row: 1;
+  }
+
+  /* Login moves into the phone menu */
+  .nav__login--bar {
+    display: none;
+  }
+
+  .nav__login--menu {
+    display: block;
+    margin: 1.2rem 0 0;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(31, 31, 31, 0.2);
+    min-width: 8rem;
+    text-align: center;
+    font-size: 1rem;
+    letter-spacing: 0.14em;
+  }
+
+  .nav__links--open .nav__login--menu {
+    animation: ov-fade-up 450ms var(--ov-ease) both;
+    animation-delay: calc(80ms + var(--i) * 60ms);
   }
 
   .nav .nav__cta {

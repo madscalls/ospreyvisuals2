@@ -1,0 +1,137 @@
+/* Policy pages: the Word documents' look (Aptos, navy headings, blue subtitle) on a white sheet over the paper backdrop */
+.page-policy {
+  --doc-navy: #1e3142;
+  --doc-blue: #4f81bd;
+  --doc-font: Aptos, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 52rem);
+  justify-content: center;
+  align-items: start;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  padding: clamp(1rem, 3vh, 2rem) var(--ov-gutter) clamp(2rem, 6vh, 4rem);
+}
+
+/* Section list: stays in view on desktop so any part is one click away */
+.page-policy__toc {
+  position: sticky;
+  top: 1.5rem;
+  font-family: var(--doc-font);
+  font-size: 0.85rem;
+  line-height: 1.35;
+  max-height: calc(100vh - 3rem);
+  overflow-y: auto;
+}
+
+.page-policy__toc-title {
+  margin-bottom: 0.6rem;
+  font-family: var(--ov-font-body);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.page-policy__toc ol {
+  list-style: none;
+  display: grid;
+  gap: 0.15rem;
+  padding: 0;
+}
+
+.page-policy__toc a {
+  display: block;
+  padding: 0.25rem 0 0.25rem 0.7rem;
+  border-left: 2px solid rgba(31, 31, 31, 0.15);
+  color: rgba(31, 31, 31, 0.75);
+  transition: color 200ms ease, border-color 200ms ease;
+}
+
+.page-policy__toc a:hover,
+.page-policy__toc a:focus-visible {
+  color: var(--ov-orange-deep);
+  border-color: var(--ov-orange-deep);
+}
+
+/* The document */
+.policy-doc {
+  background: #fff;
+  color: #1f1f1f;
+  font-family: var(--doc-font);
+  font-size: 1rem; /* the documents use 9.5pt on paper; a little larger reads better on screen */
+  line-height: 1.6;
+  padding: clamp(1.5rem, 5vw, 4rem) clamp(1.25rem, 6vw, 4.5rem);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(31, 31, 31, 0.08), 0 12px 40px -18px rgba(31, 31, 31, 0.35);
+}
+
+.policy-doc__head {
+  margin-bottom: 1.5rem;
+}
+
+.policy-doc__title {
+  font-family: var(--doc-font);
+  font-weight: 700;
+  font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  line-height: 1.15;
+  color: var(--doc-navy);
+  margin-bottom: 0.6rem;
+}
+
+.policy-doc__subtitle {
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  color: var(--doc-blue);
+}
+
+.policy-doc__heading {
+  font-family: var(--doc-font);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--doc-navy);
+  margin: 1.6rem 0 0.35rem;
+  scroll-margin-top: 1.5rem;
+}
+
+.policy-doc__text {
+  margin-bottom: 0.6rem;
+}
+
+.policy-doc a {
+  color: var(--doc-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  overflow-wrap: anywhere;
+}
+
+.policy-doc__foot {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e3e6ea;
+  font-size: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+}
+
+.policy-doc__foot ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  padding: 0;
+}
+
+/* Phones and portrait tablets: just the document, full width */
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  .page-policy {
+    grid-template-columns: minmax(0, 1fr);
+    padding-inline: max(0.75rem, calc(var(--ov-gutter) / 2));
+  }
+  .page-policy__toc {
+    display: none;
+  }
+  .policy-doc {
+    font-size: 0.95rem;
+  }
+}

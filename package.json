@@ -9,7 +9,8 @@
     "build": "vite build && cp dist/index.html dist/404.html",
     "preview": "vite preview",
     "test:access": "node tests/access.test.mjs",
-    "test:quote-files": "node tests/quote-files.test.mjs"
+    "test:quote-files": "node tests/quote-files.test.mjs",
+    "test:tags": "node tests/tags.test.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

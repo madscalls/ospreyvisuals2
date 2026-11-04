@@ -1,10 +1,11 @@
 /*
   GET  /api/admin/portfolio  every photo (including hidden and recently deleted) plus the covers
   POST /api/admin/portfolio  upload one photo: multipart form with
-                               full (image), thumb (image), category, alt, caption, width, height
+                               full (image), thumb (image), category, alt, caption, tags, width, height
 */
 import { json, cleanText, HttpError } from '../../../_lib/http.js';
 import { readImage, imageKey, putImage, MAX_FULL_BYTES, MAX_THUMB_BYTES } from '../../../_lib/images.js';
+import { tagsToColumn } from '../../../_lib/tags.js';
 import { isCategory, listAll, listCovers, toAdminItem, getItem, audit, purgeExpired } from '../../../_lib/portfolio.js';
 
 export async function onRequestGet({ env }) {
@@ -46,8 +47,8 @@ export async function onRequestPost({ request, env, data }) {
   try {
     await env.DB.batch([
       env.DB.prepare(
-        `INSERT INTO portfolio_items (id, category, full_key, thumb_key, width, height, alt, caption, position, hidden, created_at, updated_at, updated_by)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)`
+        `INSERT INTO portfolio_items (id, category, full_key, thumb_key, width, height, alt, caption, tags, position, hidden, created_at, updated_at, updated_by)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)`
       ).bind(
         id,
         category,
@@ -57,6 +58,7 @@ export async function onRequestPost({ request, env, data }) {
         toSize(form.get('height')),
         cleanText(form.get('alt'), 200),
         cleanText(form.get('caption'), 160),
+        tagsToColumn(form.get('tags')),
         (last?.p ?? -1) + 1,
         now,
         now,

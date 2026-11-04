@@ -35,9 +35,9 @@ export async function onRequestPut({ request, env, params, data }) {
     await env.DB.batch([
       // The old version, parked in "Recently deleted" with the same details
       env.DB.prepare(
-        `INSERT INTO portfolio_items (id, category, full_key, thumb_key, width, height, alt, caption, position, hidden, deleted_at, replaced_from, created_at, updated_at, updated_by)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-      ).bind(oldVersionId, row.category, row.full_key, row.thumb_key, row.width, row.height, row.alt, row.caption, row.position, row.hidden, now, row.id, row.created_at, now, data.admin),
+        `INSERT INTO portfolio_items (id, category, full_key, thumb_key, width, height, alt, caption, tags, position, hidden, deleted_at, replaced_from, created_at, updated_at, updated_by)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      ).bind(oldVersionId, row.category, row.full_key, row.thumb_key, row.width, row.height, row.alt, row.caption, row.tags || '', row.position, row.hidden, now, row.id, row.created_at, now, data.admin),
       env.DB.prepare(
         'UPDATE portfolio_items SET full_key = ?, thumb_key = ?, width = ?, height = ?, updated_at = ?, updated_by = ? WHERE id = ?'
       ).bind(fullKey, thumbKey, toSize(form.get('width')), toSize(form.get('height')), now, data.admin, row.id),

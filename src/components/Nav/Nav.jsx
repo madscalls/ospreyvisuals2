@@ -50,7 +50,21 @@ export default function Nav() {
             {link.label}
           </NavLink>
         ))}
+        {/* Phones: Login sits at the bottom of the full-screen menu */}
+        <NavLink
+          to="/login"
+          className={({ isActive }) => `nav__login nav__login--menu${isActive ? ' nav__login--active' : ''}`}
+          onClick={() => setOpen(false)}
+          style={{ '--i': NAV_LINKS.length }}
+        >
+          Login
+        </NavLink>
       </nav>
+
+      {/* Desktop: Login to the left of Get a Quote. Customer accounts come later; for now /login explains that and links staff to the admin. */}
+      <NavLink to="/login" className={({ isActive }) => `nav__login nav__login--bar${isActive ? ' nav__login--active' : ''}`}>
+        Login
+      </NavLink>
 
       <Button to="/contact" image={quoteButton} underlay={quoteUnderlay} size="sm" className="nav__cta">
         Get a Quote

@@ -1,8 +1,9 @@
 /*
-  PATCH  /api/admin/portfolio/:id  change details: { alt?, caption?, hidden?, category? }
+  PATCH  /api/admin/portfolio/:id  change details: { alt?, caption?, tags?, hidden?, category? }
   DELETE /api/admin/portfolio/:id  move to "Recently deleted" (restorable for 30 days)
 */
 import { json, cleanText, readJson, HttpError } from '../../../_lib/http.js';
+import { tagsToColumn } from '../../../_lib/tags.js';
 import { isCategory, getItem, toAdminItem, audit } from '../../../_lib/portfolio.js';
 
 async function load(env, id) {
@@ -19,6 +20,7 @@ export async function onRequestPatch({ request, env, params, data }) {
   const next = {
     alt: 'alt' in body ? cleanText(body.alt, 200) : row.alt,
     caption: 'caption' in body ? cleanText(body.caption, 160) : row.caption,
+    tags: 'tags' in body ? tagsToColumn(body.tags) : row.tags || '',
     hidden: 'hidden' in body ? (body.hidden === true ? 1 : 0) : row.hidden,
     category: row.category,
     position: row.position,
@@ -33,8 +35,8 @@ export async function onRequestPatch({ request, env, params, data }) {
 
   const stmts = [
     env.DB.prepare(
-      'UPDATE portfolio_items SET alt = ?, caption = ?, hidden = ?, category = ?, position = ?, updated_at = ?, updated_by = ? WHERE id = ?'
-    ).bind(next.alt, next.caption, next.hidden, next.category, next.position, new Date().toISOString(), data.admin, row.id),
+      'UPDATE portfolio_items SET alt = ?, caption = ?, tags = ?, hidden = ?, category = ?, position = ?, updated_at = ?, updated_by = ? WHERE id = ?'
+    ).bind(next.alt, next.caption, next.tags, next.hidden, next.category, next.position, new Date().toISOString(), data.admin, row.id),
     audit(env.DB, data.admin, 'edit', row.id, Object.keys(body)),
   ];
   // A photo moved to another category can't stay the cover of its old one
