@@ -32,5 +32,6 @@ export const PAGE_IMAGES = {
   '/services': [servicesSplash, ...serviceArt],
   '/about': [aboutScene],
   '/shop': [...TRUCK_SCENE_IMAGES],
+  '/login': [...TRUCK_SCENE_IMAGES],
   '/contact': [contactScene],
 };

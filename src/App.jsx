@@ -48,8 +48,8 @@ function Site() {
   const isPolicy = POLICY_LIST.some((p) => p.path === location.pathname);
   // Long pages scroll instead of fitting one screen: galleries (any number of photos) and the policy pages
   const scrolls = isGallery || isPolicy;
-  // Contact, Services, About, Work and Login fill the screen themselves, so the footer tagline is left off there
-  const noFooter = ['/contact', '/services', '/about', '/work', '/login'].includes(location.pathname) || scrolls;
+  // Contact, Services, About and Work fill the screen themselves, so the footer tagline is left off there
+  const noFooter = ['/contact', '/services', '/about', '/work'].includes(location.pathname) || scrolls;
 
   useEffect(() => {
     document.documentElement.classList.toggle('page-scroll', scrolls);
