@@ -35,15 +35,19 @@
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  width: clamp(6.5rem, 8vw, 11rem);
-  border-bottom: 1.5px solid rgba(31, 31, 31, 0.45);
-  transition: border-color 200ms ease;
+  width: clamp(7.5rem, 9vw, 12rem);
+  padding: 0.15em 0.55em 0.15em 0.75em;
+  /* Black box with white text and icon, so it stands out on the paper */
+  background: var(--ov-ink);
+  border-radius: 3px;
+  box-shadow: 0 0 0 2px transparent;
+  transition: box-shadow 200ms ease;
   font-family: var(--ov-font-body);
   font-size: clamp(0.72rem, min(1.6vh, 0.9vw), 0.95rem);
 }
 
 .service-filter__search:focus-within {
-  border-color: var(--ov-orange-deep);
+  box-shadow: 0 0 0 2px var(--ov-orange);
 }
 
 .service-filter__search input {
@@ -54,14 +58,14 @@
   background: transparent;
   font: inherit;
   letter-spacing: 0.04em;
-  color: var(--ov-ink);
+  color: var(--ov-white);
   outline: none;
 }
 
 .service-filter__search input::placeholder {
   text-transform: uppercase;
   font-weight: 600;
-  color: rgba(31, 31, 31, 0.55);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 /* Hide the browser's own clear (×) and search decorations so it matches the row */
@@ -75,13 +79,13 @@
   place-items: center;
   width: 1.4em;
   height: 1.4em;
-  color: var(--ov-ink);
+  color: var(--ov-white);
   transition: color 200ms ease;
 }
 
 .service-filter__search-btn:hover,
 .service-filter__search-btn:focus-visible {
-  color: var(--ov-orange-deep);
+  color: var(--ov-orange);
 }
 
 .service-filter__search-btn svg {

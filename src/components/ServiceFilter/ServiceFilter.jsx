@@ -40,15 +40,21 @@ function WorkSearchBox() {
   const onSearchPage = pathname === SEARCH_PATH;
   const [value, setValue] = useState(onSearchPage ? params.get('q') || '' : '');
   const timer = useRef(null);
+  const sent = useRef(null); // the last search this box opened itself
 
-  // Keep the box in step with the address (e.g. a tag suggestion was clicked)
+  // Keep the box in step with the address (e.g. a tag suggestion was clicked), but never overwrite
+  // what's being typed when the address is just catching up with this box
   useEffect(() => {
-    if (onSearchPage) setValue(params.get('q') || '');
+    const q = params.get('q') || '';
+    if (onSearchPage && q !== sent.current) setValue(q);
   }, [onSearchPage, params]);
 
   useEffect(() => () => clearTimeout(timer.current), []);
 
-  const go = (q, replace) => navigate(q.trim() ? `${SEARCH_PATH}?q=${encodeURIComponent(q.trim())}` : onSearchPage ? '/work' : pathname, { replace });
+  const go = (q, replace) => {
+    sent.current = q.trim();
+    navigate(q.trim() ? `${SEARCH_PATH}?q=${encodeURIComponent(q.trim())}` : onSearchPage ? '/work' : pathname, { replace });
+  };
 
   return (
     <form

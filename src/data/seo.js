@@ -13,7 +13,7 @@
 import { SERVICE_DETAILS } from './services';
 import { WORK_CATEGORIES, findCategory } from './work';
 import { POLICIES } from './policies';
-import { CONTACT } from './contact';
+import { CONTACT, SOCIALS } from './contact';
 
 export const SITE_URL = 'https://ospreyvisuals.com';
 export const SITE_NAME = 'Osprey Visuals';
@@ -30,11 +30,7 @@ export const BUSINESS = {
   region: 'FL',
   country: 'US',
   // Public profiles (same business, so search engines and AI tools connect them)
-  sameAs: [
-    'https://www.instagram.com/ospreyvisualsfl/',
-    'https://www.facebook.com/OspreyVisuals',
-    'https://www.tiktok.com/@ospreyvisualsfl',
-  ],
+  sameAs: SOCIALS.map((s) => s.url),
 };
 
 const STATIC_PAGES = {

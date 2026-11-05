@@ -66,11 +66,26 @@
 
 
 @media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  .footer.footer--compact {
+    padding-block: 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
+  }
   .footer {
     width: 100%;
     height: auto;
     padding-block: 1.5rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
   }
+}
+
+/* Pages whose content fills the screen: just the small print, in a slim strip */
+.footer--compact {
+  height: auto;
+  width: 100%;
+  padding-block: clamp(0.2rem, 0.6vh, 0.45rem) clamp(0.35rem, 1vh, 0.7rem);
+}
+
+/* These pages often have artwork behind the small print: a little darker so it stays readable */
+.footer--compact .footer__legal {
+  color: rgba(31, 31, 31, 0.72);
 }
 
 /* First-load intro: footer is last */

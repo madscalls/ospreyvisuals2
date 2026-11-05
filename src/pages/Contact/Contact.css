@@ -5,7 +5,7 @@
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
   gap: clamp(0.5rem, 2vh, 1.5rem);
-  padding: clamp(0rem, 0.8vh, 0.75rem) var(--ov-gutter) clamp(0.75rem, 3vh, 2rem);
+  padding: clamp(0rem, 0.8vh, 0.75rem) var(--ov-gutter) clamp(0.25rem, 1vh, 0.75rem); /* the footer's small print sits just below */
 }
 
 .page-contact__main {

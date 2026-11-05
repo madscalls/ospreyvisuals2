@@ -6,6 +6,13 @@ export const CONTACT = {
   visit: 'Coming soon',
 };
 
+// Social profiles: icons on the Contact page and in the footer, and the business details search engines read
+export const SOCIALS = [
+  { id: 'instagram', label: 'Instagram', handle: '@ospreyvisualsfl', url: 'https://www.instagram.com/ospreyvisualsfl/' },
+  { id: 'facebook', label: 'Facebook', handle: '@OspreyVisuals', url: 'https://www.facebook.com/OspreyVisuals' },
+  { id: 'tiktok', label: 'TikTok', handle: '@ospreyvisualsfl', url: 'https://www.tiktok.com/@ospreyvisualsfl' },
+];
+
 export const PROJECT_TYPES = [
   'Vehicle wrap',
   'Signage',

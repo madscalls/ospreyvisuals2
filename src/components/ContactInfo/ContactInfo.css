@@ -63,6 +63,12 @@ a.contact-info__link:hover .contact-info__value {
 .app--intro .contact-info__item:nth-child(1) { animation-delay: 1000ms; }
 .app--intro .contact-info__item:nth-child(2) { animation-delay: 1080ms; }
 .app--intro .contact-info__item:nth-child(3) { animation-delay: 1160ms; }
+.app--intro .contact-info__item:nth-child(4) { animation-delay: 1240ms; }
+
+/* Follow Us: the label with the social icons underneath, in place of a value */
+.contact-info__social {
+  margin-top: 0.3em;
+}
 
 @media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
   /* Stacked and centred: icon on top, text underneath */

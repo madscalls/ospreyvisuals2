@@ -30,8 +30,3 @@
   position: relative;
   inset: auto;
 }
-
-/* Contact, Services, About, Work and gallery pages: no footer tagline */
-.app--no-footer > .footer {
-  display: none;
-}

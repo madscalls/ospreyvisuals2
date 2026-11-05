@@ -2,6 +2,7 @@ import { CONTACT } from '../../data/contact';
 import callIcon from '../../assets/images/contact/icon-call.svg';
 import emailIcon from '../../assets/images/contact/icon-email.svg';
 import visitIcon from '../../assets/images/contact/icon-visit.svg';
+import SocialLinks from '../SocialLinks/SocialLinks.jsx';
 import './ContactInfo.css';
 
 export default function ContactInfo() {
@@ -28,6 +29,12 @@ export default function ContactInfo() {
           </li>
         );
       })}
+      <li className="contact-info__item contact-info__item--social">
+        <span className="contact-info__text">
+          <span className="contact-info__label">Follow Us</span>
+          <SocialLinks className="contact-info__social" />
+        </span>
+      </li>
     </ul>
   );
 }

@@ -21,7 +21,11 @@ export default function PageTransition({ children }) {
   const ref = useRef(null);
 
   useEffect(() => {
-    if (location.pathname === displayed.pathname) return;
+    if (location.pathname === displayed.pathname) {
+      // Same page, new ?search (e.g. a second Work search): show it straight away, no fade
+      if (location.search !== displayed.search || location.hash !== displayed.hash) setDisplayed(location);
+      return;
+    }
     let cancelled = false;
     setPhase('out');
 
@@ -34,7 +38,7 @@ export default function PageTransition({ children }) {
     return () => {
       cancelled = true;
     };
-  }, [location, displayed.pathname]);
+  }, [location, displayed.pathname, displayed.search, displayed.hash]);
 
   // Page title + move keyboard/screen-reader focus to the new page
   useEffect(() => {

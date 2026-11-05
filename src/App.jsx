@@ -94,8 +94,8 @@ function Site() {
         </PageTransition>
       </main>
 
-      {/* No footer tagline on Contact (its contact-details row takes that spot), or on Services, About, Work and the galleries (their content runs to the bottom) */}
-      {!noFooter && <Footer />}
+      {/* Every page gets the small print. The tagline is left off Contact (its contact-details row takes that spot), Services, About, Work, galleries and policies (their content runs to the bottom) */}
+      <Footer compact={noFooter} />
     </div>
   );
 }
