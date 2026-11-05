@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "dev:admin": "vite --mode admindemo --port 5180 --strictPort --open /ospreyvisuals2/admin",
-    "build": "vite build && cp dist/index.html dist/404.html",
+    "build": "vite build && cp dist/index.html dist/404.html && vite build --ssr src/entry-server.jsx --outDir dist-ssr && node scripts/prerender.mjs",
     "preview": "vite preview",
     "test:access": "node tests/access.test.mjs",
     "test:quote-files": "node tests/quote-files.test.mjs",

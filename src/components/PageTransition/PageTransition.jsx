@@ -1,18 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { PAGE_IMAGES } from '../../data/pageImages';
-import { NAV_LINKS } from '../../data/navigation';
+import { pageMeta } from '../../data/seo';
 import { findCategory } from '../../data/work';
 import { preloadWithTimeout } from '../../hooks/imagePreloader';
 import './PageTransition.css';
-
-// Pages that aren't in the menu
-const PAGE_TITLES = {
-  '/login': 'Log in',
-  '/terms': 'Terms and Conditions',
-  '/privacy': 'Privacy Policy',
-  '/refunds': 'Refund and Cancellation Policy',
-};
 
 const OUT_MS = 220; // keep in sync with .page-transition--out in the CSS
 const wait = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -46,17 +38,8 @@ export default function PageTransition({ children }) {
 
   // Page title + move keyboard/screen-reader focus to the new page
   useEffect(() => {
-    const link = NAV_LINKS.find((l) => l.to === displayed.pathname);
     const gallery = displayed.pathname.startsWith('/work/') && findCategory(displayed.pathname.slice(6));
-    document.title = displayed.pathname === '/work/search'
-      ? 'Search | Work | Osprey Visuals'
-      : PAGE_TITLES[displayed.pathname]
-        ? `${PAGE_TITLES[displayed.pathname]} | Osprey Visuals`
-        : gallery
-      ? `${gallery.title} | Work | Osprey Visuals`
-      : link && link.to !== '/'
-        ? `${link.label} | Osprey Visuals`
-        : 'Osprey Visuals | Design. Brand. Impact.';
+    document.title = pageMeta(displayed.pathname).title;
     // Galleries are long: start each one at the top
     if (gallery) window.scrollTo(0, 0);
     ref.current?.focus({ preventScroll: true });

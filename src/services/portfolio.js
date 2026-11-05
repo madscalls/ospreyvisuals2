@@ -28,6 +28,19 @@ const API_URL = import.meta.env.VITE_PORTFOLIO_API || `${import.meta.env.BASE_UR
 const EMPTY = { covers: {}, items: [] };
 
 let request = null;
+let snapshot = null; // the loaded data, once it's here (lets pages show photos straight away)
+
+/** The portfolio if it has already loaded, else null. */
+export const portfolioSnapshot = () => snapshot;
+
+/**
+ * Pre-rendered pages: the build hands in the portfolio it rendered with, and the browser gets the same
+ * copy (window.__OV_PORTFOLIO__) so the page picks up exactly where the saved HTML left off. The live
+ * portfolio is still fetched as usual, so new uploads show without a redeploy.
+ */
+export function primePortfolio(data) {
+  snapshot = normalise(data);
+}
 
 function normalise(data) {
   const covers = data && typeof data.covers === 'object' && data.covers ? data.covers : {};
@@ -45,7 +58,8 @@ export function loadPortfolio() {
         if (!res.ok || !isJson) return EMPTY;
         return res.json().then(normalise);
       })
-      .catch(() => EMPTY);
+      .catch(() => EMPTY)
+      .then((data) => (snapshot = data));
   }
   return request;
 }

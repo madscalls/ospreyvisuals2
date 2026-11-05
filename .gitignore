@@ -6,3 +6,4 @@ dist
 # Cloudflare local testing
 .wrangler
 .dev.vars
+dist-ssr
