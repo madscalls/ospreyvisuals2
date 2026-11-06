@@ -73,7 +73,7 @@ const STATIC_PAGES = {
   '/faq': {
     title: 'FAQ: Wraps, Signs, Printing & Design | Osprey Visuals',
     description:
-      'Answers about vehicle wraps, yard signs, storefront signage, banners, business cards, logo design and ordering in Sarasota, Venice, North Port and Southwest Florida.',
+      'Answers about vehicle wraps, yard signs, storefront signage, banners, business cards, logo design and ordering in Bradenton, Lakewood Ranch, Sarasota, Venice, North Port and Southwest Florida.',
   },
   '/work/search': { title: 'Search | Work | Osprey Visuals', description: 'Search Osprey Visuals projects.', noindex: true },
 };

@@ -56,7 +56,7 @@ export const FAQS = [
   },
   {
     q: 'What areas in Southwest Florida does Osprey Visuals serve?',
-    a: 'Osprey Visuals is a Florida-based graphic design, printing, and signage company serving businesses throughout Southwest Florida, including Venice, Sarasota, North Port, Englewood, Port Charlotte, and surrounding communities. We provide custom signs, vehicle graphics, branding, and commercial printing solutions for local businesses, while many printed products can also be shipped directly to customers.',
+    a: 'Osprey Visuals is a Florida-based graphic design, printing, and signage company serving businesses throughout Southwest Florida, including Bradenton, Lakewood Ranch, Sarasota, Venice, North Port, Englewood, Port Charlotte, and surrounding communities. We provide custom signs, vehicle graphics, branding, and commercial printing solutions for local businesses, while many printed products can also be shipped directly to customers.',
   },
   {
     q: 'How much does it cost to wrap a commercial truck, van, or trailer in Sarasota, FL?',
