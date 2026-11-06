@@ -16,7 +16,7 @@ export default function WorkSearch() {
   const [params] = useSearchParams();
   const query = (params.get('q') || '').trim();
   const { loading, data } = usePortfolio();
-  const [open, setOpen] = useState(-1);
+  const [open, setOpen] = useState(null); // { index, photo } while the viewer is open
 
   const items = searchItems(data, query, WORK_CATEGORIES);
   const suggestions = popularTags(data).filter((t) => t !== query.toLowerCase());
@@ -37,7 +37,7 @@ export default function WorkSearch() {
             <p className="page-work-search__count">
               {items.length} {items.length === 1 ? 'project photo' : 'project photos'}
             </p>
-            <GalleryGrid items={items} onOpen={setOpen} />
+            <GalleryGrid items={items} onOpen={(index, photo) => setOpen({ index, photo })} />
           </>
         ) : (
           !loading && (
@@ -61,7 +61,15 @@ export default function WorkSearch() {
         )}
       </section>
 
-      {open > -1 && <Lightbox items={items} index={open} onChange={setOpen} onClose={() => setOpen(-1)} />}
+      {open && (
+        <Lightbox
+          items={items}
+          index={open.index}
+          photo={open.photo}
+          onChange={(index) => setOpen((o) => ({ ...o, index }))}
+          onClose={() => setOpen(null)}
+        />
+      )}
     </div>
   );
 }

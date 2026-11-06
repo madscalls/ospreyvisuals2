@@ -5,20 +5,21 @@
   of src/services/portfolio.js.
 */
 import { json } from '../_lib/http.js';
-import { toPublicItem } from '../_lib/portfolio.js';
+import { toPublicItem, extrasByItem } from '../_lib/portfolio.js';
 
 export async function onRequestGet({ env }) {
-  const [items, covers] = await Promise.all([
+  const [items, covers, extras] = await Promise.all([
     env.DB.prepare(
-      `SELECT id, category, full_key, thumb_key, width, height, alt, caption, tags
+      `SELECT id, category, full_key, thumb_key, width, height, alt, caption, tags, link
          FROM portfolio_items
         WHERE hidden = 0 AND deleted_at IS NULL
         ORDER BY category, position, created_at`
     ).all(),
     env.DB.prepare('SELECT category, item_id FROM portfolio_covers').all(),
+    extrasByItem(env.DB), // the other photos of multi-photo posts
   ]);
 
-  const visible = items.results.map(toPublicItem);
+  const visible = items.results.map((row) => toPublicItem(row, extras.get(row.id)));
   const byId = new Map(visible.map((i) => [i.id, i]));
   const coverMap = {};
   for (const c of covers.results) {

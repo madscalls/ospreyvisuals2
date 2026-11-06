@@ -94,3 +94,15 @@ html.lightbox-open body {
     transform: none;
   }
 }
+
+/* Caption (a link when the post has one) */
+.lightbox__text a {
+  color: var(--ov-paper);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lightbox__text a:hover,
+.lightbox__text a:focus-visible {
+  color: var(--ov-orange);
+}

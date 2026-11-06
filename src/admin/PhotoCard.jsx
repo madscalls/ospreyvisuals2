@@ -3,10 +3,15 @@ import { WORK_CATEGORIES } from '../data/work';
 
 const tagText = (tags) => (tags || []).join(', ');
 
-/** One photo in the admin list: preview, description, caption, tags, and its actions. */
-export default function PhotoCard({ item, index, total, isCover, onMove, onDragStart, onDragEnd, onDropOn, actions, currentCategory }) {
+/** One post in the admin list: its photos, description, caption, link, tags, and its actions. */
+export default function PhotoCard({ item, index, total, isCover, onMove, onDragStart, onDragEnd, onDropOn, actions, currentCategory, selected, onSelect, busy }) {
   const [alt, setAlt] = useState(item.alt);
   const [caption, setCaption] = useState(item.caption || '');
+  const [link, setLink] = useState(item.link || '');
+  const photos = item.photos?.length ? item.photos : [{ id: item.id, thumb: item.thumb }];
+  const multi = photos.length > 1;
+  const addInput = useRef(null);
+  const photoDrag = useRef(null);
   const [tags, setTags] = useState(tagText(item.tags));
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [over, setOver] = useState(false);
@@ -14,6 +19,7 @@ export default function PhotoCard({ item, index, total, isCover, onMove, onDragS
 
   useEffect(() => setAlt(item.alt), [item.alt]);
   useEffect(() => setCaption(item.caption || ''), [item.caption]);
+  useEffect(() => setLink(item.link || ''), [item.link]);
   useEffect(() => setTags(tagText(item.tags)), [item.tags]);
 
   // Delete asks twice: the button turns into "Confirm delete" for a few seconds
@@ -23,20 +29,31 @@ export default function PhotoCard({ item, index, total, isCover, onMove, onDragS
     return () => clearTimeout(t);
   }, [confirmDelete]);
 
-  const saveField = (field, value) => {
+  const saveField = async (field, value) => {
     if (value.trim() === (item[field] || '').trim()) return;
-    actions.save(item, { [field]: value });
+    const ok = await actions.save(item, { [field]: value });
+    if (!ok && field === 'link') setLink(item.link || ''); // not a web address: put back what was saved
+  };
+
+  // Photos inside the post: arrows, or drag one onto another
+  const reorder = (from, to) => {
+    if (to < 0 || to >= photos.length || from === to) return;
+    const ids = photos.map((p) => p.id);
+    ids.splice(to, 0, ids.splice(from, 1)[0]);
+    actions.reorderPhotos(item, ids);
   };
 
   return (
     <li
-      className={`admin-photo${item.hidden ? ' admin-photo--hidden' : ''}${over ? ' admin-photo--over' : ''}`}
+      className={`admin-photo${item.hidden ? ' admin-photo--hidden' : ''}${over ? ' admin-photo--over' : ''}${selected ? ' admin-photo--selected' : ''}`}
       onDragOver={(e) => {
+        if (photoDrag.current !== null) return; // reordering photos inside this post
         e.preventDefault();
         setOver(true);
       }}
       onDragLeave={() => setOver(false)}
       onDrop={(e) => {
+        if (photoDrag.current !== null) return;
         e.preventDefault();
         setOver(false);
         onDropOn();
@@ -47,9 +64,75 @@ export default function PhotoCard({ item, index, total, isCover, onMove, onDragS
         <span className="admin-photo__num">{index + 1}</span>
         {isCover && <span className="admin-photo__badge">Cover</span>}
         {item.hidden && <span className="admin-photo__badge admin-photo__badge--muted">Hidden</span>}
+        {multi && <span className="admin-photo__count">{photos.length} photos</span>}
       </div>
 
       <div className="admin-photo__fields">
+        <div className="admin-post-photos">
+          <span className="admin-post-photos__label">
+            {multi ? `Photos in this post (drag or use the arrows to change the order; the first shows in the gallery)` : 'Photos in this post'}
+          </span>
+          <ol className="admin-post-photos__list">
+            {photos.map((p, i) => (
+              <li
+                key={p.id}
+                className="admin-post-photos__item"
+                draggable={multi}
+                onDragStart={(e) => {
+                  e.stopPropagation();
+                  photoDrag.current = i;
+                }}
+                onDragEnd={() => (photoDrag.current = null)}
+                onDragOver={(e) => photoDrag.current !== null && e.preventDefault()}
+                onDrop={(e) => {
+                  if (photoDrag.current === null) return;
+                  e.preventDefault();
+                  e.stopPropagation();
+                  const from = photoDrag.current;
+                  photoDrag.current = null;
+                  reorder(from, i);
+                }}
+              >
+                <img src={p.thumb} alt="" loading="lazy" draggable={false} />
+                <span className="admin-batch__num">{i + 1}</span>
+                {multi && (
+                  <>
+                    <button type="button" className="admin-batch__remove" onClick={() => actions.removePhoto(item, p.id)} aria-label={`Take photo ${i + 1} out of this post`} title="Take out of this post">
+                      ×
+                    </button>
+                    <span className="admin-batch__order">
+                      <button type="button" onClick={() => reorder(i, i - 1)} disabled={i === 0} aria-label={`Move photo ${i + 1} earlier`}>
+                        ←
+                      </button>
+                      <button type="button" onClick={() => reorder(i, i + 1)} disabled={i === photos.length - 1} aria-label={`Move photo ${i + 1} later`}>
+                        →
+                      </button>
+                    </span>
+                  </>
+                )}
+              </li>
+            ))}
+            {photos.length < 20 && (
+              <li>
+                <button type="button" className="admin-post-photos__add" onClick={() => addInput.current?.click()} disabled={busy}>
+                  <span aria-hidden="true">+</span>
+                  Add photos
+                </button>
+                <input
+                  ref={addInput}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  hidden
+                  onChange={(e) => {
+                    actions.addPhotos(item, e.target.files);
+                    e.target.value = '';
+                  }}
+                />
+              </li>
+            )}
+          </ol>
+        </div>
         <label className="admin-field">
           <span>Description (for screen readers and Google)</span>
           <input
@@ -61,8 +144,19 @@ export default function PhotoCard({ item, index, total, isCover, onMove, onDragS
           />
         </label>
         <label className="admin-field">
-          <span>Caption (optional, shown under the photo)</span>
-          <input value={caption} maxLength={160} onChange={(e) => setCaption(e.target.value)} onBlur={() => saveField('caption', caption)} />
+          <span>Caption (optional, shown under the post)</span>
+          <input value={caption} maxLength={160} onChange={(e) => setCaption(e.target.value)} onBlur={() => saveField('caption', caption)} placeholder="e.g. Osprey Visuals" />
+        </label>
+        <label className="admin-field">
+          <span>Link (optional: the caption becomes clickable)</span>
+          <input
+            value={link}
+            maxLength={300}
+            inputMode="url"
+            onChange={(e) => setLink(e.target.value)}
+            onBlur={() => saveField('link', link)}
+            placeholder="e.g. https://ospreyvisuals.com"
+          />
         </label>
         <label className="admin-field">
           <span>Tags (separate with commas; people can search these on the Work page)</span>
@@ -87,6 +181,11 @@ export default function PhotoCard({ item, index, total, isCover, onMove, onDragS
       </div>
 
       <div className="admin-photo__actions">
+        {onSelect && (
+          <label className="admin-photo__select" title="Tick two or more posts to combine them into one">
+            <input type="checkbox" checked={!!selected} onChange={onSelect} /> Select
+          </label>
+        )}
         <div className="admin-photo__order">
           <button type="button" className="admin-btn admin-btn--icon" onClick={() => onMove(index, -1)} disabled={index === 0} aria-label="Move earlier">
             ↑
@@ -102,7 +201,7 @@ export default function PhotoCard({ item, index, total, isCover, onMove, onDragS
           {item.hidden ? 'Show on site' : 'Hide'}
         </button>
         <button type="button" className="admin-btn admin-btn--small" onClick={() => replaceInput.current?.click()}>
-          Replace
+          {multi ? 'Replace first photo' : 'Replace'}
         </button>
         <input
           ref={replaceInput}

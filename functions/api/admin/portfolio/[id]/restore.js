@@ -1,6 +1,6 @@
 // POST /api/admin/portfolio/:id/restore: bring a photo back from "Recently deleted" (to the end of its category).
 import { json, HttpError } from '../../../../_lib/http.js';
-import { getItem, toAdminItem, audit } from '../../../../_lib/portfolio.js';
+import { getItem, getAdminItem, toAdminItem, audit } from '../../../../_lib/portfolio.js';
 
 export async function onRequestPost({ env, params, data }) {
   const row = await getItem(env.DB, params.id);
@@ -19,5 +19,5 @@ export async function onRequestPost({ env, params, data }) {
       audit(env.DB, data.admin, 'restore', row.id),
     ]);
   }
-  return json({ item: toAdminItem(await getItem(env.DB, row.id)) });
+  return json({ item: await getAdminItem(env.DB, row.id) });
 }

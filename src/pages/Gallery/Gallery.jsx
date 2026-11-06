@@ -15,7 +15,7 @@ export default function Gallery() {
   const { slug } = useParams();
   const category = findCategory(slug);
   const { loading, data } = usePortfolio();
-  const [open, setOpen] = useState(-1);
+  const [open, setOpen] = useState(null); // { index, photo } while the viewer is open
 
   if (!category) return <Navigate to="/work" replace />;
 
@@ -36,7 +36,7 @@ export default function Gallery() {
 
       <section className="page-gallery__body" aria-labelledby="gallery-title" aria-busy={loading}>
         {items.length > 0 ? (
-          <GalleryGrid items={items} onOpen={setOpen} />
+          <GalleryGrid items={items} onOpen={(index, photo) => setOpen({ index, photo })} />
         ) : (
           !loading && (
             <div className="page-gallery__empty">
@@ -48,7 +48,15 @@ export default function Gallery() {
         )}
       </section>
 
-      {open > -1 && <Lightbox items={items} index={open} onChange={setOpen} onClose={() => setOpen(-1)} />}
+      {open && (
+        <Lightbox
+          items={items}
+          index={open.index}
+          photo={open.photo}
+          onChange={(index) => setOpen((o) => ({ ...o, index }))}
+          onClose={() => setOpen(null)}
+        />
+      )}
     </div>
   );
 }

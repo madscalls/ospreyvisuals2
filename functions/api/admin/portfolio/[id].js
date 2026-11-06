@@ -1,10 +1,10 @@
 /*
-  PATCH  /api/admin/portfolio/:id  change details: { alt?, caption?, tags?, hidden?, category? }
+  PATCH  /api/admin/portfolio/:id  change details: { alt?, caption?, tags?, link?, hidden?, category? }
   DELETE /api/admin/portfolio/:id  move to "Recently deleted" (restorable for 30 days)
 */
 import { json, cleanText, readJson, HttpError } from '../../../_lib/http.js';
 import { tagsToColumn } from '../../../_lib/tags.js';
-import { isCategory, getItem, toAdminItem, audit } from '../../../_lib/portfolio.js';
+import { isCategory, getItem, getAdminItem, audit, normalizeLink } from '../../../_lib/portfolio.js';
 
 async function load(env, id) {
   const row = await getItem(env.DB, id);
@@ -21,6 +21,7 @@ export async function onRequestPatch({ request, env, params, data }) {
     alt: 'alt' in body ? cleanText(body.alt, 200) : row.alt,
     caption: 'caption' in body ? cleanText(body.caption, 160) : row.caption,
     tags: 'tags' in body ? tagsToColumn(body.tags) : row.tags || '',
+    link: 'link' in body ? normalizeLink(body.link) : row.link || '',
     hidden: 'hidden' in body ? (body.hidden === true ? 1 : 0) : row.hidden,
     category: row.category,
     position: row.position,
@@ -35,8 +36,8 @@ export async function onRequestPatch({ request, env, params, data }) {
 
   const stmts = [
     env.DB.prepare(
-      'UPDATE portfolio_items SET alt = ?, caption = ?, tags = ?, hidden = ?, category = ?, position = ?, updated_at = ?, updated_by = ? WHERE id = ?'
-    ).bind(next.alt, next.caption, next.tags, next.hidden, next.category, next.position, new Date().toISOString(), data.admin, row.id),
+      'UPDATE portfolio_items SET alt = ?, caption = ?, tags = ?, link = ?, hidden = ?, category = ?, position = ?, updated_at = ?, updated_by = ? WHERE id = ?'
+    ).bind(next.alt, next.caption, next.tags, next.link, next.hidden, next.category, next.position, new Date().toISOString(), data.admin, row.id),
     audit(env.DB, data.admin, 'edit', row.id, Object.keys(body)),
   ];
   // A photo moved to another category can't stay the cover of its old one
@@ -45,7 +46,7 @@ export async function onRequestPatch({ request, env, params, data }) {
   }
   await env.DB.batch(stmts);
 
-  return json({ item: toAdminItem(await getItem(env.DB, row.id)) });
+  return json({ item: await getAdminItem(env.DB, row.id) });
 }
 
 export async function onRequestDelete({ env, params, data }) {
@@ -58,5 +59,5 @@ export async function onRequestDelete({ env, params, data }) {
       audit(env.DB, data.admin, 'delete', row.id),
     ]);
   }
-  return json({ item: toAdminItem(await getItem(env.DB, row.id)) });
+  return json({ item: await getAdminItem(env.DB, row.id) });
 }

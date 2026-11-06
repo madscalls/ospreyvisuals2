@@ -57,8 +57,13 @@ const imageForm = (fields, { full, thumb, width, height }) => {
 const realApi = {
   session: () => request('/session'),
   list: () => request('/portfolio'),
-  upload: (category, prepared, { alt = '', caption = '', tags = '' } = {}) =>
-    request('/portfolio', { method: 'POST', form: imageForm({ category, alt, caption, tags }, prepared) }),
+  upload: (category, prepared, { alt = '', caption = '', tags = '', link = '' } = {}) =>
+    request('/portfolio', { method: 'POST', form: imageForm({ category, alt, caption, tags, link }, prepared) }),
+  // Adds one more photo to the end of an existing post
+  addPhoto: (postId, prepared) => request('/portfolio', { method: 'POST', form: imageForm({ postId }, prepared) }),
+  reorderPhotos: (postId, ids) => request(`/portfolio/${postId}/photos`, { method: 'PUT', body: { ids } }),
+  removePhoto: (postId, photoId) => request(`/portfolio/${postId}/photos/${photoId}`, { method: 'DELETE' }),
+  combine: (ids) => request('/portfolio/combine', { method: 'POST', body: { ids } }),
   update: (id, changes) => request(`/portfolio/${id}`, { method: 'PATCH', body: changes }),
   replace: (id, prepared) => request(`/portfolio/${id}/photo`, { method: 'PUT', form: imageForm({}, prepared) }),
   remove: (id) => request(`/portfolio/${id}`, { method: 'DELETE' }),

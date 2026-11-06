@@ -12,15 +12,109 @@
 }
 
 /* Pale paper rim, like the torn tiles on the Work page */
-.gallery-grid__button {
-  display: block;
-  width: 100%;
+.gallery-grid__frame {
+  position: relative;
   padding: clamp(3px, 0.35vw, 6px);
   background: #f7f0e3;
   border-radius: 3px;
   box-shadow: 0 6px 14px rgba(31, 31, 31, 0.14);
   overflow: hidden;
+}
+
+.gallery-grid__button {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 2px;
   cursor: zoom-in;
+}
+
+/* Posts with several photos: every photo fills the first photo's shape */
+.gallery-grid__frame--multi .gallery-grid__button img {
+  aspect-ratio: var(--ratio);
+  object-fit: cover;
+  animation: ov-fade-in 220ms ease both;
+}
+
+/* Small, quiet arrows inside the frame: clearer on hover, always there on touch screens */
+.gallery-grid__arrow {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: clamp(1.9rem, 2.4vw, 2.3rem);
+  height: clamp(1.9rem, 2.4vw, 2.3rem);
+  border-radius: 50%;
+  background: rgba(247, 240, 227, 0.78);
+  color: var(--ov-ink);
+  box-shadow: 0 2px 6px rgba(31, 31, 31, 0.18);
+  opacity: 0.55;
+  transform: translateY(-50%);
+  transition: opacity 200ms ease, background-color 200ms ease, color 200ms ease;
+}
+
+.gallery-grid__arrow svg {
+  width: 55%;
+  height: 55%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gallery-grid__arrow--prev { left: clamp(0.5rem, 0.8vw, 0.85rem); }
+.gallery-grid__arrow--next { right: clamp(0.5rem, 0.8vw, 0.85rem); }
+
+.gallery-grid__frame:hover .gallery-grid__arrow,
+.gallery-grid__arrow:focus-visible {
+  opacity: 1;
+}
+
+.gallery-grid__arrow:hover,
+.gallery-grid__arrow:focus-visible {
+  background: var(--ov-orange-deep);
+  color: var(--ov-white);
+}
+
+@media (hover: none) {
+  .gallery-grid__arrow {
+    opacity: 0.9;
+  }
+}
+
+/* Which photo is showing */
+.gallery-grid__dots {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(0.55rem, 0.9vw, 0.9rem);
+  display: flex;
+  gap: 5px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: rgba(31, 31, 31, 0.35);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.gallery-grid__dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  transition: background-color 200ms ease, transform 200ms ease;
+}
+
+.gallery-grid__dots b {
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 1;
+  color: #fff;
+}
+
+.gallery-grid__dots span.is-on {
+  background: #fff;
+  transform: scale(1.2);
 }
 
 .gallery-grid__button img {
@@ -43,4 +137,18 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ov-ink-soft);
+}
+
+/* A caption with a link */
+.gallery-grid__caption a {
+  color: var(--ov-orange-deep);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 200ms ease;
+}
+
+.gallery-grid__caption a:hover,
+.gallery-grid__caption a:focus-visible {
+  color: var(--ov-ink);
 }

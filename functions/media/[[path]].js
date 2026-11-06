@@ -12,10 +12,15 @@ export async function onRequestGet({ params, env, request }) {
   if (!IMAGE_KEY.test(key)) return notFound();
 
   // Looked up by file, not by folder: a restored earlier version keeps its files in the original photo's folder
+  // (a post's first photo is on its own row; its other photos are in portfolio_photos)
   const row = await env.DB.prepare(
-    'SELECT 1 AS ok FROM portfolio_items WHERE hidden = 0 AND deleted_at IS NULL AND (full_key = ? OR thumb_key = ?)'
+    `SELECT 1 AS ok FROM portfolio_items WHERE hidden = 0 AND deleted_at IS NULL AND (full_key = ?1 OR thumb_key = ?1)
+     UNION ALL
+     SELECT 1 FROM portfolio_photos p JOIN portfolio_items i ON i.id = p.item_id
+      WHERE i.hidden = 0 AND i.deleted_at IS NULL AND (p.full_key = ?1 OR p.thumb_key = ?1)
+     LIMIT 1`
   )
-    .bind(key, key)
+    .bind(key)
     .first();
   if (!row) return notFound();
 

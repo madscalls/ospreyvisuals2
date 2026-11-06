@@ -673,3 +673,196 @@
   background: #f1eadc;
   font-size: 0.8rem;
 }
+
+/* ---- Multi-photo posts (2026-11-07) ---- */
+
+/* Chosen photos waiting to upload: number, drag to reorder, arrows */
+.admin-batch__item {
+  cursor: grab;
+}
+
+.admin-batch__num {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  min-width: 1.4rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: rgba(31, 31, 31, 0.75);
+  color: #fff;
+  font-size: 0.75rem;
+  line-height: 1.4rem;
+  text-align: center;
+}
+
+.admin-batch__order {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.admin-batch__order button {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ov-ink);
+  font-size: 0.85rem;
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(31, 31, 31, 0.25);
+}
+
+.admin-batch__order button:disabled {
+  visibility: hidden;
+}
+
+/* One post or separate posts */
+.admin-batch__mode {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.5rem;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.65rem 0.8rem;
+  border: 1.5px solid #e6dccb;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.admin-choice--on {
+  border-color: var(--ov-orange-deep);
+  background: #fff7ef;
+}
+
+.admin-choice input {
+  margin-top: 0.2rem;
+  accent-color: var(--ov-orange-deep);
+}
+
+.admin-choice span {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.admin-choice small {
+  color: #6b6458;
+}
+
+/* A post's photos, in its card */
+.admin-photo__count {
+  position: absolute;
+  right: 0.4rem;
+  bottom: 0.4rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(31, 31, 31, 0.75);
+  color: #fff;
+  font-size: 0.75rem;
+}
+
+.admin-post-photos {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.admin-post-photos__label {
+  font-size: 0.8rem;
+  color: #6b6458;
+}
+
+.admin-post-photos__list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 0.4rem;
+}
+
+.admin-post-photos__item {
+  position: relative;
+  cursor: grab;
+}
+
+.admin-post-photos__item img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #f1eadc;
+}
+
+.admin-post-photos__add {
+  display: grid;
+  place-content: center;
+  gap: 0.1rem;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1.5px dashed #d8ccb7;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: #6b6458;
+  text-align: center;
+}
+
+.admin-post-photos__add span {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.admin-post-photos__add:hover:not(:disabled) {
+  border-color: var(--ov-orange-deep);
+  color: var(--ov-orange-deep);
+}
+
+/* Select for "Combine into one post" */
+.admin-photo__select {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid #e6dccb;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.admin-photo__select input {
+  accent-color: var(--ov-orange-deep);
+}
+
+.admin-photo--selected {
+  border-color: var(--ov-orange-deep);
+  box-shadow: 0 0 0 3px rgba(201, 80, 15, 0.15);
+}
+
+.admin-combine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin: 0.25rem 0 0.75rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  background: #f6efe2;
+  font-size: 0.85rem;
+  color: #6b6458;
+}
+
+.admin-combine--active {
+  background: #fff7ef;
+  color: var(--ov-ink);
+  border: 1px solid var(--ov-orange-deep);
+}
+
+.admin__error {
+  color: #b42318;
+}
