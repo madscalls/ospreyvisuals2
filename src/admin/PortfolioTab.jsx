@@ -22,6 +22,7 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
   const [batchTags, setBatchTags] = useState('');
   const [onePost, setOnePost] = useState(true); // several photos: one post you can flip through, or a post each
   const batchDrag = useRef(null); // key of the batch photo being dragged
+  const [activeKey, setActiveKey] = useState(null); // separate posts: the photo whose own tags are being edited
   // Posts ticked for "Combine into one post"
   const [selected, setSelected] = useState([]);
   const [progress, setProgress] = useState(null); // { done, total } while uploading
@@ -75,7 +76,7 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
   function addFiles(fileList) {
     const files = Array.from(fileList || []).filter(isImage);
     if (!files.length) return;
-    setBatch((b) => [...b, ...files.map((file) => ({ key: `${file.name}-${file.size}-${Math.random()}`, file, preview: URL.createObjectURL(file) }))]);
+    setBatch((b) => [...b, ...files.map((file) => ({ key: `${file.name}-${file.size}-${Math.random()}`, file, preview: URL.createObjectURL(file), tags: '' }))]);
   }
 
   function removeFromBatch(key) {
@@ -89,6 +90,7 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
   function clearBatch() {
     batch.forEach((x) => URL.revokeObjectURL(x.preview));
     setBatch([]);
+    setActiveKey(null);
     setBatchAlt('');
     setBatchCaption('');
     setBatchLink('');
@@ -128,6 +130,8 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
     const label = WORK_CATEGORIES.find((c) => c.slug === forCategory)?.title;
     const details = { alt: batchAlt.trim() || `${label} project by Osprey Visuals`, caption: batchCaption, link: batchLink, tags: batchTags };
     const asOnePost = onePost && queue.length > 1;
+    // Separate posts: each photo gets the tags for all of them plus its own
+    const tagsFor = (x) => (asOnePost ? batchTags : [batchTags, x.tags].filter((t) => t.trim()).join(', '));
     clearBatch();
     setProgress({ done: 0, total: queue.length });
 
@@ -140,7 +144,7 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
       if (i + 1 < queue.length) next = prepareImage(queue[i + 1].file).catch((err) => err);
       try {
         if (prepared instanceof Error) throw prepared;
-        const result = postId ? await api.addPhoto(postId, prepared) : await api.upload(forCategory, prepared, details);
+        const result = postId ? await api.addPhoto(postId, prepared) : await api.upload(forCategory, prepared, { ...details, tags: tagsFor(queue[i]) });
         if (asOnePost) postId = result.item.id;
         setItems((list) => (list.some((x) => x.id === result.item.id) ? list.map((x) => (x.id === result.item.id ? result.item : x)) : [...list, result.item]));
         added++;
@@ -286,6 +290,11 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
     },
   };
 
+  // Separate posts: each photo can have its own tags (click it)
+  const perPhoto = !onePost && batch.length > 1;
+  const activeIndex = batch.findIndex((x) => x.key === activeKey);
+  const active = activeIndex > -1 ? batch[activeIndex] : null;
+
   return (
     <section className="admin-portfolio" aria-labelledby="portfolio-title">
       <div className="admin-portfolio__head">
@@ -372,7 +381,12 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
             </fieldset>
           )}
 
-          {batch.length > 1 && <p className="admin__note">Drag the photos, or use the arrows, to change their order.{onePost ? ' The first one shows in the gallery.' : ''}</p>}
+          {batch.length > 1 && (
+            <p className="admin__note">
+              Drag the photos, or use the arrows, to change their order.
+              {onePost ? ' The first one shows in the gallery.' : ' Click a photo to give it its own tags.'}
+            </p>
+          )}
           <ol className="admin-batch__list">
             {batch.map((x, i) => (
               <li
@@ -389,8 +403,21 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
                   dropInBatch(x.key);
                 }}
               >
-                <img src={x.preview} alt="" draggable={false} />
+                {perPhoto ? (
+                  <button
+                    type="button"
+                    className={`admin-batch__pick${activeKey === x.key ? ' admin-batch__pick--on' : ''}`}
+                    onClick={() => setActiveKey((k) => (k === x.key ? null : x.key))}
+                    aria-pressed={activeKey === x.key}
+                    aria-label={`Tags for photo ${i + 1}`}
+                  >
+                    <img src={x.preview} alt="" draggable={false} />
+                  </button>
+                ) : (
+                  <img src={x.preview} alt="" draggable={false} />
+                )}
                 <span className="admin-batch__num">{i + 1}</span>
+                {perPhoto && x.tags.trim() && <span className="admin-batch__tagged">Tags</span>}
                 <button type="button" className="admin-batch__remove" onClick={() => removeFromBatch(x.key)} aria-label={`Remove ${x.file.name}`}>
                   ×
                 </button>
@@ -407,6 +434,24 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
               </li>
             ))}
           </ol>
+          {perPhoto && active && (
+            <div className="admin-batch__photo">
+              <img src={active.preview} alt="" />
+              <label className="admin-field">
+                <span>Tags for photo {activeIndex + 1} only (added to the tags for all photos below)</span>
+                <input
+                  autoFocus
+                  value={active.tags}
+                  maxLength={500}
+                  onChange={(e) => setBatch((b) => b.map((x) => (x.key === active.key ? { ...x, tags: e.target.value } : x)))}
+                  placeholder="e.g. ford, black truck"
+                />
+              </label>
+              <button type="button" className="admin-btn admin-btn--small" onClick={() => setActiveKey(null)}>
+                Done
+              </button>
+            </div>
+          )}
           <div className="admin-batch__fields">
             <label className="admin-field">
               <span>Description (for screen readers and Google{onePost || batch.length === 1 ? '' : '; goes on each post'})</span>
@@ -421,7 +466,7 @@ export default function PortfolioTab({ api, notify, onAuthError }) {
               <input value={batchLink} maxLength={300} inputMode="url" onChange={(e) => setBatchLink(e.target.value)} placeholder="e.g. https://ospreyvisuals.com" />
             </label>
             <label className="admin-field">
-              <span>Tags (separate with commas)</span>
+              <span>{perPhoto ? 'Tags for all photos (separate with commas)' : 'Tags (separate with commas)'}</span>
               <input value={batchTags} maxLength={500} onChange={(e) => setBatchTags(e.target.value)} placeholder="e.g. truck wrap, ford, palm trees" />
             </label>
           </div>

@@ -866,3 +866,54 @@
 .admin__error {
   color: #b42318;
 }
+
+/* Separate posts: click a waiting photo to give it its own tags */
+.admin-batch__pick {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border-radius: 6px;
+  outline: 3px solid transparent;
+  outline-offset: 1px;
+  cursor: pointer;
+  transition: outline-color 150ms ease;
+}
+
+.admin-batch__pick:hover {
+  outline-color: #e6c3a6;
+}
+
+.admin-batch__pick--on {
+  outline-color: var(--ov-orange-deep);
+}
+
+.admin-batch__tagged {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  background: var(--ov-orange-deep);
+  color: #fff;
+  font-size: 0.7rem;
+  pointer-events: none;
+}
+
+.admin-batch__photo {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.75rem;
+  padding: 0.65rem;
+  border: 1.5px solid var(--ov-orange-deep);
+  border-radius: 8px;
+  background: #fff7ef;
+}
+
+.admin-batch__photo img {
+  width: 64px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 6px;
+}
