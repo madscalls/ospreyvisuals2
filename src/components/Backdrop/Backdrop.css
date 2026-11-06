@@ -15,7 +15,7 @@
 }
 
 /*
-  Services: the painted clouds stay at the top (behind the palm-tree splash) and fade to plain paper
+  Services and FAQ: the painted clouds stay at the top (behind the palm-tree splash) and fade to plain paper
   before the service cards, like the concept. A paper wash fades in over the lower part.
 */
 .backdrop::after {

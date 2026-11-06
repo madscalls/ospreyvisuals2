@@ -10,6 +10,7 @@ import Gallery from './pages/Gallery/Gallery.jsx';
 import WorkSearch from './pages/WorkSearch/WorkSearch.jsx';
 import Login from './pages/Login/Login.jsx';
 import Policy from './pages/Policy/Policy.jsx';
+import Faq from './pages/Faq/Faq.jsx';
 import { POLICY_LIST } from './data/policies';
 import Services from './pages/Services/Services.jsx';
 import About from './pages/About/About.jsx';
@@ -46,8 +47,9 @@ function Site() {
 
   const isGallery = location.pathname.startsWith('/work/');
   const isPolicy = POLICY_LIST.some((p) => p.path === location.pathname);
+  const isFaq = location.pathname === '/faq';
   // Long pages scroll instead of fitting one screen: galleries (any number of photos) and the policy pages
-  const scrolls = isGallery || isPolicy;
+  const scrolls = isGallery || isPolicy || isFaq;
   // Contact, Services, About and Work fill the screen themselves, so the footer tagline is left off there
   const noFooter = ['/contact', '/services', '/about', '/work'].includes(location.pathname) || scrolls;
 
@@ -55,7 +57,7 @@ function Site() {
     document.documentElement.classList.toggle('page-scroll', scrolls);
   }, [scrolls]);
   // Services: the backdrop's painted sky shows only at the top, behind the palm-tree splash
-  const plainPaper = location.pathname === '/services';
+  const plainPaper = location.pathname === '/services' || isFaq; // FAQ: plain paper behind the questions so they read easily
 
   // First-load intro: while this class is on, components play their staggered fade-in
   // (text → truck scene → everything else). Removed once everything (incl. the birds' glide-in) has finished.
@@ -85,6 +87,7 @@ function Site() {
               <Route path="/shop" element={<Shop />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/faq" element={<Faq />} />
               {POLICY_LIST.map((p) => (
                 <Route key={p.slug} path={p.path} element={<Policy slug={p.slug} />} />
               ))}

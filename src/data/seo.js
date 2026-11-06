@@ -14,6 +14,7 @@ import { SERVICE_DETAILS } from './services';
 import { WORK_CATEGORIES, findCategory } from './work';
 import { POLICIES } from './policies';
 import { CONTACT, SOCIALS } from './contact';
+import { FAQS } from './faq';
 
 export const SITE_URL = 'https://ospreyvisuals.com';
 export const SITE_NAME = 'Osprey Visuals';
@@ -23,12 +24,15 @@ export const BUSINESS = {
   name: 'Osprey Visuals',
   legalName: 'Osprey Visuals LLC',
   description:
-    'Osprey Visuals is a Florida design and branding studio: vehicle wraps, signage, print and promotional products, ' +
+    'Osprey Visuals is a design, signage and branding studio serving Sarasota, Manatee and Charlotte counties in Florida: vehicle wraps, signage, print and promotional products, ' +
     'websites and digital graphics, business branding, and custom creations like 3D printing and laser engraving.',
   phone: '+1-941-408-5184',
   email: CONTACT.email,
   region: 'FL',
   country: 'US',
+  // Service-area business: no shop address yet (meets customers at a set garage or on site)
+  areaServed: ['Sarasota County', 'Manatee County', 'Charlotte County'],
+  hours: { days: 'Monday through Sunday', opens: '09:00', closes: '19:00', label: 'Every day, 9 AM – 7 PM' },
   // Public profiles (same business, so search engines and AI tools connect them)
   sameAs: SOCIALS.map((s) => s.url),
 };
@@ -66,6 +70,11 @@ const STATIC_PAGES = {
     title: 'Log in | Osprey Visuals',
     description: 'Customer accounts are coming soon: orders, invoices and reorders in one place.',
   },
+  '/faq': {
+    title: 'FAQ: Wraps, Signs, Printing & Design | Osprey Visuals',
+    description:
+      'Answers about vehicle wraps, yard signs, storefront signage, banners, business cards, logo design and ordering in Sarasota, Venice, North Port and Southwest Florida.',
+  },
   '/work/search': { title: 'Search | Work | Osprey Visuals', description: 'Search Osprey Visuals projects.', noindex: true },
 };
 
@@ -101,6 +110,7 @@ export const PRERENDER_ROUTES = [
   '/about',
   '/shop',
   '/contact',
+  '/faq',
   '/login',
   ...Object.values(POLICIES).map((p) => p.path),
 ];
@@ -120,6 +130,13 @@ export function structuredData(pathname) {
     telephone: BUSINESS.phone,
     email: BUSINESS.email,
     address: { '@type': 'PostalAddress', addressRegion: BUSINESS.region, addressCountry: BUSINESS.country },
+    areaServed: BUSINESS.areaServed.map((name) => ({ '@type': 'AdministrativeArea', name: `${name}, Florida` })),
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: BUSINESS.hours.opens,
+      closes: BUSINESS.hours.closes,
+    },
     sameAs: BUSINESS.sameAs,
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
@@ -148,11 +165,18 @@ export function structuredData(pathname) {
     const trail = [{ name: 'Home', path: '/' }];
     const gallery = pathname.startsWith('/work/') && findCategory(pathname.slice(6));
     if (gallery) trail.push({ name: 'Work', path: '/work' });
-    trail.push({ name: pageMeta(pathname).title.split(' | ')[0], path: pathname });
+    trail.push({ name: pathname === '/faq' ? 'FAQ' : pageMeta(pathname).title.split(' | ')[0], path: pathname });
     out.push({
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
       itemListElement: trail.map((t, i) => ({ '@type': 'ListItem', position: i + 1, name: t.name, item: `${SITE_URL}${t.path === '/' ? '/' : t.path}` })),
+    });
+  }
+  if (pathname === '/faq') {
+    out.push({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: FAQS.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
     });
   }
   return out;
@@ -165,7 +189,9 @@ export function llmsTxt() {
     '',
     `> ${BUSINESS.description}`,
     '',
-    `Phone: ${CONTACT.phone} · Email: ${CONTACT.email} · Based in Florida, United States.`,
+    `Phone: ${CONTACT.phone} · Email: ${CONTACT.email}`,
+    `Service area: ${BUSINESS.areaServed.join(', ')} (Florida). No storefront yet: we meet customers at a set garage or come to them.`,
+    `Hours: ${BUSINESS.hours.label}.`,
     'Quotes: use the contact form (files can be attached) or call.',
     '',
     '## Services',
@@ -179,8 +205,12 @@ export function llmsTxt() {
     ...WORK_CATEGORIES.map((c) => `  - [${c.title}](${SITE_URL}/work/${c.slug}): ${c.tagline}`),
     `- [About](${SITE_URL}/about): how we work and what we believe`,
     `- [Contact / get a quote](${SITE_URL}/contact)`,
+    `- [FAQ](${SITE_URL}/faq): pricing, turnaround, design, installation, materials, service area`,
     `- [Shop](${SITE_URL}/shop): coming soon`,
     '',
+    '## Frequently asked questions',
+    '',
+    ...FAQS.flatMap((f) => [`### ${f.q}`, '', f.a, '']),
     '## Policies',
     '',
     ...Object.values(POLICIES).map((p) => `- [${p.label}](${SITE_URL}${p.path})`),

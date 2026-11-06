@@ -20,8 +20,14 @@ export default function Footer({ compact = false }) {
           <Divider className="footer__divider" />
         </>
       )}
-      <p className="footer__legal">
+      <div className="footer__legal">
         <span>© {new Date().getFullYear()} Osprey Visuals</span>
+        <span className="footer__item">
+          <span aria-hidden="true">·</span>
+          <Link to="/faq" className="footer__link">
+            FAQ
+          </Link>
+        </span>
         {POLICY_LIST.map((p) => (
           <span key={p.slug} className="footer__item">
             <span aria-hidden="true">·</span>
@@ -34,7 +40,7 @@ export default function Footer({ compact = false }) {
           <span aria-hidden="true">·</span>
           <SocialLinks size="small" />
         </span>
-      </p>
+      </div>
     </footer>
   );
 }

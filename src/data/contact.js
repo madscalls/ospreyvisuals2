@@ -13,15 +13,22 @@ export const SOCIALS = [
   { id: 'tiktok', label: 'TikTok', handle: '@ospreyvisualsfl', url: 'https://www.tiktok.com/@ospreyvisualsfl' },
 ];
 
+// Nick's list (2026-11-06)
 export const PROJECT_TYPES = [
-  'Vehicle wrap',
-  'Signage',
-  'Print & promo',
-  'Branding & design',
-  'Digital (web / social)',
-  'Business solutions',
-  'Custom creations (3D printing, engraving)',
-  'Something else',
+  'Vehicle Wrap / Lettering',
+  'Storefront Signage',
+  'Signage (Real Estate)',
+  'Signage (Personal / Commercial)',
+  'Banners / Magnets',
+  'Business Cards / Yard Signs',
+  'Print Solutions',
+  'Promotional Products',
+  'Apparel',
+  'Branding / Design / Logos',
+  'Digital (Websites / Socials / QR Codes)',
+  'Business Solutions',
+  'Custom Creations (3D Printing, Engraving)',
+  'Something Else',
 ];
 
 export const TIMELINES = ['As soon as possible', 'Within a month', '1–3 months', 'Flexible / just exploring'];

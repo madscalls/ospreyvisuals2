@@ -1,0 +1,113 @@
+/* FAQ: heading, then a column of collapsible questions on the paper, then a nudge to get a quote */
+.page-faq {
+  width: min(100%, 60rem);
+  margin-inline: auto;
+  padding: clamp(0.5rem, 2vh, 1.5rem) var(--ov-gutter) clamp(2rem, 6vh, 4rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 3vh, 2.25rem);
+}
+
+.page-faq .page-heading__body {
+  max-width: 40rem;
+}
+
+.page-faq__list {
+  border-top: 1px solid rgba(31, 31, 31, 0.18);
+}
+
+.faq-item {
+  border-bottom: 1px solid rgba(31, 31, 31, 0.18);
+}
+
+.faq-item__q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: clamp(0.85rem, 1.8vh, 1.15rem) 0.25rem;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  font-size: clamp(0.95rem, 1.9vh, 1.1rem);
+  line-height: 1.35;
+  color: var(--ov-ink);
+  transition: color 200ms ease;
+}
+
+/* Hide the browser's own triangle */
+.faq-item__q::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item__q:hover,
+.faq-item__q:focus-visible,
+.faq-item[open] > .faq-item__q {
+  color: var(--ov-orange-deep);
+}
+
+.faq-item__q:focus-visible {
+  outline: 2px solid var(--ov-orange);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.faq-item__icon {
+  flex: none;
+  width: 1.3em;
+  height: 1.3em;
+  color: var(--ov-orange);
+  transition: transform 260ms var(--ov-ease);
+}
+
+.faq-item[open] .faq-item__icon {
+  transform: rotate(180deg);
+}
+
+.faq-item__a {
+  max-width: 48rem;
+  padding: 0 0.25rem clamp(1rem, 2.2vh, 1.4rem);
+  font-size: clamp(0.92rem, 1.8vh, 1.05rem);
+  line-height: 1.65;
+  color: var(--ov-ink-soft);
+  animation: faq-open 260ms var(--ov-ease);
+}
+
+@keyframes faq-open {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-item__a {
+    animation: none;
+  }
+  .faq-item__icon {
+    transition: none;
+  }
+}
+
+.page-faq__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  font-size: var(--ov-fs-body);
+  color: var(--ov-ink-soft);
+}
+
+.page-faq__cta a:not(.brush-btn) {
+  color: var(--ov-orange-deep);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+  .page-faq__cta {
+    flex-direction: column;
+    text-align: center;
+  }
+}
