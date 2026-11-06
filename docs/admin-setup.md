@@ -29,7 +29,7 @@ The admin page (`/admin`) and its photo storage run on Cloudflare. Until these s
 Cloudflare account: Ospreyvisualsfl@gmail.com. Everything below is on free plans.
 
 1. **Pages project** `ospreyvisuals2` (Workers & Pages), connected to GitHub `madscalls/ospreyvisuals2`, branch `main`.
-   - Build command `npx vite build`, output `dist`. Every push to `main` deploys; other branches get a preview URL.
+   - Build command `npm run build` (builds the site, then saves a ready-to-read copy of each page for search engines and AI tools, plus sitemap.xml and llms.txt), output `dist`. Every push to `main` deploys; other branches get a preview URL.
    - Because `wrangler.toml` exists, Cloudflare reads bindings from it and **ignores build variables typed into the
      dashboard**. That's why `vite.config.js` defaults to the site root, and why the settings in step 4 are *secrets*.
    - Test address: https://ospreyvisuals2.pages.dev

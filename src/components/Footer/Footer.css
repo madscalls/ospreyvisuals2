@@ -7,7 +7,7 @@
   gap: clamp(0.25rem, 1vh, 0.6rem);
   height: var(--ov-footer-h);
   justify-content: center;
-  width: 64%;
+  width: 100%; /* centred across the whole page, on every page */
   padding: 0 var(--ov-gutter);
 }
 
@@ -79,7 +79,6 @@
 /* Pages whose content fills the screen: just the small print, in a slim strip */
 .footer--compact {
   height: auto;
-  width: 100%;
   padding-block: clamp(0.2rem, 0.6vh, 0.45rem) clamp(0.35rem, 1vh, 0.7rem);
 }
 
